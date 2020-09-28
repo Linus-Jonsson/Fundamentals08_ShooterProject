@@ -25,7 +25,9 @@ public void setup() {
 public void draw() {
 	background(255);
 }
-
+class Bullet {
+	
+}
 
 
 
