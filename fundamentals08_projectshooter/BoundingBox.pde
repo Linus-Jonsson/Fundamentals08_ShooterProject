@@ -1,7 +1,7 @@
 class BoundingBox {
 	int x, y, w, h;
 
-	draw(void) {
+	void draw() {
 		strokeWidth(1);
 		stroke(255, 0, 0);
 		rect(x, y, w, h);

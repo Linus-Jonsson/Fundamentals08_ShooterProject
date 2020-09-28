@@ -1,18 +1,17 @@
+// StarSystem stars;
 Game invadersOfSpace;
-
-// test :D
 
 void setup() {
 	surface.setLocation(10, 10);
 	size(640, 480);
 	frameRate(30);
-
+	// stars = new StarSystem(new PVector(width/2, height/2));
 	invadersOfSpace = new Game();
 }
 
 void draw() {
-	background(255);
-	// Epic starfield goes here...
+	// stars.drawBackground();
+	background(0); //Basic background while building
 	switch (invadersOfSpace.getState()) {
 		case 0: invadersOfSpace.init(); break;
 		case 1: invadersOfSpace.homeScreen(); break;
