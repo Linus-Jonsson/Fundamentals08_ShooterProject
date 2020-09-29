@@ -1,0 +1,47 @@
+# Cache files for Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# Workspace files are user-specific
+*.sublime-workspace
+
+# Project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using Sublime Text
+# *.sublime-project
+
+# SFTP configuration file
+sftp-config.json
+
+# Package control specific files
+Package Control.last-run
+Package Control.ca-list
+Package Control.ca-bundle
+Package Control.system-ca-bundle
+Package Control.cache/
+Package Control.ca-certs/
+Package Control.merged-ca-bundle
+Package Control.user-ca-bundle
+oscrypto-ca-bundle.crt
+bh_unicode_properties.cache
+
+# Sublime-github package stores a github token in this file
+# https://packagecontrol.io/packages/sublime-github
+GitHub.sublime-settings
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$BoundingBox.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$CollisionManager.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Enemy.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$EnemyManager.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Game.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$GameObject.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Player.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$PlayerManager.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Shot.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$ShotsManager.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Star.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$StarSystem.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Time.class
+fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter.class
+fundamentals08_projectshooter/build-tmp/source/fundamentals08_projectshooter.java
+*.class
+*.java
