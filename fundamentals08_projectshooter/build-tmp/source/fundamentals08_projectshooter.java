@@ -19,7 +19,8 @@ Game invadersOfSpace;
 
 
 public void setup() {
-	surface.setLocation(10, 10);
+	//  surface.setLocation(10, 10);
+	((java.awt.Canvas) surface.getNative()).requestFocus();
 	
 	frameRate(30);
 	stars = new StarSystem(new PVector(width/2, height/2));
@@ -27,12 +28,7 @@ public void setup() {
 }
 
 public void draw() {
-
-	background(255);
-	// Epic starfield goes here...
-
 	stars.drawBackground();
-	//background(0); //Basic background while building
 	switch (invadersOfSpace.state) {
 		case 0: invadersOfSpace.init(); break;
 		case 1: invadersOfSpace.splashScreen(); break;
@@ -43,10 +39,11 @@ public void draw() {
 
 
 public void keyPressed() {
-  if (keyCode == RIGHT) invadersOfSpace.move(1, 0);
-  if (keyCode == LEFT) invadersOfSpace.move(-1, 0);
-  if (keyCode == DOWN) invadersOfSpace.move(0, 1);
-  if (keyCode == UP) invadersOfSpace.move(0, -1);
+	if (keyCode == RIGHT) invadersOfSpace.move(1, 0);
+  	if (keyCode == LEFT) invadersOfSpace.move(-1, 0);
+  	if (keyCode == DOWN) invadersOfSpace.move(0, 1);
+  	if (keyCode == UP) invadersOfSpace.move(0, -1);
+  	if (key == 32) invadersOfSpace.shoot(); // 32 = space
  }
 
 class BoundingBox {
@@ -58,27 +55,91 @@ class BoundingBox {
 		rect(x, y, w, h);
 	}
 }
-class Bullet extends GameObject {
-	Bullet(float x, float y) {
-		super(x, y);
+// ska nog ej ha...
+// Denna ska vi nog inte ha... vi har GameObject-klassen istället.
+class CollisionManager {
+	Player[][] players;
+	Enemy[] enemies;
+	ArrayList<Shot> shots;
+
+	CollisionManager(Player[][] _players, Enemy[] _enemies, ArrayList<Shot> _shots) {
+		players = _players;
+		enemies = _enemies;
+		shots = _shots;
+	}
+
+	public void update(float delta_t) {
+		// Check all shots against players, enemies and shields
+		for (int n = 0; n < shots.size(); n++) {
+			//if (shots.get(n).pos.y > 640)
+			
+		}
 	}
 }
-// Denna ska vi nog inte ha... vi har GameObject-klassen istället.
 class Enemy extends GameObject {
 	
 	Enemy(float x, float y) {
 		super(x, y);
 	}
 
-	public void draw() {
-		stroke(255, 0, 0);
-		fill(255, 0, 0);
-		circle(pos.x, pos.y, 20);
+	public void AI(float delta_t) {
+		// A.I. stuff, arite!
+		if (pos.x < 20 || pos.x > width - 20) {
+			pos.x -= vel.x * delta_t;
+		}
+
+		if ((int)random(100) == 0) {
+			vel.x = -1;
+		}
+		if ((int)random(100) == 0) {
+			vel.x = 1;
+		}
 	}
 
-	// ska se skottet när det är nära
-	// 
 
+	public void draw() {
+		float size = 10;
+		
+		pushMatrix();
+		translate(pos.x, pos.y);
+		noStroke();
+
+		beginShape(TRIANGLES);
+		fill(20, 40, 255);
+		vertex(-size, 0);
+		vertex(-size*2.2f, -size*0.3f);
+		vertex(-size*1.8f, -size*0.5f);
+		vertex(-size*2.2f, -size*0.3f);
+		vertex(-size*1.8f, -size*0.3f);
+		vertex(-size*1.1f, -size*1.4f);
+		vertex(size, 0);
+		vertex(size*2.2f, -size*0.3f);
+		vertex(size*1.8f, -size*0.5f);
+		vertex(size*2.2f, -size*0.3f);
+		vertex(size*1.8f, -size*0.3f);
+		vertex(size*1.1f, -size*1.4f);
+		endShape();
+
+		fill(255);
+		ellipse(-size*0.05f, size*0.05f, size*3.05f, size*2.05f);
+		ellipse(-size*0.55f, -size*0.45f, size*0.65f, size*0.45f);
+		ellipse(size*0.55f, -size*0.45f, size*0.65f, size*0.45f);
+		fill(40, 100, 255);
+		ellipse(0, 0, size*3, size*2);
+		fill(255);
+		ellipse(-size*0.52f, -size*0.48f, size*0.63f, size*0.43f);
+		ellipse(size*0.48f, -size*0.48f, size*0.63f, size*0.43f);
+		fill(20, 40, 255);
+		ellipse(-size*0.5f, -size*0.5f, size*0.6f, size*0.4f);
+		ellipse(size*0.5f, -size*0.5f, size*0.6f, size*0.4f);
+		fill(0);
+		ellipse(-size*0.5f, -size*0.55f, size*0.3f, size*0.2f);
+		ellipse(size*0.5f, -size*0.55f, size*0.3f, size*0.2f);
+		fill(255);
+		ellipse(-size*0.56f, -size*0.58f, size*0.12f, size*0.08f);
+		ellipse(size*0.44f, -size*0.58f, size*0.12f, size*0.08f);
+		popMatrix();
+	}
 }
 class EnemyManager {
 	Enemy[] enemies;
@@ -91,15 +152,20 @@ class EnemyManager {
 			enemies[n] = new Enemy(width / 2, height * 0.9f);
 	}
 
+	public Enemy[] getEnemies() {
+		return enemies;
+	}
+
 	public void draw() {
 		for (int n = 0; n < nEnemies; n++) {
-				enemies[n].draw();
+			enemies[n].draw();
 		}
 	}
 
 	public void update(float delta_t) {
 		for (Enemy e : enemies) {
 			e.transform(delta_t);
+			e.AI(delta_t);
 		}
 	}
 }
@@ -109,6 +175,8 @@ class Game {
 	final int nEnemies = 1;
 	PlayerManager playerManager;
 	EnemyManager enemyManager;
+	ShotsManager shotsManager;
+	CollisionManager collisionManager;
 	Time time;
 	int state; // 0 = Init. 1 = Welcome screen. 2 = Running. 3 = Game Over
 	int score; // a function of the number of surviving players and elapsed time.
@@ -117,37 +185,33 @@ class Game {
 	Game() {
 		time = new Time();
 		state = 0;
+		shotsManager = new ShotsManager();
 		playerManager = new PlayerManager(nPlayersX, nPlayersY); //
 		enemyManager = new EnemyManager(1);
+		collisionManager = new CollisionManager(playerManager.getPlayers(),
+												enemyManager.getEnemies(),
+												shotsManager.getShots());
 	}
 
 	public void init() {
-		// Init everything, then change state to 1, Welcome Screen.
-		// ...
-		// (Add code)
-		//
 		state = 1;
 	}
 
 	public void splashScreen() {
-		// Add code...
-		// Wait for user to start game by pressing a defined key
-		// 
-		// (Add code) 
-		//
-		// Then change to state = 2 
 		state = 2;
 	}
 
 	public void run() {
 		float delta_t = time.getDelta() * 0.05f;
-		//gameObjects.update(delta_t);
 
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);
+		shotsManager.update(delta_t);
+		collisionManager.update(delta_t);
 
 		playerManager.draw();
 		enemyManager.draw();
+		shotsManager.draw();
 	}
 
 	public void gameOver() {
@@ -155,15 +219,19 @@ class Game {
 		stroke(0);
 		fill(0);
 		text("Game Over!", width, height);
-		// Wait for user to quit or restart
-		// 
-		// (Add code)
-		//
-		// Then change to state 0 (init) or quit
 	}
 
 	public void move(int x, int y) {
 		playerManager.setCurrentPlayer(x, y);
+	}
+
+	public void shoot() {
+		if (playerManager.clearShot()) { // No other player ship is blocking the view.
+			float x = playerManager.getCurrent().pos.x;
+			float y = playerManager.getCurrent().pos.y;
+			shotsManager.spawn(x, y, new PVector(0, 3));
+			shotsManager.spawn(x + 10, y, new PVector(0, 3));
+		}
 	}
 }
 class GameObject {
@@ -175,7 +243,6 @@ class GameObject {
 		vel = new PVector(0, 0);
 		boundingBox = new BoundingBox();
 		println("creation of new Game Object");
-		gameObjects.add(this);
 	}
 
 	public boolean collideWall() {
@@ -189,36 +256,99 @@ class GameObject {
 		pos.x += vel.x * delta_t;
 		pos.y += vel.y * delta_t;
 	}
+
+	//boolean 
 }
-GameObjectsManager gameObjects = new GameObjectsManager();
-
-class GameObjectsManager {
-	ArrayList<GameObject> gameObjects; // players, enemy, bullets, etc.
-
-	GameObjectsManager() {
-		gameObjects = new ArrayList<GameObject>(200);
-	}
-
-	public void add(GameObject go) {
-		gameObjects.add(go);
-	}
-}
+// tas bort?
 class Player extends GameObject {
-
+	boolean alive;
 	Player(float x, float y) {
 		super(x, y);
+		alive = true;
 	}
 
 	public void draw(boolean highlight) {
-		if (highlight) {
-			stroke(255, 255, 0);
-			fill(255, 255, 0);			
-		} else {
-			stroke(0, 255, 0);
-			fill(0, 255, 0);
-		}
-		circle(pos.x, pos.y, 20);
-	}
+		float size = 10;
+		int nonHighlightAlpha = 100;
+		
+		pushMatrix();
+  		translate(pos.x, pos.y);
+		
+  		int r = (int)random(255);
+  		stroke(0, r, r);
+  		line (-1, -23, 0, -23 - (int)random(4));
+  		r = (int)random(255);
+  		stroke(0, r, r);
+  		line (1, -23, 0, -23 - (int)random(4));
+  		r = (int)random(255);
+  		stroke(0, r, r);
+  		line (1, -23, 0, -23 - (int)random(4));
+
+
+		beginShape(QUADS);
+		noStroke();
+		
+		if (!highlight)
+			fill(255, 100, 20, nonHighlightAlpha);
+		else 
+			fill(255, 100, 20, 255);
+
+		vertex(-size*0.7f, -size*0.5f);
+		vertex(-size*0.6f, -size*0.5f);
+		vertex(-size*0.6f, -size*2.1f);
+		vertex(-size*0.7f, -size*2.1f);
+		vertex(size*0.7f, -size*0.5f);
+		vertex(size*0.6f, -size*0.5f);
+		vertex(size*0.6f, -size*2.1f);
+		vertex(size*0.7f, -size*2.1f);
+		vertex(-size*0.35f, -size*2);
+		vertex(-size*0.4f, -size*2.15f);
+		vertex(size*0.4f, -size*2.15f);
+		vertex(size*0.35f, -size*2);
+		endShape();
+
+		beginShape(TRIANGLES);
+		noStroke();
+		if (!highlight)
+			fill(255, 170, 40, nonHighlightAlpha);
+		else
+			fill(255, 170, 40, 255);
+		vertex(-size*0.9f, -size*0.75f);
+		vertex(-size*1.4f, -size*1.8f);
+		vertex(-size*0.4f, -size*1.8f);
+		vertex(size*0.9f, -size*0.75f);
+		vertex(size*1.4f, -size*1.8f);
+		vertex(size*0.4f, -size*1.8f);
+		vertex(0, 0);
+		vertex(-size, -size*2);
+		vertex(size, -size*2);
+		if (!highlight)
+			fill(255, 220, 120, nonHighlightAlpha);
+		else
+			fill(255, 220, 120, 255);
+		vertex(0, -size*0.7f);
+		vertex(-size*0.4f, -size*1.5f);
+		vertex(size*0.4f, -size*1.5f);
+		endShape();
+
+		beginShape(LINES);
+		strokeWeight(size * 0.1f);
+		
+		if (!highlight) 
+			stroke(nonHighlightAlpha);
+		else
+			stroke(255);
+		vertex(-size*0.02f, -size*0.06f);
+		vertex(-size*0.65f, -size*1.35f);
+		vertex(-size*0.95f, -size*0.8f);
+		vertex(-size*1.4f, -size*1.75f);
+		vertex(size*0.85f, -size*0.8f);
+		vertex(size*0.65f, -size*1.25f);
+		vertex(0, -size*0.75f);
+		vertex(-size*0.4f, -size*1.45f);
+		endShape();	
+		popMatrix();
+	}	
 }
 class PlayerManager {
 	Player[][] players;
@@ -233,17 +363,39 @@ class PlayerManager {
 		players = new Player[rows][cols];
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < cols; x++) {
-				players[y][x] = new Player((width / 2) - (cols / 2) * 25 + x * 25, 
-										   (height / 2) - rows * 25 + y * 25);
+				players[y][x] = new Player((width / 2) - (cols / 2) * 35 + x * 35, 
+										   (height / 2) - rows * 25 + y * 35);
 				players[y][x].vel.x = -1;
 				players[y][x].vel.y = 0;
 			}
 		}
+
+		players[4][4].alive = false;
+		players[0][0].alive = false;
+		players[3][10].alive = false;
+	}
+
+	public Player[][] getPlayers() {
+		return players;
 	}
 
 	public void setCurrentPlayer(int x, int y) {
-		currentX += x;
-		currentY += y;
+		int tmpX = currentX;
+		int tmpY = currentY;
+		do {
+			currentX += x;
+			currentY += y;
+			if (currentX < 0 || currentX > cols - 1 || 
+				currentY < 0 || currentY > rows - 1) {
+				currentX -= x;
+				currentY -= y;
+				break;
+			}
+		} while (!players[currentY][currentX].alive);
+		if (!players[currentY][currentX].alive) {
+			currentX = tmpX;
+			currentY = tmpY;
+		}
 	}
 
 	public void draw() {
@@ -254,7 +406,8 @@ class PlayerManager {
 					highlight = true;
 				else 
 					highlight = false;
-				players[y][x].draw(highlight);
+				if (players[y][x].alive)
+					players[y][x].draw(highlight);
 			}
 		}
 	}
@@ -276,8 +429,6 @@ class PlayerManager {
 				}
 			}
 		}				
-
-				
 	}
 
 	public void changeDirection(float delta_t) {
@@ -289,7 +440,62 @@ class PlayerManager {
 			}
 		}				
 	}
+
+
+	public Player getCurrent() {
+		return players[currentY][currentX];
+	}
+
+	public boolean clearShot() {
+		for (int yTmp = currentY + 1; yTmp < rows; yTmp++) {
+			if (players[yTmp][currentX].alive)
+				return false;
+		}
+		return true;
+	}
 }
+class ShotsManager {
+	ArrayList<Shot> shots;
+	ShotsManager() {
+		shots = new ArrayList<Shot>(100);
+	}
+
+	public ArrayList<Shot> getShots() {
+		return shots;
+	}
+
+	public void spawn(float x, float y, PVector vel) {
+		shots.add(new Shot(x, y, vel));
+	}
+
+	public void update(float delta_t) {
+		for (Shot s : shots) {
+			s.transform(delta_t);
+		}
+	}
+
+	public void draw() {
+		for (Shot s : shots) {
+			s.draw();
+		}
+	}
+}
+
+class Shot extends GameObject {
+	Shot(float x, float y, PVector _vel) {
+		super (x, y);
+		vel = _vel.copy();
+	}
+
+	public void draw() {
+		stroke(0, 200, 255);
+		fill(0, 200, 255);
+		rect (pos.x, pos.y, 2, 10);
+	}
+}
+
+
+
 class StarSystem {
   ArrayList<Star> stars;
   PVector origin;

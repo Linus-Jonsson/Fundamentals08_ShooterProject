@@ -11,17 +11,39 @@ class PlayerManager {
 		players = new Player[rows][cols];
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < cols; x++) {
-				players[y][x] = new Player((width / 2) - (cols / 2) * 25 + x * 25, 
-										   (height / 2) - rows * 25 + y * 25);
+				players[y][x] = new Player((width / 2) - (cols / 2) * 35 + x * 35, 
+										   (height / 2) - rows * 25 + y * 35);
 				players[y][x].vel.x = -1;
 				players[y][x].vel.y = 0;
 			}
 		}
+
+		players[4][4].alive = false;
+		players[0][0].alive = false;
+		players[3][10].alive = false;
+	}
+
+	Player[][] getPlayers() {
+		return players;
 	}
 
 	void setCurrentPlayer(int x, int y) {
-		currentX += x;
-		currentY += y;
+		int tmpX = currentX;
+		int tmpY = currentY;
+		do {
+			currentX += x;
+			currentY += y;
+			if (currentX < 0 || currentX > cols - 1 || 
+				currentY < 0 || currentY > rows - 1) {
+				currentX -= x;
+				currentY -= y;
+				break;
+			}
+		} while (!players[currentY][currentX].alive);
+		if (!players[currentY][currentX].alive) {
+			currentX = tmpX;
+			currentY = tmpY;
+		}
 	}
 
 	void draw() {
@@ -32,7 +54,8 @@ class PlayerManager {
 					highlight = true;
 				else 
 					highlight = false;
-				players[y][x].draw(highlight);
+				if (players[y][x].alive)
+					players[y][x].draw(highlight);
 			}
 		}
 	}
@@ -54,8 +77,6 @@ class PlayerManager {
 				}
 			}
 		}				
-
-				
 	}
 
 	void changeDirection(float delta_t) {
@@ -66,5 +87,18 @@ class PlayerManager {
 				players[y][x].vel.x = -players[y][x].vel.x;
 			}
 		}				
+	}
+
+
+	Player getCurrent() {
+		return players[currentY][currentX];
+	}
+
+	boolean clearShot() {
+		for (int yTmp = currentY + 1; yTmp < rows; yTmp++) {
+			if (players[yTmp][currentX].alive)
+				return false;
+		}
+		return true;
 	}
 }

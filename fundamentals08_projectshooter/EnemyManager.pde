@@ -9,15 +9,20 @@ class EnemyManager {
 			enemies[n] = new Enemy(width / 2, height * 0.9);
 	}
 
+	Enemy[] getEnemies() {
+		return enemies;
+	}
+
 	void draw() {
 		for (int n = 0; n < nEnemies; n++) {
-				enemies[n].draw();
+			enemies[n].draw();
 		}
 	}
 
 	void update(float delta_t) {
 		for (Enemy e : enemies) {
 			e.transform(delta_t);
+			e.AI(delta_t);
 		}
 	}
 }

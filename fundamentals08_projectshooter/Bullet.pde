@@ -1,5 +1,1 @@
-class Bullet extends GameObject {
-	Bullet(float x, float y) {
-		super(x, y);
-	}
-}
+// ska nog ej ha...

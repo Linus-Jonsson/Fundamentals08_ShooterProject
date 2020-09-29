@@ -7,7 +7,6 @@ class GameObject {
 		vel = new PVector(0, 0);
 		boundingBox = new BoundingBox();
 		println("creation of new Game Object");
-		gameObjects.add(this);
 	}
 
 	boolean collideWall() {
@@ -21,4 +20,6 @@ class GameObject {
 		pos.x += vel.x * delta_t;
 		pos.y += vel.y * delta_t;
 	}
+
+	//boolean 
 }
