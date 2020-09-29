@@ -28,20 +28,6 @@ bh_unicode_properties.cache
 # Sublime-github package stores a github token in this file
 # https://packagecontrol.io/packages/sublime-github
 GitHub.sublime-settings
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$BoundingBox.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$CollisionManager.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Enemy.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$EnemyManager.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Game.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$GameObject.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Player.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$PlayerManager.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Shot.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$ShotsManager.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Star.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$StarSystem.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Time.class
-fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter.class
-fundamentals08_projectshooter/build-tmp/source/fundamentals08_projectshooter.java
+
 *.class
 *.java
