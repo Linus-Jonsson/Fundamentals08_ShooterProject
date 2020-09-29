@@ -14,24 +14,25 @@ import java.io.IOException;
 
 public class fundamentals08_projectshooter extends PApplet {
 
-
 StarSystem stars;
 Game invadersOfSpace;
 
-// test :D
 
 public void setup() {
 	surface.setLocation(10, 10);
 	
 	frameRate(30);
-
-
+	stars = new StarSystem(new PVector(width/2, height/2));
 	invadersOfSpace = new Game();
 }
 
 public void draw() {
+
 	background(255);
 	// Epic starfield goes here...
+
+	stars.drawBackground();
+	//background(0); //Basic background while building
 	switch (invadersOfSpace.state) {
 		case 0: invadersOfSpace.init(); break;
 		case 1: invadersOfSpace.splashScreen(); break;
@@ -41,44 +42,13 @@ public void draw() {
 }
 
 
-public void keyPressed()
-{
+public void keyPressed() {
   if (keyCode == RIGHT) invadersOfSpace.move(1, 0);
   if (keyCode == LEFT) invadersOfSpace.move(-1, 0);
   if (keyCode == DOWN) invadersOfSpace.move(0, 1);
   if (keyCode == UP) invadersOfSpace.move(0, -1);
-}
+ }
 
-/*
-boolean keys[4];
-	keys[0] = false;
-  	keys[1] = false;
-  	keys[2] = false;
-  	keys[3] = false;
-  
-void getInput() {
-	if (keys[0] == true) man.acc.x += 300; 
-	if (keys[1] == true) man.acc.x -= 300; 
-	if (keys[2] == true) man.acc.y += 300;
-	if (keys[3] == true) man.acc.y -= 300; 	
-}
-
-void keyPressed()
-{
-  if (keyCode == RIGHT) keys[0] = true;
-  if (keyCode == LEFT) keys[1] = true;
-  if (keyCode == DOWN) keys[2] = true;
-  if (keyCode == UP) keys[3] = true;
-}
-
-void keyReleased()
-{
-  if (keyCode == RIGHT) keys[0] = false;
-  if (keyCode == LEFT) keys[1] = false;
-  if (keyCode == DOWN) keys[2] = false;
-  if (keyCode == UP) keys[3] = false;
-  if (key == 'g') gravity = !gravity; //keys[4] = false;
-} */
 class BoundingBox {
 	int x, y, w, h;
 
@@ -95,35 +65,6 @@ class Bullet extends GameObject {
 }
 // Denna ska vi nog inte ha... vi har GameObject-klassen istället.
 class Enemy extends GameObject {
-	stars = new StarSystem(new PVector(width/2, height/2));
-	// invadersOfSpace = new Game();
-}
-
-public void draw() {
-	starfieldBackground();
-	// Epic starfield goes here...
-	// switch (invadersOfSpace.getState()) {
-	// 	case 0: invadersOfSpace.init(); break;
-	// 	case 1: invadersOfSpace.homeScreen(); break;
-	// 	case 2: invadersOfSpace.run(); break;
-	// 	case 3: invadersOfSpace.gameOver(); break;
-	// }
-}
-// class BoundingBox {
-// 	int x, y, w, h;
-
-// 	void draw() {
-// 		strokeWidth(1);
-// 		stroke(255, 0, 0);
-// 		rect(x, y, w, h);
-// 	}
-// }
-class Bullet extends GameObject {
-	
-}
-// Denna ska vi nog inte ha... vi har GameObject-klassen istället.
-class Enemy {
-
 	
 	Enemy(float x, float y) {
 		super(x, y);
@@ -134,6 +75,10 @@ class Enemy {
 		fill(255, 0, 0);
 		circle(pos.x, pos.y, 20);
 	}
+
+	// ska se skottet när det är nära
+	// 
+
 }
 class EnemyManager {
 	Enemy[] enemies;
@@ -166,6 +111,8 @@ class Game {
 	EnemyManager enemyManager;
 	Time time;
 	int state; // 0 = Init. 1 = Welcome screen. 2 = Running. 3 = Game Over
+	int score; // a function of the number of surviving players and elapsed time.
+	int highSchore; //
 	
 	Game() {
 		time = new Time();
@@ -256,7 +203,6 @@ class GameObjectsManager {
 		gameObjects.add(go);
 	}
 }
-
 class Player extends GameObject {
 
 	Player(float x, float y) {
@@ -330,6 +276,8 @@ class PlayerManager {
 				}
 			}
 		}				
+
+				
 	}
 
 	public void changeDirection(float delta_t) {
@@ -342,82 +290,6 @@ class PlayerManager {
 		}				
 	}
 }
-// Linus' awesome stuff!
-class Time {
-  long initTime;
-  long lastTime;
-  Time() {
-    initTime = millis();
-    lastTime = millis();
-  }
-
-  public long getAbsolute() {
-    return millis() - initTime;
-  }
-
-  public float getDelta() {
-    float delta_t = (millis() - lastTime);
-    lastTime = millis();
-    return delta_t;
-  }
-
-  public void pause(long p) {
-    long t = millis();
-    while ((millis() - t) < p);
-// Invaders of space? =)
-
-class Game { 
-	int state; // 0 = Init. 1 = Welcome screen. 2 = Running. 3 = Game Over
-
-	public int getState() {return state;}
-
-	public void init() {
-	}
-
-	public void welcomeScreen() {
-	}
-
-	public void run() {
-	}
-
-	public void gameOver() {
-	}
-}
-class GameObject {
-	PVector pos, vel;
-	BoundingBox boundingBox;  // Radius of bounding circle. Used for collision detection.
-
-	GameObject () {
-		pos = new PVector();
-		vel = new PVector();
-		size = -1;
-		println("creation of new Game Object");
-	}
-
-	public boolean collide(GameObject other) {
-		if (overlap(this, other))
-			return true;
-		return false;
-	}
-
-	public void draw() {
-	}
-}
-class Player extends GameObject {
-
-	Player() {
-		super();
-	}
-}
-class PlayerManager {
-	
-}
-public void starfieldBackground() {
-  background(0);
-  stars.addStars();
-  stars.run();
-}
-
 class StarSystem {
   ArrayList<Star> stars;
   PVector origin;
@@ -426,9 +298,17 @@ class StarSystem {
     stars = new ArrayList<Star>();
     origin = position.copy();
   }
+
+  public void drawBackground() {
+    background(0);
+    addStars();
+    run();
+  }
+
   public void addStars() {
     stars.add(new Star(origin));
   }
+
   public void run() {
     for (int i = stars.size()-1; i >= 0; i--) {
       Star s = stars.get(i);
@@ -446,9 +326,9 @@ class Star {
   float size;
   float lifespan;
 
-  Star(PVector l) {
+  Star(PVector pos) {
     velocity = new PVector(random(-1, 1), random(-1, 1));
-    position = l.copy();
+    position = pos.copy();
     size = random(0.4f, 0.8f);
     lifespan = 255.0f;
   }
@@ -473,7 +353,30 @@ class Star {
     }
   }
 }
-  public void settings() { 	size(640, 480); }
+class Time {
+  long initTime;
+  long lastTime;
+  Time() {
+    initTime = millis();
+    lastTime = millis();
+  }
+
+  public long getAbsolute() {
+    return millis() - initTime;
+  }
+
+  public float getDelta() {
+    float delta_t = (millis() - lastTime);
+    lastTime = millis();
+    return delta_t;
+  }
+
+  public void pause(long p) {
+    long t = millis();
+    while ((millis() - t) < p);
+  }
+}
+  public void settings() { 	size(480, 640); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "fundamentals08_projectshooter" };
     if (passedArgs != null) {

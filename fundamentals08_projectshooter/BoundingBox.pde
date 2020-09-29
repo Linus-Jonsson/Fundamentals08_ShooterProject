@@ -3,7 +3,6 @@ class BoundingBox {
 
 	void draw() {
 		strokeWeight(1);
-		strokeWidth(1);
 		stroke(255, 0, 0);
 		rect(x, y, w, h);
 	}

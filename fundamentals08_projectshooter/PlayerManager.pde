@@ -54,6 +54,8 @@ class PlayerManager {
 				}
 			}
 		}				
+
+				
 	}
 
 	void changeDirection(float delta_t) {

@@ -9,4 +9,8 @@ class Enemy extends GameObject {
 		fill(255, 0, 0);
 		circle(pos.x, pos.y, 20);
 	}
+
+	// ska se skottet när det är nära
+	// 
+
 }

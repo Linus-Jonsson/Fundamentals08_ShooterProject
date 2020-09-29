@@ -9,8 +9,8 @@ class StarSystem {
 
   void drawBackground() {
     background(0);
-    stars.addStars();
-    stars.run();
+    addStars();
+    run();
   }
 
   void addStars() {

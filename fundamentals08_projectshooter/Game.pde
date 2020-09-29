@@ -6,6 +6,8 @@ class Game {
 	EnemyManager enemyManager;
 	Time time;
 	int state; // 0 = Init. 1 = Welcome screen. 2 = Running. 3 = Game Over
+	int score; // a function of the number of surviving players and elapsed time.
+	int highSchore; //
 	
 	Game() {
 		time = new Time();
