@@ -20,11 +20,45 @@ class Enemy extends GameObject {
 
 
 	void draw() {
-		float size = 10;
+		float size = 8;
 		
 		pushMatrix();
 		translate(pos.x, pos.y);
 		noStroke();
+
+		beginShape(TRIANGLES);
+		push();
+		translate(-size*0.1, size*0.03);
+		fill(255);
+		vertex(-size, 0);
+		vertex(-size*2.2, -size*0.3);
+		vertex(-size*1.8, -size*0.5);
+		vertex(-size*2.2, -size*0.3);
+		vertex(-size*1.8, -size*0.3);
+		vertex(-size*1.1, -size*1.4);
+		vertex(-size, 0);
+		vertex(-size*2.1, size*0.7);
+		vertex(-size*1.8, size*0.8);
+		vertex(-size*2.1, size*0.7);
+		vertex(-size*1.8, size*0.6);
+		vertex(-size*0.6, size*1.4);
+		pop();
+		push();
+		translate(-size*0.1, size*0.05);
+		vertex(size, 0);
+		vertex(size*2.2, -size*0.3);
+		vertex(size*1.8, -size*0.5);
+		vertex(size*2.2, -size*0.3);
+		vertex(size*1.8, -size*0.3);
+		vertex(size*1.1, -size*1.4);
+		vertex(size, 0);
+		vertex(size*2.1, size*0.7);
+		vertex(size*1.8, size*0.8);
+		vertex(size*2.1, size*0.7);
+		vertex(size*1.8, size*0.6);
+		vertex(size*0.6, size*1.4);
+		pop();
+		endShape();
 
 		beginShape(TRIANGLES);
 		fill(20, 40, 255);
@@ -40,6 +74,18 @@ class Enemy extends GameObject {
 		vertex(size*2.2, -size*0.3);
 		vertex(size*1.8, -size*0.3);
 		vertex(size*1.1, -size*1.4);
+		vertex(-size, 0);
+		vertex(-size*2.1, size*0.7);
+		vertex(-size*1.8, size*0.8);
+		vertex(-size*2.1, size*0.7);
+		vertex(-size*1.8, size*0.6);
+		vertex(-size*0.6, size*1.4);
+		vertex(size, 0);
+		vertex(size*2.1, size*0.7);
+		vertex(size*1.8, size*0.8);
+		vertex(size*2.1, size*0.7);
+		vertex(size*1.8, size*0.6);
+		vertex(size*0.6, size*1.4);
 		endShape();
 
 		fill(255);

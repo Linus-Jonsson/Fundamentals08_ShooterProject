@@ -6,6 +6,9 @@ class Game {
 	EnemyManager enemyManager;
 	ShotsManager shotsManager;
 	CollisionManager collisionManager;
+	// Explosion Testing:
+	// Explosion explosion;
+	// PVector tempPos;
 	Time time;
 	int state; // 0 = Init. 1 = Welcome screen. 2 = Running. 3 = Game Over
 	int score; // a function of the number of surviving players and elapsed time.
@@ -23,6 +26,10 @@ class Game {
 		collisionManager = new CollisionManager(playerManager.getPlayers(),
 												enemyManager.getEnemies(),
 												shotsManager.getShots());
+		// Explosion Testing:
+		// tempPos = new PVector(width/2, height/2);
+		// explosion = new Explosion(tempPos);
+		// explosion.create();
 	}
 
 	void init() {
@@ -47,6 +54,9 @@ class Game {
 		playerManager.draw();
 		enemyManager.draw();
 		shotsManager.draw();
+
+		// Explosion Testing:
+		// explosion.update(delta_t);
 	}
 
 	void gameOver() {

@@ -21,5 +21,5 @@ class GameObject {
 		pos.y += vel.y * delta_t;
 	}
 
-	//boolean 
+	//boolean
 }

@@ -2,7 +2,7 @@ StarSystem stars;
 Game invadersOfSpace;
 
 void setup() {
-	//  surface.setLocation(10, 10);
+	// surface.setLocation(10, 10);
 	((java.awt.Canvas) surface.getNative()).requestFocus();
 	size(480, 640);
 	frameRate(30);
