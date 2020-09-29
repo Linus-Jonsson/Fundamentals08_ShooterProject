@@ -17,7 +17,7 @@ class Game {
 		time = new Time();
 		state = 0;
 		shotsManager = new ShotsManager();
-		state = 1;
+		state = 2;
 		playerManager = new PlayerManager(nPlayersX, nPlayersY); //
 		enemyManager = new EnemyManager(1);
 		collisionManager = new CollisionManager(playerManager.getPlayers(),
