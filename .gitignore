@@ -43,3 +43,5 @@ fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$StarSystem
 fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter$Time.class
 fundamentals08_projectshooter/build-tmp/fundamentals08_projectshooter.class
 fundamentals08_projectshooter/build-tmp/source/fundamentals08_projectshooter.java
+*.class
+*.java
