@@ -1,5 +1,6 @@
 class Player extends GameObject {
 	boolean alive;
+	
 	Player(float x, float y) {
 		super(x, y);
 		alive = true;
@@ -21,7 +22,6 @@ class Player extends GameObject {
   		r = (int)random(255);
   		stroke(0, r, r);
   		line (1, -23, 0, -23 - (int)random(4));
-
 
 		beginShape(QUADS);
 		noStroke();

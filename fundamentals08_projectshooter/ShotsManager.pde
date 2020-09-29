@@ -1,5 +1,6 @@
 class ShotsManager {
 	ArrayList<Shot> shots;
+	
 	ShotsManager() {
 		shots = new ArrayList<Shot>(100);
 	}

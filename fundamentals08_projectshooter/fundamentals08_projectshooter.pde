@@ -1,7 +1,6 @@
 StarSystem stars;
 Game invadersOfSpace;
 
-
 void setup() {
 	//  surface.setLocation(10, 10);
 	((java.awt.Canvas) surface.getNative()).requestFocus();
@@ -20,7 +19,6 @@ void draw() {
 		case 3: invadersOfSpace.gameOver(); break;
 	}
 }
-
 
 void keyPressed() {
 	if (keyCode == RIGHT) invadersOfSpace.move(1, 0);

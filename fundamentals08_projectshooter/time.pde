@@ -1,6 +1,7 @@
 class Time {
   long initTime;
   long lastTime;
+  
   Time() {
     initTime = millis();
     lastTime = millis();
