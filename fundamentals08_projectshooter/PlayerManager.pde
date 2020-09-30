@@ -12,15 +12,11 @@ class PlayerManager {
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < cols; x++) {
 				players[y][x] = new Player((width / 2) - (cols / 2) * 35 + x * 35, 
-										   (height / 2) - rows * 25 + y * 35);
+										   (height / 2) - rows * 25 + y * 35, new BoundingCircle(0, -12, 25));
 				players[y][x].vel.x = -1;
 				players[y][x].vel.y = 0;
 			}
 		}
-
-		players[4][4].alive = false;
-		players[0][0].alive = false;
-		players[3][10].alive = false;
 	}
 
 	Player[][] getPlayers() {

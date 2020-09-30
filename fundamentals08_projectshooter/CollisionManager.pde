@@ -9,11 +9,31 @@ class CollisionManager {
 		shots = _shots;
 	}
 
-	void update(float delta_t) {
+	boolean update(float delta_t) {
 		// Check all shots against players, enemies and shields
 		for (int n = 0; n < shots.size(); n++) {
-			//if (shots.get(n).pos.y > 640)
-			
+			Shot s = shots.get(n);
+		
+			// players:
+			for (int py = 0; py < players.length; py++) {
+				for (int px = 0; px < players[0].length; px++) {
+					if (s.collides(players[py][px]) && players[py][px].alive) {
+						//exit();
+						players[py][px].alive = false;
+						shots.remove(n);
+						//if ()
+						return true; // Game Over!
+					}
+				}
+			}
+		
+			// enemies:
+			for (int ex = 0; ex < enemies.length; ex++) {
+				if (s.collides(enemies[ex])) {
+					//exit();
+				}
+			}
 		}
+		return false; // No game over!
 	}
 }

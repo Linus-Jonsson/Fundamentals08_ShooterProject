@@ -1,26 +1,16 @@
 class Enemy extends GameObject {
 	
-	Enemy(float x, float y) {
-		super(x, y);
+	Enemy(float x, float y, BoundingCircle bc) {
+		super(x, y, bc);
 	}
-
-	void AI(float delta_t) {
-		// A.I. stuff, arite!
-		if (pos.x < 20 || pos.x > width - 20) {
-			pos.x -= vel.x * delta_t;
-		}
-
-		if ((int)random(100) == 0) {
-			vel.x = -1;
-		}
-		if ((int)random(100) == 0) {
-			vel.x = 1;
-		}
-	}
-
 
 	void draw() {
+<<<<<<< Updated upstream
 		float size = 8;
+=======
+		//drawBoundingCircle();
+		float size = 10;
+>>>>>>> Stashed changes
 		
 		pushMatrix();
 		translate(pos.x, pos.y);

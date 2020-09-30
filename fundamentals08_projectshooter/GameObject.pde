@@ -1,11 +1,12 @@
 class GameObject {
 	PVector pos, vel;
-	BoundingBox boundingBox;  // Radius of bounding circle. Used for collision detection.
+	BoundingCircle boundingCircle;
 
-	GameObject (float x, float y) {
+
+	GameObject (float x, float y, BoundingCircle bc) {
 		pos = new PVector(x, y);
 		vel = new PVector(0, 0);
-		boundingBox = new BoundingBox();
+		boundingCircle = bc;
 		println("creation of new Game Object");
 	}
 
@@ -21,5 +22,26 @@ class GameObject {
 		pos.y += vel.y * delta_t;
 	}
 
+<<<<<<< Updated upstream
 	//boolean
+=======
+	boolean collides(GameObject g) {
+		float dx = (pos.x + boundingCircle.offset.x) - (g.pos.x + g.boundingCircle.offset.x);
+		float dy = (pos.y + boundingCircle.offset.y) - (g.pos.y + g.boundingCircle.offset.y);
+		/*stroke(255, 0, 0);
+		line (pos.x + boundingCircle.offset.x,
+			  pos.y + boundingCircle.offset.y,
+			  g.pos.x + g.boundingCircle.offset.x,
+			  g.pos.y + g.boundingCircle.offset.y);*/
+		if (sqrt(dx * dx + dy * dy) <= (boundingCircle.radius / 2 + g.boundingCircle.radius / 2))
+			return true;
+		return false;
+	}
+
+	void drawBoundingCircle() {
+		stroke(255, 0, 0);
+		fill(0, 0, 0);
+		circle(pos.x + boundingCircle.offset.x, pos.y + boundingCircle.offset.y, boundingCircle.radius);
+	}
+>>>>>>> Stashed changes
 }

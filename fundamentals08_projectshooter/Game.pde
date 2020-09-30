@@ -12,17 +12,24 @@ class Game {
 	Time time;
 	int state; // 0 = Init. 1 = Welcome screen. 2 = Running. 3 = Game Over
 	int score; // a function of the number of surviving players and elapsed time.
+<<<<<<< Updated upstream
 	int highScore; //
 	PFont titleFont = createFont("Alien-Encounters-Italic.ttf", 80);
 	PFont font = createFont("Futuristic Armour.otf", 22);
 
+=======
+	int highSchore; //
+	PFont titleFont = createFont("Alien-Encounters-Italic.ttf", 80);
+	PFont font = createFont("Futuristic Armour.otf", 22);
+	
+>>>>>>> Stashed changes
 	Game() {
 		time = new Time();
 		state = 0;
 		shotsManager = new ShotsManager();
 		state = 2;
 		playerManager = new PlayerManager(nPlayersX, nPlayersY); //
-		enemyManager = new EnemyManager(1);
+		enemyManager = new EnemyManager(1, shotsManager);
 		collisionManager = new CollisionManager(playerManager.getPlayers(),
 												enemyManager.getEnemies(),
 												shotsManager.getShots());
@@ -31,16 +38,16 @@ class Game {
 		// explosion = new Explosion(tempPos);
 		// explosion.create();
 	}
-
-	void init() {
-		state = 1;
-	}
-
+	
 	void splashScreen() {
+<<<<<<< Updated upstream
 		state = 2;
 		startScreen();
 		// Add code: Key SPACE to change to state = 2 
 		//state = 2;
+=======
+		startScreen(titleFont, font);
+>>>>>>> Stashed changes
 	}
 
 	void run() {
@@ -49,7 +56,9 @@ class Game {
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);
 		shotsManager.update(delta_t);
-		collisionManager.update(delta_t);
+		
+		if (collisionManager.update(delta_t))
+			state = 3;
 
 		playerManager.draw();
 		enemyManager.draw();
@@ -67,7 +76,11 @@ class Game {
 		//Add code: If "playerDead == true"
 		//gameOverScreen();
 		//else
+<<<<<<< Updated upstream
 		winScreen();
+=======
+		winScreen(titleFont, font);
+>>>>>>> Stashed changes
 		// Add code: Key SPACE to state 0 (init)
 		// state = 0;
 		// Add code: ..or Key ESC to quit
@@ -82,8 +95,8 @@ class Game {
 		if (playerManager.clearShot()) { // No other player ship is blocking the view.
 			float x = playerManager.getCurrent().pos.x;
 			float y = playerManager.getCurrent().pos.y;
-			shotsManager.spawn(x, y, new PVector(0, 3));
-			shotsManager.spawn(x + 10, y, new PVector(0, 3));
+			shotsManager.spawn(x - 5, y, new BoundingCircle(0, 10, 2), new PVector(0, 3));
+			shotsManager.spawn(x + 5, y, new BoundingCircle(0, 10, 2), new PVector(0, 3));
 		}
 	}
 

@@ -1,18 +1,24 @@
 class Player extends GameObject {
 	boolean alive;
+<<<<<<< Updated upstream
 	
 	Player(float x, float y) {
 		super(x, y);
+=======
+	Player(float x, float y, BoundingCircle bc) {
+		super(x, y, bc);
+>>>>>>> Stashed changes
 		alive = true;
 	}
 
 	void draw(boolean highlight) {
+		//drawBoundingCircle();
 		float size = 10;
 		int nonHighlightAlpha = 100;
 		
 		pushMatrix();
   		translate(pos.x, pos.y);
-		
+
   		int r = (int)random(255);
   		stroke(0, r, r);
   		line (-1, -23, 0, -23 - (int)random(4));

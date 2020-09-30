@@ -9,8 +9,8 @@ class ShotsManager {
 		return shots;
 	}
 
-	void spawn(float x, float y, PVector vel) {
-		shots.add(new Shot(x, y, vel));
+	void spawn(float x, float y, BoundingCircle bc, PVector vel) {
+		shots.add(new Shot(x, y, bc, vel));
 	}
 
 	void update(float delta_t) {
@@ -27,8 +27,8 @@ class ShotsManager {
 }
 
 class Shot extends GameObject {
-	Shot(float x, float y, PVector _vel) {
-		super (x, y);
+	Shot(float x, float y, BoundingCircle bc, PVector _vel) {
+		super (x, y, bc);
 		vel = _vel.copy();
 	}
 
