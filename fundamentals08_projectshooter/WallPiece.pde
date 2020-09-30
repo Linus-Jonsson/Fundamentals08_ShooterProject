@@ -3,6 +3,7 @@ class WallPiece extends GameObject {
 
 	WallPiece(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
+
 		alive = true;
 	}
 
@@ -12,5 +13,6 @@ class WallPiece extends GameObject {
 			fill(255);
 			ellipse(pos.x, pos.y, boundingCircle.radius, boundingCircle.radius);
 		}
-	} 
+
+	}
 }
