@@ -2,7 +2,6 @@ class GameObject {
 	PVector pos, vel;
 	BoundingCircle boundingCircle;
 
-
 	GameObject (float x, float y, BoundingCircle bc) {
 		pos = new PVector(x, y);
 		vel = new PVector(0, 0);

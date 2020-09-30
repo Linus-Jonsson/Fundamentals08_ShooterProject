@@ -56,24 +56,25 @@ class Explosion {
 }
 
 
-
 class Particle {
   PVector pos = new PVector();
   PVector vel;
-  float speed = 0.45;
-  float size = 6;
+  color col;
+  float speed = 0.75;
+  float size  = 8;
 
   Particle (PVector _pos) {
     pos.set(_pos);
     vel = new PVector (random (-1,1), random (-1,1));
+    col = color(random(125, 256), random(125, 256), 255);
   }
 
   void update (float delta_t, color c) {
     vel.mult(speed*delta_t);
     pos.add(vel);
-    size = size * 0.9;
-    fill (c);
-    stroke (c);
+    size = size * 0.75;
+    fill (col);
+    noStroke();
     ellipse (pos.x, pos.y, size, size);
   }
 }

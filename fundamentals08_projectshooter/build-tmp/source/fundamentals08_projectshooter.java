@@ -26,9 +26,9 @@ public class fundamentals08_projectshooter extends PApplet {
 //
 // döpa om radius to diameter 
 //
-// flytta murarna något till höger
+// flytta murarna något till höger (CHECK!//Linus)
 //
-// pos.x på väggarna ligger uppe till vänster med ett indrag på radius
+// pos.x på väggarna ligger uppe till vänster med ett indrag på radius (diameter/2)
 
 
 Game invadersOfSpace;
@@ -36,9 +36,8 @@ StarSystem stars;
 int state;
 boolean firstTime;
 
-
 public void setup() {
-	// surface.setLocation(10, 10);
+	surface.setLocation(10, 10);
 	((java.awt.Canvas) surface.getNative()).requestFocus();
 	
 	frameRate(30);
@@ -360,24 +359,25 @@ class Explosion {
 }
 
 
-
 class Particle {
   PVector pos = new PVector();
   PVector vel;
-  float speed = 0.45f;
-  float size = 6;
+  int col;
+  float speed = 0.75f;
+  float size  = 8;
 
   Particle (PVector _pos) {
     pos.set(_pos);
     vel = new PVector (random (-1,1), random (-1,1));
+    col = color(random(125, 256), random(125, 256), 255);
   }
 
   public void update (float delta_t, int c) {
     vel.mult(speed*delta_t);
     pos.add(vel);
-    size = size * 0.9f;
-    fill (c);
-    stroke (c);
+    size = size * 0.75f;
+    fill (col);
+    noStroke();
     ellipse (pos.x, pos.y, size, size);
   }
 }
@@ -440,9 +440,6 @@ class Game {
 		enemyManager.draw();
 		shotsManager.draw();
 		wallManager.draw();
-
-		// Explosion Testing:
-		// explosion.update(delta_t);
 	}
 
 	public void gameOver() {
@@ -476,7 +473,6 @@ class Game {
 class GameObject {
 	PVector pos, vel;
 	BoundingCircle boundingCircle;
-
 
 	GameObject (float x, float y, BoundingCircle bc) {
 		pos = new PVector(x, y);
@@ -988,6 +984,121 @@ class Star {
     }
   }
 }
+class WallManager {
+  Wall[] walls;
+  int nWalls;
+
+  WallManager(int _nWalls) {
+    nWalls = _nWalls;
+    walls = new Wall[nWalls];
+    for (int i=0; i<nWalls; i++) {
+      walls[i] = new Wall(new PVector(width/8.5f+(width/9*2*i), height*0.78f));
+    }
+  }
+
+  public Wall[] getWalls() {
+    return walls;
+  }
+
+  public void draw() {
+    for (int i=0; i<nWalls; i++) {
+      for (int j=0; j<walls[i].wall.length; j++) {
+        if (walls[i].wall[j].alive == false) {
+          continue;
+        }
+        if (j == 4 || j == 8 || j == 12 || j == 16) {
+          walls[i].wall[j].drawTopRow();          
+        } else if (j == 1) {
+          walls[i].wall[j].drawLeftCorner();
+        } else if (j == 0) {
+          walls[i].wall[j].drawRightCorner();
+        } else {
+          walls[i].wall[j].draw();
+        }      
+      }      
+    }
+  }
+}
+
+class Wall {
+  WallPiece[] wall;
+  int nPieces = 20;
+  PVector pos;
+  float wallPieceDiameter = 10;
+
+  Wall (PVector _pos) {
+    wall = new WallPiece[nPieces];
+    pos = new PVector(_pos.x, _pos.y);
+    for (int i=0; i<nPieces/4; i++) {
+      for (int j=0; j<nPieces/5; j++)
+        if (i*4+j == 0) {
+          wall[i*4+j] = new WallPiece(pos.x+wallPieceDiameter*5, pos.y+wallPieceDiameter, new BoundingCircle(0, 0, wallPieceDiameter), wallPieceDiameter);
+        } else if (i*4+j == 11) {
+          wall[i*4+j] = new WallPiece(pos.x+wallPieceDiameter*2.5f*i, pos.y+wallPieceDiameter*j-wallPieceDiameter, new BoundingCircle(0, 0, wallPieceDiameter), wallPieceDiameter);
+        } else if (i*4+j == 15) {
+          wall[i*4+j] = new WallPiece(pos.x+wallPieceDiameter*5/3*i, pos.y+wallPieceDiameter*j, new BoundingCircle(0, 0, wallPieceDiameter), wallPieceDiameter);
+        } else {
+          wall[i*4+j] = new WallPiece(pos.x+wallPieceDiameter*i, pos.y+wallPieceDiameter*j, new BoundingCircle(0, 0, wallPieceDiameter), wallPieceDiameter);
+        }
+      }
+    }
+  }
+class WallPiece extends GameObject {
+	boolean alive;
+	float diameter;
+	int col;
+
+	WallPiece(float x, float y, BoundingCircle bc, float dia) {
+		super(x, y, bc);
+		alive = true;
+		diameter = dia;
+		col = color(0, 255, 0);
+	}
+
+	public void draw() {
+		rectMode(CENTER);
+		stroke(col);
+		fill(col);
+		beginShape();
+		vertex(pos.x+diameter/2, pos.y+diameter/2);
+		vertex(pos.x-diameter/2, pos.y+diameter/2);
+		vertex(pos.x-diameter/2, pos.y-diameter/1.3f);
+		vertex(pos.x-diameter/4, pos.y-diameter/1.7f);
+		vertex(pos.x, pos.y-diameter/2);
+		vertex(pos.x+diameter/3, pos.y-diameter/1.9f);
+		vertex(pos.x+diameter/2, pos.y-diameter/1.3f);
+		endShape(CLOSE);
+	}
+
+	public void drawTopRow() {
+		rectMode(CENTER);
+		stroke(col);
+		fill(col);
+		square(pos.x, pos.y, diameter);
+	}
+
+	public void drawLeftCorner() {
+		stroke(col);
+		fill(col);
+		beginShape();
+		vertex(pos.x+diameter/2, pos.y+diameter/2);
+		vertex(pos.x-diameter/2, pos.y+diameter/2);
+		vertex(pos.x-diameter/2, pos.y-diameter/2);
+		vertex(pos.x+diameter/2, pos.y-diameter*1.5f);
+		endShape(CLOSE);
+	}	
+
+	public void drawRightCorner() {
+		stroke(col);
+		fill(col);
+		beginShape();
+		vertex(pos.x+diameter/2, pos.y+diameter/2);
+		vertex(pos.x-diameter/2, pos.y+diameter/2);
+		vertex(pos.x-diameter/2, pos.y-diameter*1.5f);
+		vertex(pos.x+diameter/2, pos.y-diameter/2);
+		endShape(CLOSE);
+	}
+}
 class Time {
   long initTime;
   long lastTime;
@@ -1011,78 +1122,6 @@ class Time {
     long t = millis();
     while ((millis() - t) < p);
   }
-}
-class WallManager {
-  Wall[] walls;
-  int nWalls;
-
-  WallManager(int _nWalls) {
-    nWalls = _nWalls;
-    walls = new Wall[nWalls];
-    for (int i=0; i<nWalls; i++) {
-      walls[i] = new Wall(new PVector(width/9+(width/9*2*i), height*0.78f));
-    }
-  }
-
-  public Wall[] getWalls() {
-    return walls;
-  }
-
-  public void draw() {
-      for (int i=0; i<nWalls; i++) {
-          for (int j=0; j<walls[i].wall.length; j++) {
-        if (walls[i].wall[j] == null) {
-          println("i:"+i);
-          continue;
-        } else {
-          walls[i].wall[j].draw();
-        }      
-      }
-    }
-  }
-}
-
-
-class Wall {
-  WallPiece[] wall;
-  int nPieces = 20;
-  PVector pos;
-  float wallPieceRadius = 10;
-
-  Wall (PVector _pos) {
-    wall = new WallPiece[nPieces];
-    pos = new PVector(_pos.x, _pos.y);
-    for (int i=0; i<nPieces/4; i++) {
-      for (int j=0; j<nPieces/5; j++)
-        if (i*4+j == 0) {
-          wall[i*4+j] = new WallPiece(pos.x+wallPieceRadius*5, pos.y+wallPieceRadius, new BoundingCircle(0, 0, wallPieceRadius));
-        } else if (i*4+j == 11) {
-          wall[i*4+j] = new WallPiece(pos.x+wallPieceRadius*2.5f*i, pos.y+wallPieceRadius*j-wallPieceRadius, new BoundingCircle(0, 0, wallPieceRadius));
-        } else if (i*4+j == 15) {
-          wall[i*4+j] = new WallPiece(pos.x+wallPieceRadius*5/3*i, pos.y+wallPieceRadius*j, new BoundingCircle(0, 0, wallPieceRadius));
-        } else {
-          wall[i*4+j] = new WallPiece(pos.x+wallPieceRadius*i, pos.y+wallPieceRadius*j, new BoundingCircle(0, 0, wallPieceRadius));
-        }
-      }
-    }
-  }
-class WallPiece extends GameObject {
-	boolean alive;
-
-	WallPiece(float x, float y, BoundingCircle bc) {
-		super(x, y, bc);
-
-		alive = true;
-	}
-
-	public void draw() {
-		if (alive) {
-			noStroke();
-			fill(255);
-			ellipse(pos.x, pos.y, boundingCircle.radius, boundingCircle.radius);
-		}
-
-	}
 }
   public void settings() { 	size(480, 640); }
   static public void main(String[] passedArgs) {

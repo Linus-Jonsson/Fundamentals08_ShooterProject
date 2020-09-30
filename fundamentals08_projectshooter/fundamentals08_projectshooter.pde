@@ -10,9 +10,9 @@
 //
 // döpa om radius to diameter 
 //
-// flytta murarna något till höger
+// flytta murarna något till höger (CHECK!//Linus)
 //
-// pos.x på väggarna ligger uppe till vänster med ett indrag på radius
+// pos.x på väggarna ligger uppe till vänster med ett indrag på radius (diameter/2)
 
 
 Game invadersOfSpace;
@@ -20,9 +20,8 @@ StarSystem stars;
 int state;
 boolean firstTime;
 
-
 void setup() {
-	// surface.setLocation(10, 10);
+	surface.setLocation(10, 10);
 	((java.awt.Canvas) surface.getNative()).requestFocus();
 	size(480, 640);
 	frameRate(30);

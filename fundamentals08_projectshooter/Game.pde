@@ -57,9 +57,6 @@ class Game {
 		enemyManager.draw();
 		shotsManager.draw();
 		wallManager.draw();
-
-		// Explosion Testing:
-		// explosion.update(delta_t);
 	}
 
 	void gameOver() {
