@@ -17,8 +17,9 @@ class Time {
     return delta_t;
   }
 
-  void pause(long p) {
+  void pause(long paus) {
     long t = millis();
-    while ((millis() - t) < p);
+    while ((millis() - t) < paus);
   }
+
 }

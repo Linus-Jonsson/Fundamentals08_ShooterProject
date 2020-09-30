@@ -861,10 +861,11 @@ class Time {
     return delta_t;
   }
 
-  public void pause(long p) {
+  public void pause(long paus) {
     long t = millis();
-    while ((millis() - t) < p);
+    while ((millis() - t) < paus);
   }
+
 }
   public void settings() { 	size(480, 640); }
   static public void main(String[] passedArgs) {
