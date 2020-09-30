@@ -1,3 +1,20 @@
+// To fix:
+// 
+// BUG: 
+// 1) can't select a different player when diagonal space between current
+// and next
+//
+// 2) Shots go through the crabs and create TONS of particle systems
+// that slow down the system, and create huge delta_t which mess up the
+// looks of the explosions.
+//
+// döpa om radius to diameter 
+//
+// flytta murarna något till höger
+//
+// pos.x på väggarna ligger uppe till vänster med ett indrag på radius
+
+
 Game invadersOfSpace;
 StarSystem stars;
 int state;
@@ -34,6 +51,7 @@ void draw() {
 			state = 3; 
 			break;
 		case 3: 
+			invadersOfSpace.run();
 			invadersOfSpace.gameOver(); 
 			break;
 	}

@@ -7,7 +7,7 @@ class EnemyManager {
 		nEnemies = _nEnemies;
 		enemies = new Enemy[nEnemies];
 		for (int n = 0; n < nEnemies; n++)
-			enemies[n] = new Enemy(width / 2, height * 0.9, new BoundingCircle(0, 0, 40));
+			enemies[n] = new Enemy(width / 2, height * 0.9, new BoundingCircle(0, 0, 35));
 		shotsManager = _shotsManager;
 	}
 
@@ -32,7 +32,7 @@ class EnemyManager {
 			if ((int)random(100) == 0) 
 				e.vel.x = 1;
 			if ((int)random(100) == 0) 
-				shotsManager.spawn(e.pos.x, e.pos.y - 10, new BoundingCircle(0, 0, 2), new PVector(0, -3));
+				shotsManager.spawn(e.pos.x, e.pos.y - 15, new BoundingCircle(0, 0, 2), new PVector(0, -3));
 		}
 	}
 }

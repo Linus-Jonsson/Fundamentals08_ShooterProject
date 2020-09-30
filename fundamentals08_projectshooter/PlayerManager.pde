@@ -13,10 +13,15 @@ class PlayerManager {
 			for (int x = 0; x < cols; x++) {
 				players[y][x] = new Player((width / 2) - (cols / 2) * 35 + x * 35, 
 										   (height / 2) - rows * 25 + y * 35, new BoundingCircle(0, -12, 25));
-				players[y][x].vel.x = -1;
+				players[y][x].vel.x = -0.1;
 				players[y][x].vel.y = 0;
 			}
 		}
+		players[4][6].alive = false;
+		players[3][7].alive = false;
+		players[2][9].alive = false;
+		players[1][10].alive = false;
+
 		players[currentY][currentX].isCurrent = true;
 	}
 
@@ -38,10 +43,50 @@ class PlayerManager {
 				break;
 			}
 		} while (!players[currentY][currentX].alive);
+		
+		if (!players[currentY][currentX].alive) {
+			// find closest one along the vector
+			currentX = tmpX;
+			currentY = tmpY;
+			int shortestX = currentX;
+			int shortestY = currentY;
+			float shortestLength = 100000;
+			do {
+				currentX += x;
+				currentY += y;
+				for (int yc = 0; yc < rows; yc++) {
+					for (int xc = 0; xc < cols; xc++) {
+						float dist = 10000000;
+						float dx, dy;
+						dx = xc - currentX;
+						dy = yc - currentY;
+						if (players[yc][xc].alive) {
+							if (sqrt(dx * dx + dy * dy) < shortestLength) {
+								shortestLength = sqrt(dx * dx + dy * dy);
+								shortestX = xc;
+								shortestY = yc;
+							}
+						}
+					}
+				}
+				if (currentX < 0 || currentX > cols - 1 || 
+					currentY < 0 || currentY > rows - 1) {
+					currentX -= x;
+					currentY -= y;
+					break;
+				}
+			} while (!players[currentY][currentX].alive);
+			currentX = shortestX;
+			currentY = shortestY;
+		}
+
+		// Didn't find a new player to highlight?
+		// Then we revert back to the initial one.
 		if (!players[currentY][currentX].alive) {
 			currentX = tmpX;
 			currentY = tmpY;
 		}
+
 		players[currentY][currentX].isCurrent = true;
 	}
 

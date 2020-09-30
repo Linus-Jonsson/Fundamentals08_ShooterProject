@@ -1,26 +1,37 @@
 class StarSystem {
   ArrayList<Star> stars;
   PVector origin;
+  boolean startOffRun;
 
   StarSystem(PVector position) {
-    stars = new ArrayList<Star>();
+    stars = new ArrayList<Star>(1000);
     origin = position.copy();
+    startOffRun = true;
   }
 
   void drawBackground() {
     background(0);
-    addStars();
-    run();
+    if (startOffRun) {
+    	startOffRun = false;
+    	for (int n = 0; n < 1000; n++) {
+    		addStars();
+    		run(false);
+    	}
+    }
+    else {
+    	addStars();
+    	run(true);
+    }
   }
 
   void addStars() {
     stars.add(new Star(origin));
   }
 
-  void run() {
+  void run(boolean draw) {
     for (int i = stars.size()-1; i >= 0; i--) {
       Star s = stars.get(i);
-      s.run();
+      s.run(draw);
       if (s.isDead()) {
         stars.remove(i);
       }
@@ -40,9 +51,10 @@ class Star {
     size = random(0.4, 0.8);
     lifespan = 255.0;
   }
-  void run() {
+  void run(boolean draw) {
     update();
-    display();
+    if (draw)
+    	display();
   }
   void update() {
     position.add(velocity);

@@ -2,13 +2,15 @@ class Game {
 	final int nPlayersX = 11;
 	final int nPlayersY = 5;
 	final int nEnemies = 1;
+	final int nWalls = 4;
+
 	PlayerManager playerManager;
 	EnemyManager enemyManager;
 	ShotsManager shotsManager;
 	CollisionManager collisionManager;
-	// Explosion Testing:
-	// Explosion explosion;
-	// PVector tempPos;
+	ExplosionsManager explosionsManager;
+	WallManager wallManager;
+
 	Time time;
 	int score; // a function of the number of surviving players and elapsed time.
 	int highSchore; //
@@ -16,21 +18,21 @@ class Game {
 	PFont titleFont = createFont("Alien-Encounters-Italic.ttf", 80);
 	PFont font = createFont("Futuristic Armour.otf", 22);
 	boolean gameOver;
-
 	
 	Game() {
 		time = new Time();
 		shotsManager = new ShotsManager();
 		playerManager = new PlayerManager(nPlayersX, nPlayersY); //
 		enemyManager = new EnemyManager(1, shotsManager);
+		explosionsManager = new ExplosionsManager();
+		wallManager = new WallManager(nWalls);
 		collisionManager = new CollisionManager(playerManager.getPlayers(),
 												enemyManager.getEnemies(),
-												shotsManager.getShots());
+												shotsManager.getShots(),
+												wallManager.getWalls(),
+												explosionsManager);
+
 		gameOver = false;
-		// Explosion Testing:
-		// tempPos = new PVector(width/2, height/2);
-		// explosion = new Explosion(tempPos);
-		// explosion.create();
 	}
 	
 	boolean isGameOver() {return gameOver;}
@@ -45,6 +47,7 @@ class Game {
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);
 		shotsManager.update(delta_t);
+		explosionsManager.update(delta_t);
 		
 		if (collisionManager.update(delta_t)) { // Collision testing...
 			gameOver = true;
@@ -53,6 +56,7 @@ class Game {
 		playerManager.draw();
 		enemyManager.draw();
 		shotsManager.draw();
+		wallManager.draw();
 
 		// Explosion Testing:
 		// explosion.update(delta_t);

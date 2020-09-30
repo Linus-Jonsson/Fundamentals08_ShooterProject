@@ -14,6 +14,23 @@ import java.io.IOException;
 
 public class fundamentals08_projectshooter extends PApplet {
 
+// To fix:
+// 
+// BUG: 
+// 1) can't select a different player when diagonal space between current
+// and next
+//
+// 2) Shots go through the crabs and create TONS of particle systems
+// that slow down the system, and create huge delta_t which mess up the
+// looks of the explosions.
+//
+// döpa om radius to diameter 
+//
+// flytta murarna något till höger
+//
+// pos.x på väggarna ligger uppe till vänster med ett indrag på radius
+
+
 Game invadersOfSpace;
 StarSystem stars;
 int state;
@@ -50,6 +67,7 @@ public void draw() {
 			state = 3; 
 			break;
 		case 3: 
+			invadersOfSpace.run();
 			invadersOfSpace.gameOver(); 
 			break;
 	}
@@ -83,34 +101,66 @@ class CollisionManager {
 	Player[][] players;
 	Enemy[] enemies;
 	ArrayList<Shot> shots;
+	Wall[] walls;
+	ExplosionsManager explosionsManager;
 
-	CollisionManager(Player[][] _players, Enemy[] _enemies, ArrayList<Shot> _shots) {
+	CollisionManager(Player[][] _players, 
+					 Enemy[] _enemies, 
+					 ArrayList<Shot> _shots,
+					 Wall[] _walls, 
+					 ExplosionsManager _explosionsManager) {
 		players = _players;
 		enemies = _enemies;
 		shots = _shots;
+		walls = _walls;
+		explosionsManager = _explosionsManager;
 	}
 
 	public boolean update(float delta_t) {
-		// Check all shots against players, enemies and shields
+		// Check all shots against players, enemies and walls
 		for (int n = 0; n < shots.size(); n++) {
 			Shot s = shots.get(n);
-		
+
 			// players:
 			for (int py = 0; py < players.length; py++) {
 				for (int px = 0; px < players[0].length; px++) {
 					if (s.collides(players[py][px]) && players[py][px].alive) {
 						players[py][px].alive = false;
 						shots.remove(n);
-						if (players[py][px].isCurrent)
+						float explosionX = players[py][px].pos.x + players[py][px].boundingCircle.offset.x;						
+						float explosionY = players[py][px].pos.y + players[py][px].boundingCircle.offset.y;
+						if (players[py][px].isCurrent) {
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 128, 255), 10);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 64, 128), 10);
 							return true; // Game Over!
-					}
+						} else {
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 10);
+							return false;
+						}
+					} 
 				}
 			}
 		
 			// enemies:
 			for (int ex = 0; ex < enemies.length; ex++) {
 				if (s.collides(enemies[ex])) {
-					//exit();
+					float explosionX = enemies[ex].pos.x + enemies[ex].boundingCircle.offset.x;						
+					float explosionY = enemies[ex].pos.y + enemies[ex].boundingCircle.offset.y;
+					explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 10);					
+					shots.remove(n);					
+					return false;
+				}
+			}
+
+			// walls:
+			for (int w = 0; w < walls.length; w++) {
+				for (int wp = 0; wp < walls[w].wall.length; wp++) {
+					WallPiece wallPiece = walls[w].wall[wp];
+					if (wallPiece.alive && s.collides(wallPiece)) {
+						wallPiece.alive = false;
+						shots.remove(n);						
+						return false;
+					}
 				}
 			}
 		}
@@ -124,7 +174,7 @@ class Enemy extends GameObject {
 	}
 
 	public void draw() {
-		drawBoundingCircle();
+		//drawBoundingCircle();
 		float size = 10;
 		
 		pushMatrix();
@@ -223,7 +273,7 @@ class EnemyManager {
 		nEnemies = _nEnemies;
 		enemies = new Enemy[nEnemies];
 		for (int n = 0; n < nEnemies; n++)
-			enemies[n] = new Enemy(width / 2, height * 0.9f, new BoundingCircle(0, 0, 40));
+			enemies[n] = new Enemy(width / 2, height * 0.9f, new BoundingCircle(0, 0, 35));
 		shotsManager = _shotsManager;
 	}
 
@@ -248,22 +298,48 @@ class EnemyManager {
 			if ((int)random(100) == 0) 
 				e.vel.x = 1;
 			if ((int)random(100) == 0) 
-				shotsManager.spawn(e.pos.x, e.pos.y - 10, new BoundingCircle(0, 0, 2), new PVector(0, -3));
+				shotsManager.spawn(e.pos.x, e.pos.y - 15, new BoundingCircle(0, 0, 2), new PVector(0, -3));
 		}
 	}
 }
+class ExplosionsManager {
+  ArrayList<Explosion> explosions;
+
+  ExplosionsManager() {
+    explosions = new ArrayList<Explosion>(10);
+  }
+
+  public ArrayList<Explosion> getExplosions() {
+    return explosions;
+  }
+
+  public void update(float delta_t) {
+    for (int e = 0; e < explosions.size(); e++) {
+      explosions.get(e).update(delta_t);
+      if (explosions.get(e).isDone())
+        explosions.remove(e);
+    }
+  }
+
+  public void spawn(PVector pos, int c, int clock) {
+    explosions.add(new Explosion(pos, c, clock));
+  }
+}
+
+
 class Explosion {
   Particle[] explosion = new Particle[100];
   PVector pos;
+  int lifeClock;
+  int c;
 
-  Explosion (PVector _pos) {
+  Explosion (PVector _pos, int _c, int clock) {
     pos = new PVector(_pos.x, _pos.y);
-  }
-  
-  public void create() {
+    c = _c;
     for (int i=0; i<explosion.length; i++) {
       explosion[i] = new Particle(pos);
     }
+    lifeClock = clock;
   }
 
   public void update(float delta_t) {
@@ -271,16 +347,24 @@ class Explosion {
       if (explosion[i].size <= 0) {
         continue;
       } else {
-        explosion[i].update(delta_t);
+        explosion[i].update(delta_t, c);
       }
     }
   }
+
+  public boolean isDone() {
+    if (lifeClock-- == 0)
+      return true;
+    return false;
+  }
 }
+
+
 
 class Particle {
   PVector pos = new PVector();
   PVector vel;
-  float speed = 0.61f;
+  float speed = 0.45f;
   float size = 6;
 
   Particle (PVector _pos) {
@@ -288,11 +372,12 @@ class Particle {
     vel = new PVector (random (-1,1), random (-1,1));
   }
 
-  public void update (float delta_t) {
+  public void update (float delta_t, int c) {
     vel.mult(speed*delta_t);
     pos.add(vel);
-    size -= 0.19f;
-    fill (255);
+    size = size * 0.9f;
+    fill (c);
+    stroke (c);
     ellipse (pos.x, pos.y, size, size);
   }
 }
@@ -300,13 +385,15 @@ class Game {
 	final int nPlayersX = 11;
 	final int nPlayersY = 5;
 	final int nEnemies = 1;
+	final int nWalls = 4;
+
 	PlayerManager playerManager;
 	EnemyManager enemyManager;
 	ShotsManager shotsManager;
 	CollisionManager collisionManager;
-	// Explosion Testing:
-	// Explosion explosion;
-	// PVector tempPos;
+	ExplosionsManager explosionsManager;
+	WallManager wallManager;
+
 	Time time;
 	int score; // a function of the number of surviving players and elapsed time.
 	int highSchore; //
@@ -314,21 +401,21 @@ class Game {
 	PFont titleFont = createFont("Alien-Encounters-Italic.ttf", 80);
 	PFont font = createFont("Futuristic Armour.otf", 22);
 	boolean gameOver;
-
 	
 	Game() {
 		time = new Time();
 		shotsManager = new ShotsManager();
 		playerManager = new PlayerManager(nPlayersX, nPlayersY); //
 		enemyManager = new EnemyManager(1, shotsManager);
+		explosionsManager = new ExplosionsManager();
+		wallManager = new WallManager(nWalls);
 		collisionManager = new CollisionManager(playerManager.getPlayers(),
 												enemyManager.getEnemies(),
-												shotsManager.getShots());
+												shotsManager.getShots(),
+												wallManager.getWalls(),
+												explosionsManager);
+
 		gameOver = false;
-		// Explosion Testing:
-		// tempPos = new PVector(width/2, height/2);
-		// explosion = new Explosion(tempPos);
-		// explosion.create();
 	}
 	
 	public boolean isGameOver() {return gameOver;}
@@ -343,6 +430,7 @@ class Game {
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);
 		shotsManager.update(delta_t);
+		explosionsManager.update(delta_t);
 		
 		if (collisionManager.update(delta_t)) { // Collision testing...
 			gameOver = true;
@@ -351,6 +439,7 @@ class Game {
 		playerManager.draw();
 		enemyManager.draw();
 		shotsManager.draw();
+		wallManager.draw();
 
 		// Explosion Testing:
 		// explosion.update(delta_t);
@@ -536,10 +625,15 @@ class PlayerManager {
 			for (int x = 0; x < cols; x++) {
 				players[y][x] = new Player((width / 2) - (cols / 2) * 35 + x * 35, 
 										   (height / 2) - rows * 25 + y * 35, new BoundingCircle(0, -12, 25));
-				players[y][x].vel.x = -1;
+				players[y][x].vel.x = -0.1f;
 				players[y][x].vel.y = 0;
 			}
 		}
+		players[4][6].alive = false;
+		players[3][7].alive = false;
+		players[2][9].alive = false;
+		players[1][10].alive = false;
+
 		players[currentY][currentX].isCurrent = true;
 	}
 
@@ -561,10 +655,50 @@ class PlayerManager {
 				break;
 			}
 		} while (!players[currentY][currentX].alive);
+		
+		if (!players[currentY][currentX].alive) {
+			// find closest one along the vector
+			currentX = tmpX;
+			currentY = tmpY;
+			int shortestX = currentX;
+			int shortestY = currentY;
+			float shortestLength = 100000;
+			do {
+				currentX += x;
+				currentY += y;
+				for (int yc = 0; yc < rows; yc++) {
+					for (int xc = 0; xc < cols; xc++) {
+						float dist = 10000000;
+						float dx, dy;
+						dx = xc - currentX;
+						dy = yc - currentY;
+						if (players[yc][xc].alive) {
+							if (sqrt(dx * dx + dy * dy) < shortestLength) {
+								shortestLength = sqrt(dx * dx + dy * dy);
+								shortestX = xc;
+								shortestY = yc;
+							}
+						}
+					}
+				}
+				if (currentX < 0 || currentX > cols - 1 || 
+					currentY < 0 || currentY > rows - 1) {
+					currentX -= x;
+					currentY -= y;
+					break;
+				}
+			} while (!players[currentY][currentX].alive);
+			currentX = shortestX;
+			currentY = shortestY;
+		}
+
+		// Didn't find a new player to highlight?
+		// Then we revert back to the initial one.
 		if (!players[currentY][currentX].alive) {
 			currentX = tmpX;
 			currentY = tmpY;
 		}
+
 		players[currentY][currentX].isCurrent = true;
 	}
 
@@ -782,26 +916,37 @@ public void startScreen(PFont titleFont, PFont font) {
 class StarSystem {
   ArrayList<Star> stars;
   PVector origin;
+  boolean startOffRun;
 
   StarSystem(PVector position) {
-    stars = new ArrayList<Star>();
+    stars = new ArrayList<Star>(1000);
     origin = position.copy();
+    startOffRun = true;
   }
 
   public void drawBackground() {
     background(0);
-    addStars();
-    run();
+    if (startOffRun) {
+    	startOffRun = false;
+    	for (int n = 0; n < 1000; n++) {
+    		addStars();
+    		run(false);
+    	}
+    }
+    else {
+    	addStars();
+    	run(true);
+    }
   }
 
   public void addStars() {
     stars.add(new Star(origin));
   }
 
-  public void run() {
+  public void run(boolean draw) {
     for (int i = stars.size()-1; i >= 0; i--) {
       Star s = stars.get(i);
-      s.run();
+      s.run(draw);
       if (s.isDead()) {
         stars.remove(i);
       }
@@ -821,9 +966,10 @@ class Star {
     size = random(0.4f, 0.8f);
     lifespan = 255.0f;
   }
-  public void run() {
+  public void run(boolean draw) {
     update();
-    display();
+    if (draw)
+    	display();
   }
   public void update() {
     position.add(velocity);
@@ -861,11 +1007,80 @@ class Time {
     return delta_t;
   }
 
-  public void pause(long paus) {
+  public void pause(long p) {
     long t = millis();
-    while ((millis() - t) < paus);
+    while ((millis() - t) < p);
+  }
+}
+class WallManager {
+  Wall[] walls;
+  int nWalls;
+
+  WallManager(int _nWalls) {
+    nWalls = _nWalls;
+    walls = new Wall[nWalls];
+    for (int i=0; i<nWalls; i++) {
+      walls[i] = new Wall(new PVector(width/9+(width/9*2*i), height*0.78f));
+    }
   }
 
+  public Wall[] getWalls() {
+    return walls;
+  }
+
+  public void draw() {
+      for (int i=0; i<nWalls; i++) {
+          for (int j=0; j<walls[i].wall.length; j++) {
+        if (walls[i].wall[j] == null) {
+          println("i:"+i);
+          continue;
+        } else {
+          walls[i].wall[j].draw();
+        }      
+      }
+    }
+  }
+}
+
+
+class Wall {
+  WallPiece[] wall;
+  int nPieces = 20;
+  PVector pos;
+  float wallPieceRadius = 10;
+
+  Wall (PVector _pos) {
+    wall = new WallPiece[nPieces];
+    pos = new PVector(_pos.x, _pos.y);
+    for (int i=0; i<nPieces/4; i++) {
+      for (int j=0; j<nPieces/5; j++)
+        if (i*4+j == 0) {
+          wall[i*4+j] = new WallPiece(pos.x+wallPieceRadius*5, pos.y+wallPieceRadius, new BoundingCircle(0, 0, wallPieceRadius));
+        } else if (i*4+j == 11) {
+          wall[i*4+j] = new WallPiece(pos.x+wallPieceRadius*2.5f*i, pos.y+wallPieceRadius*j-wallPieceRadius, new BoundingCircle(0, 0, wallPieceRadius));
+        } else if (i*4+j == 15) {
+          wall[i*4+j] = new WallPiece(pos.x+wallPieceRadius*5/3*i, pos.y+wallPieceRadius*j, new BoundingCircle(0, 0, wallPieceRadius));
+        } else {
+          wall[i*4+j] = new WallPiece(pos.x+wallPieceRadius*i, pos.y+wallPieceRadius*j, new BoundingCircle(0, 0, wallPieceRadius));
+        }
+      }
+    }
+  }
+class WallPiece extends GameObject {
+	boolean alive;
+
+	WallPiece(float x, float y, BoundingCircle bc) {
+		super(x, y, bc);
+		alive = true;
+	}
+
+	public void draw() {
+		if (alive) {
+			noStroke();
+			fill(255);
+			ellipse(pos.x, pos.y, boundingCircle.radius, boundingCircle.radius);
+		}
+	} 
 }
   public void settings() { 	size(480, 640); }
   static public void main(String[] passedArgs) {

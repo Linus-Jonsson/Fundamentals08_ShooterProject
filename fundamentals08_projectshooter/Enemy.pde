@@ -5,7 +5,7 @@ class Enemy extends GameObject {
 	}
 
 	void draw() {
-		drawBoundingCircle();
+		//drawBoundingCircle();
 		float size = 10;
 		
 		pushMatrix();
