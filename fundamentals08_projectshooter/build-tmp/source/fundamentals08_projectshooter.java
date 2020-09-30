@@ -14,49 +14,60 @@ import java.io.IOException;
 
 public class fundamentals08_projectshooter extends PApplet {
 
-StarSystem stars;
 Game invadersOfSpace;
+StarSystem stars;
+int state;
+boolean firstTime;
 
 
 public void setup() {
-	//  surface.setLocation(10, 10);
+	// surface.setLocation(10, 10);
 	((java.awt.Canvas) surface.getNative()).requestFocus();
 	
 	frameRate(30);
-	stars = new StarSystem(new PVector(width/2, height/2));
-	invadersOfSpace = new Game(); 
-	invadersOfSpace.state = 1;
+	state = 0; // Init.
+	firstTime = true;
+	stars = new StarSystem(new PVector(width/2, height/2));	
 }
 
 public void draw() {
 	stars.drawBackground();
-	switch (invadersOfSpace.state) {
-		case 0: invadersOfSpace.splashScreen(); break;
-		case 1: stars = new StarSystem(new PVector(width/2, height/2));
-				invadersOfSpace = new Game(); 
-				invadersOfSpace.state = 1;
-				break;
-		case 2: invadersOfSpace.run(); break;
-		case 3: invadersOfSpace.gameOver(); break;
+	switch (state) {
+		case 0: 
+			invadersOfSpace = new Game(); 
+			if (firstTime) {
+				state = 1;
+				firstTime = false;
+			} else 
+				state = 2;
+			break;
+		case 1: 
+			invadersOfSpace.splashScreen(); 
+			break;
+		case 2: 
+			invadersOfSpace.run();
+			if (invadersOfSpace.isGameOver())
+			state = 3; 
+			break;
+		case 3: 
+			invadersOfSpace.gameOver(); 
+			break;
 	}
 }
-
 
 public void keyPressed() {
 	if (keyCode == RIGHT) invadersOfSpace.move(1, 0);
   	if (keyCode == LEFT) invadersOfSpace.move(-1, 0);
   	if (keyCode == DOWN) invadersOfSpace.move(0, 1);
   	if (keyCode == UP) invadersOfSpace.move(0, -1);
-  	if (key == 32) {
-  		if (invadersOfSpace.state == 1)
-  			invadersOfSpace.state = 2;
-  		else if (invadersOfSpace.state == 3)
-  			invadersOfSpace.state = 0;
-  		else {
-  			invadersOfSpace.shoot(); // 32 = space
-  		}
+  	if (key == 32) { // Spacebar
+  		switch (state) {
+  			case 1: state = 2; break;
+  			case 2: invadersOfSpace.shoot(); break;
+  			case 3: state = 0; break;
+		}
   	}
- }
+}
 
 class BoundingCircle {
 	PVector offset;
@@ -114,12 +125,46 @@ class Enemy extends GameObject {
 	}
 
 	public void draw() {
-		//drawBoundingCircle();
+		drawBoundingCircle();
 		float size = 10;
 		
 		pushMatrix();
 		translate(pos.x, pos.y);
 		noStroke();
+
+		beginShape(TRIANGLES);
+		push();
+		translate(-size*0.1f, size*0.03f);
+		fill(255);
+		vertex(-size, 0);
+		vertex(-size*2.2f, -size*0.3f);
+		vertex(-size*1.8f, -size*0.5f);
+		vertex(-size*2.2f, -size*0.3f);
+		vertex(-size*1.8f, -size*0.3f);
+		vertex(-size*1.1f, -size*1.4f);
+		vertex(-size, 0);
+		vertex(-size*2.1f, size*0.7f);
+		vertex(-size*1.8f, size*0.8f);
+		vertex(-size*2.1f, size*0.7f);
+		vertex(-size*1.8f, size*0.6f);
+		vertex(-size*0.6f, size*1.4f);
+		pop();
+		push();
+		translate(-size*0.1f, size*0.05f);
+		vertex(size, 0);
+		vertex(size*2.2f, -size*0.3f);
+		vertex(size*1.8f, -size*0.5f);
+		vertex(size*2.2f, -size*0.3f);
+		vertex(size*1.8f, -size*0.3f);
+		vertex(size*1.1f, -size*1.4f);
+		vertex(size, 0);
+		vertex(size*2.1f, size*0.7f);
+		vertex(size*1.8f, size*0.8f);
+		vertex(size*2.1f, size*0.7f);
+		vertex(size*1.8f, size*0.6f);
+		vertex(size*0.6f, size*1.4f);
+		pop();
+		endShape();
 
 		beginShape(TRIANGLES);
 		fill(20, 40, 255);
@@ -135,6 +180,18 @@ class Enemy extends GameObject {
 		vertex(size*2.2f, -size*0.3f);
 		vertex(size*1.8f, -size*0.3f);
 		vertex(size*1.1f, -size*1.4f);
+		vertex(-size, 0);
+		vertex(-size*2.1f, size*0.7f);
+		vertex(-size*1.8f, size*0.8f);
+		vertex(-size*2.1f, size*0.7f);
+		vertex(-size*1.8f, size*0.6f);
+		vertex(-size*0.6f, size*1.4f);
+		vertex(size, 0);
+		vertex(size*2.1f, size*0.7f);
+		vertex(size*1.8f, size*0.8f);
+		vertex(size*2.1f, size*0.7f);
+		vertex(size*1.8f, size*0.6f);
+		vertex(size*0.6f, size*1.4f);
 		endShape();
 
 		fill(255);
@@ -196,6 +253,50 @@ class EnemyManager {
 		}
 	}
 }
+class Explosion {
+  Particle[] explosion = new Particle[100];
+  PVector pos;
+
+  Explosion (PVector _pos) {
+    pos = new PVector(_pos.x, _pos.y);
+  }
+  
+  public void create() {
+    for (int i=0; i<explosion.length; i++) {
+      explosion[i] = new Particle(pos);
+    }
+  }
+
+  public void update(float delta_t) {
+    for (int i=0; i<explosion.length; i++) {
+      if (explosion[i].size <= 0) {
+        continue;
+      } else {
+        explosion[i].update(delta_t);
+      }
+    }
+  }
+}
+
+class Particle {
+  PVector pos = new PVector();
+  PVector vel;
+  float speed = 0.61f;
+  float size = 6;
+
+  Particle (PVector _pos) {
+    pos.set(_pos);
+    vel = new PVector (random (-1,1), random (-1,1));
+  }
+
+  public void update (float delta_t) {
+    vel.mult(speed*delta_t);
+    pos.add(vel);
+    size -= 0.19f;
+    fill (255);
+    ellipse (pos.x, pos.y, size, size);
+  }
+}
 class Game { 
 	final int nPlayersX = 11;
 	final int nPlayersY = 5;
@@ -204,24 +305,35 @@ class Game {
 	EnemyManager enemyManager;
 	ShotsManager shotsManager;
 	CollisionManager collisionManager;
+	// Explosion Testing:
+	// Explosion explosion;
+	// PVector tempPos;
 	Time time;
-	int state; // 0 = Init. 1 = Welcome screen. 2 = Running. 3 = Game Over
 	int score; // a function of the number of surviving players and elapsed time.
 	int highSchore; //
+	int state;
 	PFont titleFont = createFont("Alien-Encounters-Italic.ttf", 80);
 	PFont font = createFont("Futuristic Armour.otf", 22);
+	boolean gameOver;
+
 	
 	Game() {
 		time = new Time();
-		state = 0;
 		shotsManager = new ShotsManager();
 		playerManager = new PlayerManager(nPlayersX, nPlayersY); //
 		enemyManager = new EnemyManager(1, shotsManager);
 		collisionManager = new CollisionManager(playerManager.getPlayers(),
 												enemyManager.getEnemies(),
 												shotsManager.getShots());
+		gameOver = false;
+		// Explosion Testing:
+		// tempPos = new PVector(width/2, height/2);
+		// explosion = new Explosion(tempPos);
+		// explosion.create();
 	}
 	
+	public boolean isGameOver() {return gameOver;}
+
 	public void splashScreen() {
 		startScreen(titleFont, font);
 	}
@@ -233,12 +345,16 @@ class Game {
 		enemyManager.update(delta_t);
 		shotsManager.update(delta_t);
 		
-		if (collisionManager.update(delta_t))
-			state = 3;
+		if (collisionManager.update(delta_t)) { // Collision testing...
+			gameOver = true;
+		}
 
 		playerManager.draw();
 		enemyManager.draw();
 		shotsManager.draw();
+
+		// Explosion Testing:
+		// explosion.update(delta_t);
 	}
 
 	public void gameOver() {
@@ -247,9 +363,9 @@ class Game {
 		fill(0);
 		text("Game Over!", width, height);
 		//Add code: If "playerDead == true"
-		//gameOverScreen();
+		gameOverScreen(titleFont, font);
 		//else
-		winScreen(titleFont, font);
+		//winScreen(titleFont, font);
 		// Add code: Key SPACE to state 0 (init)
 		// state = 0;
 		// Add code: ..or Key ESC to quit
@@ -315,6 +431,7 @@ class GameObject {
 // tas bort?
 class Player extends GameObject {
 	boolean alive;
+	
 	Player(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
 		alive = true;
@@ -337,7 +454,6 @@ class Player extends GameObject {
   		r = (int)random(255);
   		stroke(0, r, r);
   		line (1, -23, 0, -23 - (int)random(4));
-
 
 		beginShape(QUADS);
 		noStroke();
@@ -506,6 +622,7 @@ class PlayerManager {
 }
 class ShotsManager {
 	ArrayList<Shot> shots;
+	
 	ShotsManager() {
 		shots = new ArrayList<Shot>(100);
 	}
@@ -724,6 +841,7 @@ class Star {
 class Time {
   long initTime;
   long lastTime;
+  
   Time() {
     initTime = millis();
     lastTime = millis();

@@ -1,13 +1,8 @@
 class Player extends GameObject {
 	boolean alive;
-<<<<<<< Updated upstream
 	
-	Player(float x, float y) {
-		super(x, y);
-=======
 	Player(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
->>>>>>> Stashed changes
 		alive = true;
 	}
 

@@ -22,9 +22,6 @@ class GameObject {
 		pos.y += vel.y * delta_t;
 	}
 
-<<<<<<< Updated upstream
-	//boolean
-=======
 	boolean collides(GameObject g) {
 		float dx = (pos.x + boundingCircle.offset.x) - (g.pos.x + g.boundingCircle.offset.x);
 		float dy = (pos.y + boundingCircle.offset.y) - (g.pos.y + g.boundingCircle.offset.y);
@@ -43,5 +40,4 @@ class GameObject {
 		fill(0, 0, 0);
 		circle(pos.x + boundingCircle.offset.x, pos.y + boundingCircle.offset.y, boundingCircle.radius);
 	}
->>>>>>> Stashed changes
 }

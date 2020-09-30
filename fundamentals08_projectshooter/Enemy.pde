@@ -5,12 +5,8 @@ class Enemy extends GameObject {
 	}
 
 	void draw() {
-<<<<<<< Updated upstream
-		float size = 8;
-=======
-		//drawBoundingCircle();
+		drawBoundingCircle();
 		float size = 10;
->>>>>>> Stashed changes
 		
 		pushMatrix();
 		translate(pos.x, pos.y);

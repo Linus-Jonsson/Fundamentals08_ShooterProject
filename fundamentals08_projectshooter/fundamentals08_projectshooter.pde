@@ -1,9 +1,8 @@
-StarSystem stars;
 Game invadersOfSpace;
-<<<<<<< Updated upstream
-=======
+StarSystem stars;
 int state;
->>>>>>> Stashed changes
+boolean firstTime;
+
 
 void setup() {
 	// surface.setLocation(10, 10);
@@ -11,18 +10,32 @@ void setup() {
 	size(480, 640);
 	frameRate(30);
 	state = 0; // Init.
+	firstTime = true;
+	stars = new StarSystem(new PVector(width/2, height/2));	
 }
 
 void draw() {
 	stars.drawBackground();
-	switch (invadersOfSpace.state) {
-		case 0: stars = new StarSystem(new PVector(width/2, height/2));
-				invadersOfSpace = new Game(); 
-				invadersOfSpace.state = 1;
-				break;
-		case 1: invadersOfSpace.splashScreen(); break;
-		case 2: invadersOfSpace.run(); break;
-		case 3: invadersOfSpace.gameOver(); break;
+	switch (state) {
+		case 0: 
+			invadersOfSpace = new Game(); 
+			if (firstTime) {
+				state = 1;
+				firstTime = false;
+			} else 
+				state = 2;
+			break;
+		case 1: 
+			invadersOfSpace.splashScreen(); 
+			break;
+		case 2: 
+			invadersOfSpace.run();
+			if (invadersOfSpace.isGameOver())
+			state = 3; 
+			break;
+		case 3: 
+			invadersOfSpace.gameOver(); 
+			break;
 	}
 }
 
@@ -31,14 +44,12 @@ void keyPressed() {
   	if (keyCode == LEFT) invadersOfSpace.move(-1, 0);
   	if (keyCode == DOWN) invadersOfSpace.move(0, 1);
   	if (keyCode == UP) invadersOfSpace.move(0, -1);
-  	if (key == 32) {
-  		if (state == 1)
-  			state = 2;
-  		else if (state == 3)
-  			state = 2;
-  		else {
-  			invadersOfSpace.shoot(); // 32 = space
-  		}
+  	if (key == 32) { // Spacebar
+  		switch (state) {
+  			case 1: state = 2; break;
+  			case 2: invadersOfSpace.shoot(); break;
+  			case 3: state = 0; break;
+		}
   	}
- }
+}
 
