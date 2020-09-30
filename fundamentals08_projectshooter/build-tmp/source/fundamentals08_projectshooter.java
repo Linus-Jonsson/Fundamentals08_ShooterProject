@@ -99,11 +99,10 @@ class CollisionManager {
 			for (int py = 0; py < players.length; py++) {
 				for (int px = 0; px < players[0].length; px++) {
 					if (s.collides(players[py][px]) && players[py][px].alive) {
-						//exit();
 						players[py][px].alive = false;
 						shots.remove(n);
-						//if ()
-						return true; // Game Over!
+						if (players[py][px].isCurrent)
+							return true; // Game Over!
 					}
 				}
 			}
@@ -431,10 +430,12 @@ class GameObject {
 // tas bort?
 class Player extends GameObject {
 	boolean alive;
+	boolean isCurrent;
 	
 	Player(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
 		alive = true;
+		isCurrent = false;
 	}
 
 	public void draw(boolean highlight) {
@@ -539,6 +540,7 @@ class PlayerManager {
 				players[y][x].vel.y = 0;
 			}
 		}
+		players[currentY][currentX].isCurrent = true;
 	}
 
 	public Player[][] getPlayers() {
@@ -546,6 +548,7 @@ class PlayerManager {
 	}
 
 	public void setCurrentPlayer(int x, int y) {
+		players[currentY][currentX].isCurrent = false;
 		int tmpX = currentX;
 		int tmpY = currentY;
 		do {
@@ -562,6 +565,7 @@ class PlayerManager {
 			currentX = tmpX;
 			currentY = tmpY;
 		}
+		players[currentY][currentX].isCurrent = true;
 	}
 
 	public void draw() {

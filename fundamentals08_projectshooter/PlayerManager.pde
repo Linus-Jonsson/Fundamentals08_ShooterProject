@@ -17,6 +17,7 @@ class PlayerManager {
 				players[y][x].vel.y = 0;
 			}
 		}
+		players[currentY][currentX].isCurrent = true;
 	}
 
 	Player[][] getPlayers() {
@@ -24,6 +25,7 @@ class PlayerManager {
 	}
 
 	void setCurrentPlayer(int x, int y) {
+		players[currentY][currentX].isCurrent = false;
 		int tmpX = currentX;
 		int tmpY = currentY;
 		do {
@@ -40,6 +42,7 @@ class PlayerManager {
 			currentX = tmpX;
 			currentY = tmpY;
 		}
+		players[currentY][currentX].isCurrent = true;
 	}
 
 	void draw() {

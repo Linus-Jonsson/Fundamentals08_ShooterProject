@@ -18,11 +18,10 @@ class CollisionManager {
 			for (int py = 0; py < players.length; py++) {
 				for (int px = 0; px < players[0].length; px++) {
 					if (s.collides(players[py][px]) && players[py][px].alive) {
-						//exit();
 						players[py][px].alive = false;
 						shots.remove(n);
-						//if ()
-						return true; // Game Over!
+						if (players[py][px].isCurrent)
+							return true; // Game Over!
 					}
 				}
 			}

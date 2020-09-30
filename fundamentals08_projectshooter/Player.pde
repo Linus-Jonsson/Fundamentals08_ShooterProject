@@ -1,9 +1,11 @@
 class Player extends GameObject {
 	boolean alive;
+	boolean isCurrent;
 	
 	Player(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
 		alive = true;
+		isCurrent = false;
 	}
 
 	void draw(boolean highlight) {
