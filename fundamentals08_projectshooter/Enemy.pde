@@ -1,7 +1,16 @@
 class Enemy extends GameObject {
-	
+	int time;
 	Enemy(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
+		time = millis();
+	}
+
+	boolean readyToShoot() {
+		if (millis() - time > 1000) {
+			time = millis();
+			return true;
+		}
+		return false;
 	}
 
 	void draw() {

@@ -2,26 +2,23 @@ class PlayerManager {
 	Player[][] players;
 	int rows, cols;
 	int currentX, currentY;	
+	int time;
 
 	PlayerManager(int _cols, int _rows) {
 		rows = _rows;
 		cols = _cols;
 		currentX = cols /  2;
 		currentY = rows - 1;
+		time = millis();
 		players = new Player[rows][cols];
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < cols; x++) {
 				players[y][x] = new Player((width / 2) - (cols / 2) * 35 + x * 35, 
-										   (height / 2) - rows * 25 + y * 35, new BoundingCircle(0, -12, 25));
-				players[y][x].vel.x = -0.1;
+										   (height / 3) - rows * 25 + y * 35, new BoundingCircle(0, -12, 25));
+				players[y][x].vel.x = -0.5;
 				players[y][x].vel.y = 0;
 			}
 		}
-		players[4][6].alive = false;
-		players[3][7].alive = false;
-		players[2][9].alive = false;
-		players[1][10].alive = false;
-
 		players[currentY][currentX].isCurrent = true;
 	}
 
@@ -119,5 +116,13 @@ class PlayerManager {
 				return false;
 		}
 		return true;
+	}
+
+	boolean readyToShoot() {
+		if (millis() - time > 300) {
+			time = millis();
+			return true;
+		}
+		return false;
 	}
 }

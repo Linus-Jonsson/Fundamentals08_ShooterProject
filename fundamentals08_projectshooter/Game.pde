@@ -23,9 +23,9 @@ class Game {
 		time = new Time();
 		shotsManager = new ShotsManager();
 		playerManager = new PlayerManager(nPlayersX, nPlayersY); //
-		enemyManager = new EnemyManager(1, shotsManager);
 		explosionsManager = new ExplosionsManager();
 		wallManager = new WallManager(nWalls);
+		enemyManager = new EnemyManager(1, shotsManager, wallManager);
 		collisionManager = new CollisionManager(playerManager.getPlayers(),
 												enemyManager.getEnemies(),
 												shotsManager.getShots(),
@@ -78,8 +78,8 @@ class Game {
 	}
 
 	void shoot() {
-		if (playerManager.clearShot()) { // No other player ship is blocking the view.
-			float x = playerManager.getCurrent().pos.x;
+		if (playerManager.clearShot() && playerManager.readyToShoot()) { // No other player ship is blocking the view.
+			float x = playerManager.getCurrent().pos.x; 				 // and enough time has passed since the last shot.
 			float y = playerManager.getCurrent().pos.y;
 			shotsManager.spawn(x - 5, y, new BoundingCircle(0, 10, 2), new PVector(0, 3));
 			shotsManager.spawn(x + 5, y, new BoundingCircle(0, 10, 2), new PVector(0, 3));

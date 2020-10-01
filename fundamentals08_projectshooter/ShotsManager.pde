@@ -1,8 +1,10 @@
 class ShotsManager {
 	ArrayList<Shot> shots;
+	int t;
 	
 	ShotsManager() {
 		shots = new ArrayList<Shot>(100);
+		t = millis();
 	}
 
 	ArrayList<Shot> getShots() {

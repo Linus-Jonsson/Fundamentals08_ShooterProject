@@ -11,7 +11,7 @@ class Player extends GameObject {
 	void draw(boolean highlight) {
 		//drawBoundingCircle();
 		float size = 10;
-		int nonHighlightAlpha = 100;
+		int nonHighlightAlpha = 200;
 		
 		pushMatrix();
   		translate(pos.x, pos.y);

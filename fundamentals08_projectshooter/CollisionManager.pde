@@ -58,7 +58,8 @@ class CollisionManager {
 				for (int wp = 0; wp < walls[w].wall.length; wp++) {
 					WallPiece wallPiece = walls[w].wall[wp];
 					if (wallPiece.alive && s.collides(wallPiece)) {
-						wallPiece.alive = false;
+						//wallPiece.alive = false;
+						wallPiece.applyDamage();
 						shots.remove(n);						
 						return false;
 					}
