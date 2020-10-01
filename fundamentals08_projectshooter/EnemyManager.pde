@@ -55,11 +55,16 @@ class EnemyManager {
 				e.vel.x = -1;
 			if ((int)random(100) == 0) 
 				e.vel.x = 1;
-				
+			
+			if (e.pos.x < 25 || e.pos.x > width-25) {
+				e.pos.x -= e.vel.x*5; // FIXA DENNA ANDREAS!!!
+				e.vel.x = 0;			
+			}
+			
 			if (e.vel.x == 1)
-				e.walkingRotation = 0.4 - random(0.2, 0.3);
+				e.walkingRotation = 0.6 - random(1, 10) * 0.06;
 			if (e.vel.x == -1)
-				e.walkingRotation = -0.4 + random(0.2, 0.3);
+				e.walkingRotation = -0.6 + random(1, 10) * 0.06;
 
 
 			if ((int)random(10) == 0) {

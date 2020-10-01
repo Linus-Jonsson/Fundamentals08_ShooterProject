@@ -1,7 +1,7 @@
 class Game { 
 	final int nPlayersX = 11;
 	final int nPlayersY = 5;
-	final int nEnemies = 1;
+	final int nEnemies = 3;
 	final int nWalls = 4;
 
 	PlayerManager playerManager;
@@ -26,7 +26,7 @@ class Game {
 		playerManager = new PlayerManager(nPlayersX, nPlayersY); //
 		explosionsManager = new ExplosionsManager();
 		wallManager = new WallManager(nWalls);
-		enemyManager = new EnemyManager(1, shotsManager, wallManager);
+		enemyManager = new EnemyManager(nEnemies, shotsManager, wallManager);
 		collisionManager = new CollisionManager(playerManager.getPlayers(),
 			enemyManager.getEnemies(),
 			shotsManager.getShots(),
