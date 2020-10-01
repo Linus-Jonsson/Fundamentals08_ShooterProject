@@ -55,13 +55,12 @@ class Explosion {
   }
 }
 
-
 class Particle {
   PVector pos = new PVector();
   PVector vel;
   color col;
-  float speed = 0.75;
-  float size  = 8;
+  float speed = 0.5;
+  float size = 2;
 
   Particle (PVector _pos) {
     pos.set(_pos);
@@ -75,7 +74,6 @@ class Particle {
 
     size = size * 0.8;
     fill (c);
-    stroke (c);
     ellipse (pos.x, pos.y, size, size);
   }
 }
