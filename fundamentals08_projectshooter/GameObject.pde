@@ -6,7 +6,6 @@ class GameObject {
 		pos = new PVector(x, y);
 		vel = new PVector(0, 0);
 		boundingCircle = bc;
-		println("creation of new Game Object");
 	}
 
 	boolean collideWall() {
@@ -24,12 +23,7 @@ class GameObject {
 	boolean collides(GameObject g) {
 		float dx = (pos.x + boundingCircle.offset.x) - (g.pos.x + g.boundingCircle.offset.x);
 		float dy = (pos.y + boundingCircle.offset.y) - (g.pos.y + g.boundingCircle.offset.y);
-		/*stroke(255, 0, 0);
-		line (pos.x + boundingCircle.offset.x,
-			  pos.y + boundingCircle.offset.y,
-			  g.pos.x + g.boundingCircle.offset.x,
-			  g.pos.y + g.boundingCircle.offset.y);*/
-		if (sqrt(dx * dx + dy * dy) <= (boundingCircle.radius / 2 + g.boundingCircle.radius / 2))
+		if (sqrt(dx * dx + dy * dy) <= (boundingCircle.diameter / 2 + g.boundingCircle.diameter / 2))
 			return true;
 		return false;
 	}
@@ -37,6 +31,6 @@ class GameObject {
 	void drawBoundingCircle() {
 		stroke(255, 0, 0);
 		fill(0, 0, 0);
-		circle(pos.x + boundingCircle.offset.x, pos.y + boundingCircle.offset.y, boundingCircle.radius);
+		circle(pos.x + boundingCircle.offset.x, pos.y + boundingCircle.offset.y, boundingCircle.diameter);
 	}
 }

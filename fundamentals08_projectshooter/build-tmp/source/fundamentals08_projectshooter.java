@@ -16,18 +16,8 @@ public class fundamentals08_projectshooter extends PApplet {
 
 // To fix:
 // 
-// BUG: 
-// 1) can't select a different player when diagonal space between current
-// and next
 //
-// 2) Shots go through the crabs and create TONS of particle systems
-// that slow down the system, and create huge delta_t which mess up the
-// looks of the explosions.
-//
-// döpa om radius to diameter 
-//
-// flytta murarna något till höger (CHECK!//Linus)
-//
+// Optimera kollision mot väggarna (övergripande kollision)
 // pos.x på väggarna ligger uppe till vänster med ett indrag på radius (diameter/2)
 
 
@@ -88,14 +78,12 @@ public void keyPressed() {
 
 class BoundingCircle {
 	PVector offset;
-	float radius;
-	BoundingCircle(float x, float y, float r) {
+	float diameter;
+	BoundingCircle(float x, float y, float _diameter) {
 		offset = new PVector(x, y);
-		radius = r;
+		diameter = _diameter;
 	}
 }
-// ska nog ej ha...
-// Denna ska vi nog inte ha... vi har GameObject-klassen istället.
 class CollisionManager {
 	Player[][] players;
 	Enemy[] enemies;
@@ -129,11 +117,11 @@ class CollisionManager {
 						float explosionX = players[py][px].pos.x + players[py][px].boundingCircle.offset.x;						
 						float explosionY = players[py][px].pos.y + players[py][px].boundingCircle.offset.y;
 						if (players[py][px].isCurrent) {
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 128, 255), 10);
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 64, 128), 10);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 128, 255), 30);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 64, 128), 30);
 							return true; // Game Over!
 						} else {
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 10);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 30);
 							return false;
 						}
 					} 
@@ -145,7 +133,7 @@ class CollisionManager {
 				if (s.collides(enemies[ex])) {
 					float explosionX = enemies[ex].pos.x + enemies[ex].boundingCircle.offset.x;						
 					float explosionY = enemies[ex].pos.y + enemies[ex].boundingCircle.offset.y;
-					explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 10);					
+					explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 30);					
 					shots.remove(n);					
 					return false;
 				}
@@ -296,7 +284,7 @@ class EnemyManager {
 				e.vel.x = -1;
 			if ((int)random(100) == 0) 
 				e.vel.x = 1;
-			if ((int)random(100) == 0) 
+			if ((int)random(10) == 0) 
 				shotsManager.spawn(e.pos.x, e.pos.y - 15, new BoundingCircle(0, 0, 2), new PVector(0, -3));
 		}
 	}
@@ -375,9 +363,10 @@ class Particle {
   public void update (float delta_t, int c) {
     vel.mult(speed*delta_t);
     pos.add(vel);
-    size = size * 0.75f;
-    fill (col);
-    noStroke();
+
+    size = size * 0.8f;
+    fill (c);
+    stroke (c);
     ellipse (pos.x, pos.y, size, size);
   }
 }
@@ -414,7 +403,6 @@ class Game {
 												shotsManager.getShots(),
 												wallManager.getWalls(),
 												explosionsManager);
-
 		gameOver = false;
 	}
 	
@@ -478,7 +466,6 @@ class GameObject {
 		pos = new PVector(x, y);
 		vel = new PVector(0, 0);
 		boundingCircle = bc;
-		println("creation of new Game Object");
 	}
 
 	public boolean collideWall() {
@@ -496,12 +483,7 @@ class GameObject {
 	public boolean collides(GameObject g) {
 		float dx = (pos.x + boundingCircle.offset.x) - (g.pos.x + g.boundingCircle.offset.x);
 		float dy = (pos.y + boundingCircle.offset.y) - (g.pos.y + g.boundingCircle.offset.y);
-		/*stroke(255, 0, 0);
-		line (pos.x + boundingCircle.offset.x,
-			  pos.y + boundingCircle.offset.y,
-			  g.pos.x + g.boundingCircle.offset.x,
-			  g.pos.y + g.boundingCircle.offset.y);*/
-		if (sqrt(dx * dx + dy * dy) <= (boundingCircle.radius / 2 + g.boundingCircle.radius / 2))
+		if (sqrt(dx * dx + dy * dy) <= (boundingCircle.diameter / 2 + g.boundingCircle.diameter / 2))
 			return true;
 		return false;
 	}
@@ -509,10 +491,9 @@ class GameObject {
 	public void drawBoundingCircle() {
 		stroke(255, 0, 0);
 		fill(0, 0, 0);
-		circle(pos.x + boundingCircle.offset.x, pos.y + boundingCircle.offset.y, boundingCircle.radius);
+		circle(pos.x + boundingCircle.offset.x, pos.y + boundingCircle.offset.y, boundingCircle.diameter);
 	}
 }
-// tas bort?
 class Player extends GameObject {
 	boolean alive;
 	boolean isCurrent;
@@ -638,64 +619,39 @@ class PlayerManager {
 	}
 
 	public void setCurrentPlayer(int x, int y) {
-		players[currentY][currentX].isCurrent = false;
-		int tmpX = currentX;
-		int tmpY = currentY;
-		do {
-			currentX += x;
-			currentY += y;
-			if (currentX < 0 || currentX > cols - 1 || 
-				currentY < 0 || currentY > rows - 1) {
-				currentX -= x;
-				currentY -= y;
-				break;
-			}
-		} while (!players[currentY][currentX].alive);
-		
-		if (!players[currentY][currentX].alive) {
-			// find closest one along the vector
-			currentX = tmpX;
-			currentY = tmpY;
-			int shortestX = currentX;
-			int shortestY = currentY;
-			float shortestLength = 100000;
-			do {
-				currentX += x;
-				currentY += y;
-				for (int yc = 0; yc < rows; yc++) {
-					for (int xc = 0; xc < cols; xc++) {
-						float dist = 10000000;
-						float dx, dy;
-						dx = xc - currentX;
-						dy = yc - currentY;
-						if (players[yc][xc].alive) {
-							if (sqrt(dx * dx + dy * dy) < shortestLength) {
-								shortestLength = sqrt(dx * dx + dy * dy);
-								shortestX = xc;
-								shortestY = yc;
-							}
-						}
+		if (x == 0 && y == 0)
+			return;
+		else if (currentX + x < 0 || currentX + x > cols - 1 || 
+		 	     currentY + y < 0 || currentY + y > rows - 1) {
+			return;
+		}
+		else {				
+			players[currentY][currentX].isCurrent = false;
+		}
+
+		// find closest one along the vector +/- specified degree (up to 180)
+		// cast two rays: 
+		float initAngle = atan2(y, x);
+		float rayLength = sqrt(players.length * players.length + players[0].length * players[0].length) + 3;
+		int xRay, yRay;
+		for (float angle = 0; angle <= 3.1415f; angle += 3.1415f / 180) {
+			for (float dir = -1; dir < 3; dir += 2)	{
+				for (int l = 0; l < (int)rayLength; l++) {
+					xRay = (int)(cos(initAngle + angle * dir) * l);
+					yRay = (int)(sin(initAngle + angle * dir) * l);
+					if (currentX+xRay < 0 || currentX+xRay > cols - 1 || 
+						currentY+yRay < 0 || currentY+yRay > rows - 1) {
+						break;
+					}
+					if (!(xRay == 0 && yRay == 0) && players[currentY + yRay][currentX + xRay].alive) {
+						currentX += xRay;
+						currentY += yRay;
+						players[currentY][currentX].isCurrent = true;
+						return;
 					}
 				}
-				if (currentX < 0 || currentX > cols - 1 || 
-					currentY < 0 || currentY > rows - 1) {
-					currentX -= x;
-					currentY -= y;
-					break;
-				}
-			} while (!players[currentY][currentX].alive);
-			currentX = shortestX;
-			currentY = shortestY;
+			}
 		}
-
-		// Didn't find a new player to highlight?
-		// Then we revert back to the initial one.
-		if (!players[currentY][currentX].alive) {
-			currentX = tmpX;
-			currentY = tmpY;
-		}
-
-		players[currentY][currentX].isCurrent = true;
 	}
 
 	public void draw() {
@@ -984,6 +940,30 @@ class Star {
     }
   }
 }
+class Time {
+  long initTime;
+  long lastTime;
+  
+  Time() {
+    initTime = millis();
+    lastTime = millis();
+  }
+
+  public long getAbsolute() {
+    return millis() - initTime;
+  }
+
+  public float getDelta() {
+    float delta_t = (millis() - lastTime);
+    lastTime = millis();
+    return delta_t;
+  }
+
+  public void pause(long p) {
+    long t = millis();
+    while ((millis() - t) < p);
+  }
+}
 class WallManager {
   Wall[] walls;
   int nWalls;
@@ -1052,76 +1032,60 @@ class WallPiece extends GameObject {
 		super(x, y, bc);
 		alive = true;
 		diameter = dia;
-		col = color(0, 255, 0);
+		col = color(0, 255, 0); //NOT final color!
 	}
 
 	public void draw() {
-		rectMode(CENTER);
-		stroke(col);
-		fill(col);
-		beginShape();
-		vertex(pos.x+diameter/2, pos.y+diameter/2);
-		vertex(pos.x-diameter/2, pos.y+diameter/2);
-		vertex(pos.x-diameter/2, pos.y-diameter/1.3f);
-		vertex(pos.x-diameter/4, pos.y-diameter/1.7f);
-		vertex(pos.x, pos.y-diameter/2);
-		vertex(pos.x+diameter/3, pos.y-diameter/1.9f);
-		vertex(pos.x+diameter/2, pos.y-diameter/1.3f);
-		endShape(CLOSE);
+		if (alive) {
+			rectMode(CENTER);
+			stroke(col);
+			fill(col);
+			beginShape();
+			vertex(pos.x+diameter/2, pos.y+diameter/2);
+			vertex(pos.x-diameter/2, pos.y+diameter/2);
+			vertex(pos.x-diameter/2, pos.y-diameter/1.3f);
+			vertex(pos.x-diameter/4, pos.y-diameter/1.7f);
+			vertex(pos.x, pos.y-diameter/2);
+			vertex(pos.x+diameter/3, pos.y-diameter/1.9f);
+			vertex(pos.x+diameter/2, pos.y-diameter/1.3f);
+			endShape(CLOSE);
+		}
 	}
 
 	public void drawTopRow() {
-		rectMode(CENTER);
-		stroke(col);
-		fill(col);
-		square(pos.x, pos.y, diameter);
+		if (alive) {
+			rectMode(CENTER);
+			stroke(col);
+			fill(col);
+			square(pos.x, pos.y, diameter);
+		}
 	}
 
 	public void drawLeftCorner() {
-		stroke(col);
-		fill(col);
-		beginShape();
-		vertex(pos.x+diameter/2, pos.y+diameter/2);
-		vertex(pos.x-diameter/2, pos.y+diameter/2);
-		vertex(pos.x-diameter/2, pos.y-diameter/2);
-		vertex(pos.x+diameter/2, pos.y-diameter*1.5f);
-		endShape(CLOSE);
+		if (alive) {
+			stroke(col);
+			fill(col);
+			beginShape();
+			vertex(pos.x+diameter/2, pos.y+diameter/2);
+			vertex(pos.x-diameter/2, pos.y+diameter/2);
+			vertex(pos.x-diameter/2, pos.y-diameter/2);
+			vertex(pos.x+diameter/2, pos.y-diameter*1.5f);
+			endShape(CLOSE);
+		}
 	}	
 
 	public void drawRightCorner() {
-		stroke(col);
-		fill(col);
-		beginShape();
-		vertex(pos.x+diameter/2, pos.y+diameter/2);
-		vertex(pos.x-diameter/2, pos.y+diameter/2);
-		vertex(pos.x-diameter/2, pos.y-diameter*1.5f);
-		vertex(pos.x+diameter/2, pos.y-diameter/2);
-		endShape(CLOSE);
+		if (alive) {
+			stroke(col);
+			fill(col);
+			beginShape();
+			vertex(pos.x+diameter/2, pos.y+diameter/2);
+			vertex(pos.x-diameter/2, pos.y+diameter/2);
+			vertex(pos.x-diameter/2, pos.y-diameter*1.5f);
+			vertex(pos.x+diameter/2, pos.y-diameter/2);
+			endShape(CLOSE);
+		}
 	}
-}
-class Time {
-  long initTime;
-  long lastTime;
-  
-  Time() {
-    initTime = millis();
-    lastTime = millis();
-  }
-
-  public long getAbsolute() {
-    return millis() - initTime;
-  }
-
-  public float getDelta() {
-    float delta_t = (millis() - lastTime);
-    lastTime = millis();
-    return delta_t;
-  }
-
-  public void pause(long p) {
-    long t = millis();
-    while ((millis() - t) < p);
-  }
 }
   public void settings() { 	size(480, 640); }
   static public void main(String[] passedArgs) {

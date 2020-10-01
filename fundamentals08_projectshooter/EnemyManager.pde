@@ -31,7 +31,7 @@ class EnemyManager {
 				e.vel.x = -1;
 			if ((int)random(100) == 0) 
 				e.vel.x = 1;
-			if ((int)random(100) == 0) 
+			if ((int)random(10) == 0) 
 				shotsManager.spawn(e.pos.x, e.pos.y - 15, new BoundingCircle(0, 0, 2), new PVector(0, -3));
 		}
 	}

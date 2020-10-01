@@ -31,11 +31,11 @@ class CollisionManager {
 						float explosionX = players[py][px].pos.x + players[py][px].boundingCircle.offset.x;						
 						float explosionY = players[py][px].pos.y + players[py][px].boundingCircle.offset.y;
 						if (players[py][px].isCurrent) {
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 128, 255), 10);
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 64, 128), 10);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 128, 255), 30);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 64, 128), 30);
 							return true; // Game Over!
 						} else {
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 10);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 30);
 							return false;
 						}
 					} 
@@ -47,7 +47,7 @@ class CollisionManager {
 				if (s.collides(enemies[ex])) {
 					float explosionX = enemies[ex].pos.x + enemies[ex].boundingCircle.offset.x;						
 					float explosionY = enemies[ex].pos.y + enemies[ex].boundingCircle.offset.y;
-					explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 10);					
+					explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 30);					
 					shots.remove(n);					
 					return false;
 				}

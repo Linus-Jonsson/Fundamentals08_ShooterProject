@@ -72,9 +72,10 @@ class Particle {
   void update (float delta_t, color c) {
     vel.mult(speed*delta_t);
     pos.add(vel);
-    size = size * 0.75;
-    fill (col);
-    noStroke();
+
+    size = size * 0.8;
+    fill (c);
+    stroke (c);
     ellipse (pos.x, pos.y, size, size);
   }
 }

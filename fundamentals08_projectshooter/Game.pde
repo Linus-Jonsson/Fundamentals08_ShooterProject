@@ -31,7 +31,6 @@ class Game {
 												shotsManager.getShots(),
 												wallManager.getWalls(),
 												explosionsManager);
-
 		gameOver = false;
 	}
 	
