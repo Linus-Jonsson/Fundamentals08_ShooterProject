@@ -53,9 +53,11 @@ class Game {
 		shotsManager.update(delta_t);
 		explosionsManager.update(delta_t);
 		
-		if (collisionManager.update(delta_t)) { // Collision testing...
+		if (collisionManager.update(delta_t))
 			gameOver = true;
-		}
+		if (enemyManager.allDead())
+			gameOver = true;
+
 
 		playerManager.draw();
 		enemyManager.draw();
@@ -64,13 +66,10 @@ class Game {
 	}
 
 	void gameOver() {
-		if (gameOver) {
-			gameOverScreen(titleFont, font);
-		} else {
+		if (enemyManager.allDead())
 			winScreen(titleFont, font);
-		}
-		// Add code??: ..or Key ESC to quit
-		// exit();
+		else
+			gameOverScreen(titleFont, font);
 	}
 
 	void move(int x, int y) {

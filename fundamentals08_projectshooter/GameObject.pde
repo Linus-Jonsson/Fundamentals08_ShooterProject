@@ -8,13 +8,6 @@ class GameObject {
 		boundingCircle = bc;
 	}
 
-	boolean collideWall() {
-		float SIZE = 20; // Change later... 
-		if ((pos.x - SIZE / 2 < 0) || (pos.x > width - SIZE / 2))
-			return true;
-		return false;
-	}
-
 	void transform(float delta_t) {
 		pos.x += vel.x * delta_t;
 		pos.y += vel.y * delta_t;

@@ -19,6 +19,13 @@ class EnemyManager {
 		return enemies;
 	}
 
+	boolean allDead() {
+		for (int n = 0; n < nEnemies; n++)
+			if (enemies[n].lives > 0)
+				return false;
+		return true;
+	}
+
 	void draw() {
 		for (int n = 0; n < nEnemies; n++) {
 			enemies[n].draw();
@@ -27,14 +34,34 @@ class EnemyManager {
 
 	void update(float delta_t) {
 		for (Enemy e : enemies) {
+			if (e.lostLife && e.deathRotation == 0) {
+				e.lostLife = false;
+				e.lives--;
+				e.deathRotation = 6.28;
+				println("Crab lives: " + e.lives);
+			}
+
+			if (e.deathRotation > 0) {
+				e.deathRotation -= delta_t * 0.1;
+			} else {
+				e.deathRotation = 0;
+			}
+
 			e.transform(delta_t);
 
 			if (e.pos.x < 20 || e.pos.x > width - 20) 
 				e.pos.x -= e.vel.x * delta_t;
-			//if ((int)random(100) == 0) 
-			//	e.vel.x = -1;
-			//if ((int)random(100) == 0) 
-			//	e.vel.x = 1;
+			if ((int)random(100) == 0)
+				e.vel.x = -1;
+			if ((int)random(100) == 0) 
+				e.vel.x = 1;
+				
+			if (e.vel.x == 1)
+				e.walkingRotation = 0.4 - random(0.2, 0.3);
+			if (e.vel.x == -1)
+				e.walkingRotation = -0.4 + random(0.2, 0.3);
+
+
 			if ((int)random(10) == 0) {
 				if (e.readyToShoot()) {
 					boolean behindWall = false;
@@ -53,12 +80,6 @@ class EnemyManager {
 				}
 			}
 
-			// find shots to hide from! 
-			// ONLY (!!!!!!)
-			// thos with a positive offset, because they are fired
-			// by the player:
-			//find shot deltas between crab.y and shots.y
-
 			float closestX = 0, closestY = 10000;
 			for (Shot s : shotsManager.getShots()) {
 				if (s.boundingCircle.offset.y > 0) {
@@ -70,6 +91,7 @@ class EnemyManager {
 					}			
 				}
 			}
+			
 			//aiClock
 			/*if (e.pos.x < closestX) {
 				e.vel.x = -1;
