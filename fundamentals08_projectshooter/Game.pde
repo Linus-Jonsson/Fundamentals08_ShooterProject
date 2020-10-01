@@ -18,6 +18,7 @@ class Game {
 	PFont titleFont = createFont("Alien-Encounters-Italic.ttf", 80);
 	PFont font = createFont("Futuristic Armour.otf", 22);
 	boolean gameOver;
+	Enemy enemyLives = new Enemy(width/3.4, height*0.99, new BoundingCircle(0,0,10));
 	
 	Game() {
 		time = new Time();
@@ -27,10 +28,10 @@ class Game {
 		wallManager = new WallManager(nWalls);
 		enemyManager = new EnemyManager(1, shotsManager, wallManager);
 		collisionManager = new CollisionManager(playerManager.getPlayers(),
-												enemyManager.getEnemies(),
-												shotsManager.getShots(),
-												wallManager.getWalls(),
-												explosionsManager);
+			enemyManager.getEnemies(),
+			shotsManager.getShots(),
+			wallManager.getWalls(),
+			explosionsManager);
 		gameOver = false;
 	}
 	
@@ -42,6 +43,10 @@ class Game {
 
 	void run() {
 		float delta_t = time.getDelta() * 0.05;
+		if (!gameOver) {
+			enemyLives.drawLives();
+			graphicElements(font);
+		}
 
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);
@@ -59,17 +64,12 @@ class Game {
 	}
 
 	void gameOver() {
-		textAlign(width / 2, height / 2);
-		stroke(0);
-		fill(0);
-		text("Game Over!", width, height);
-		//Add code: If "playerDead == true"
-		gameOverScreen(titleFont, font);
-		//else
-		//winScreen(titleFont, font);
-		// Add code: Key SPACE to state 0 (init)
-		// state = 0;
-		// Add code: ..or Key ESC to quit
+		if (gameOver) {
+			gameOverScreen(titleFont, font);
+		} else {
+			winScreen(titleFont, font);
+		}
+		// Add code??: ..or Key ESC to quit
 		// exit();
 	}
 

@@ -65,13 +65,12 @@ class Particle {
   Particle (PVector _pos) {
     pos.set(_pos);
     vel = new PVector (random (-1,1), random (-1,1));
-    col = color(random(125, 256), random(125, 256), 255);
+    col = color(random(125, 256), random(125, 256), 255); //Not in use now
   }
 
   void update (float delta_t, color c) {
     vel.mult(speed*delta_t);
     pos.add(vel);
-
     size = size * 0.8;
     fill (c);
     ellipse (pos.x, pos.y, size, size);

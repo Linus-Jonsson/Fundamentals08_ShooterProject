@@ -9,7 +9,7 @@ class EnemyManager {
 		nEnemies = _nEnemies;
 		enemies = new Enemy[nEnemies];
 		for (int n = 0; n < nEnemies; n++)
-			enemies[n] = new Enemy(width / 2, height * 0.9, new BoundingCircle(0, 0, 35));
+			enemies[n] = new Enemy(width / 2, height * 0.89, new BoundingCircle(0, 0, 35));
 		shotsManager = _shotsManager;
 		wallManager = _wallManager;
 		int aiClock = 30;

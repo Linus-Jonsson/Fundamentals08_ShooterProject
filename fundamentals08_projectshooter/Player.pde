@@ -1,38 +1,44 @@
 class Player extends GameObject {
 	boolean alive;
 	boolean isCurrent;
+	color col;
+	color colDark;
+	color colBright;
 	
 	Player(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
 		alive = true;
 		isCurrent = false;
+		col = color(255, 159, 0);
+		colDark = color(207, 129, 0);
+		colBright = color(255, 173, 36);
 	}
 
 	void draw(boolean highlight) {
 		//drawBoundingCircle();
 		float size = 10;
-		int nonHighlightAlpha = 200;
+		int nonHighlightAlpha = 175;
 		
 		pushMatrix();
-  		translate(pos.x, pos.y);
+		translate(pos.x, pos.y);
 
-  		int r = (int)random(255);
-  		stroke(0, r, r);
-  		line (-1, -23, 0, -23 - (int)random(4));
-  		r = (int)random(255);
-  		stroke(0, r, r);
-  		line (1, -23, 0, -23 - (int)random(4));
-  		r = (int)random(255);
-  		stroke(0, r, r);
-  		line (1, -23, 0, -23 - (int)random(4));
+		int r = (int)random(255);
+		stroke(0, r, r);
+		line (-1, -23, 0, -23 - (int)random(4));
+		r = (int)random(255);
+		stroke(0, r, r);
+		line (1, -23, 0, -23 - (int)random(4));
+		r = (int)random(255);
+		stroke(0, r, r);
+		line (1, -23, 0, -23 - (int)random(4));
 
 		beginShape(QUADS);
 		noStroke();
 		
 		if (!highlight)
-			fill(255, 100, 20, nonHighlightAlpha);
+			fill(colDark, nonHighlightAlpha);
 		else 
-			fill(255, 100, 20, 255);
+			fill(colDark);
 
 		vertex(-size*0.7, -size*0.5);
 		vertex(-size*0.6, -size*0.5);
@@ -51,9 +57,9 @@ class Player extends GameObject {
 		beginShape(TRIANGLES);
 		noStroke();
 		if (!highlight)
-			fill(255, 170, 40, nonHighlightAlpha);
+			fill(col, nonHighlightAlpha);
 		else
-			fill(255, 170, 40, 255);
+			fill(col);
 		vertex(-size*0.9, -size*0.75);
 		vertex(-size*1.4, -size*1.8);
 		vertex(-size*0.4, -size*1.8);
@@ -64,9 +70,9 @@ class Player extends GameObject {
 		vertex(-size, -size*2);
 		vertex(size, -size*2);
 		if (!highlight)
-			fill(255, 220, 120, nonHighlightAlpha);
+			fill(colBright, nonHighlightAlpha);
 		else
-			fill(255, 220, 120, 255);
+			fill(colBright);
 		vertex(0, -size*0.7);
 		vertex(-size*0.4, -size*1.5);
 		vertex(size*0.4, -size*1.5);

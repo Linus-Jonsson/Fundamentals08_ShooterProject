@@ -1,7 +1,16 @@
 class Enemy extends GameObject {
+	color col;
+	color colDark;
+	color colBright;
+	float size = 10;
+	int lives = 3;
 	int time;
+
 	Enemy(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
+		col = color(0, 102, 243);
+		colDark = color(0, 57, 136);
+		colBright = color(54, 137, 252);
 		time = millis();
 	}
 
@@ -15,8 +24,6 @@ class Enemy extends GameObject {
 
 	void draw() {
 		//drawBoundingCircle();
-		float size = 10;
-		
 		pushMatrix();
 		translate(pos.x, pos.y);
 		noStroke();
@@ -56,7 +63,7 @@ class Enemy extends GameObject {
 		endShape();
 
 		beginShape(TRIANGLES);
-		fill(20, 40, 255);
+		fill(colDark);
 		vertex(-size, 0);
 		vertex(-size*2.2, -size*0.3);
 		vertex(-size*1.8, -size*0.5);
@@ -87,12 +94,12 @@ class Enemy extends GameObject {
 		ellipse(-size*0.05, size*0.05, size*3.05, size*2.05);
 		ellipse(-size*0.55, -size*0.45, size*0.65, size*0.45);
 		ellipse(size*0.55, -size*0.45, size*0.65, size*0.45);
-		fill(40, 100, 255);
+		fill(col);
 		ellipse(0, 0, size*3, size*2);
 		fill(255);
 		ellipse(-size*0.52, -size*0.48, size*0.63, size*0.43);
 		ellipse(size*0.48, -size*0.48, size*0.63, size*0.43);
-		fill(20, 40, 255);
+		fill(colBright);
 		ellipse(-size*0.5, -size*0.5, size*0.6, size*0.4);
 		ellipse(size*0.5, -size*0.5, size*0.6, size*0.4);
 		fill(0);
@@ -102,5 +109,19 @@ class Enemy extends GameObject {
 		ellipse(-size*0.56, -size*0.58, size*0.12, size*0.08);
 		ellipse(size*0.44, -size*0.58, size*0.12, size*0.08);
 		popMatrix();
+	}
+
+	void drawLives() {
+		push();
+		scale(0.6);
+		translate(0, height*0.6);
+		if (lives == 3) {
+			draw();
+		}
+		if (lives >= 2) {
+			translate(-60, 0);
+			draw();
+		}
+		pop();
 	}
 }

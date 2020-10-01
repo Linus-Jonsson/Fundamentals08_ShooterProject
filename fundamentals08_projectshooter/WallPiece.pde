@@ -9,7 +9,7 @@ class WallPiece extends GameObject {
 		super(x, y, bc);
 		alive = true;
 		diameter = dia;
-		col = color(0, 255, 0); //NOT final color!
+		col = color(0, 57, 136);
 		damageLevel = 0;
 		damage = new ArrayList<PVector>();
 	}

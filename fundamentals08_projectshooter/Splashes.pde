@@ -1,3 +1,18 @@
+	void graphicElements(PFont _font) {
+		fill(0, 57, 136);
+		strokeWeight(2);
+		stroke(0, 57, 136);
+		line(30, height*0.93, width-30, height*0.93);
+		textAlign(RIGHT);
+		fill(255);
+		textFont(_font, 22);
+		text("CREDIT  00", width-35, height*0.96);
+		text("HI-SCORE  " + "9999", width-35, 40);
+		textAlign(LEFT);
+		text("SCORE  " + "2345", 35, 40);
+	}
+
+
 void startScreen(PFont titleFont, PFont font) {	
 		textFont(titleFont);
 		fill(255);
@@ -44,6 +59,9 @@ void startScreen(PFont titleFont, PFont font) {
 	}	
 
 	void gameOverScreen(PFont titleFont, PFont font) {	
+		noStroke();
+		fill(0, 100);
+		rect(width/2, height/2, width, height);
 		textFont(titleFont);
 		fill(255);
 		textAlign(CENTER);
