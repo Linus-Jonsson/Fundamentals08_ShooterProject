@@ -3,6 +3,8 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
+import processing.sound.*; 
+
 import java.util.HashMap; 
 import java.util.ArrayList; 
 import java.io.File; 
@@ -21,12 +23,15 @@ public class fundamentals08_projectshooter extends PApplet {
 // pos.x på väggarna ligger uppe till vänster med ett indrag på radius (diameter/2)
 
 
+
+SoundFile ducktales;
 Game invadersOfSpace;
 StarSystem stars;
 int state;
 boolean firstTime;
 
 public void setup() {
+	ducktales = new SoundFile(this, "DuckTales.mp3");
 	surface.setLocation(10, 10);
 	((java.awt.Canvas) surface.getNative()).requestFocus();
 	
@@ -51,6 +56,7 @@ public void draw() {
 			invadersOfSpace.splashScreen(); 
 			break;
 		case 2: 
+			ducktales.loop();			
 			invadersOfSpace.run();
 			if (invadersOfSpace.isGameOver())
 			state = 3; 
