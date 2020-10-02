@@ -10,18 +10,22 @@
 //
 // Optimera kollision mot väggarna (övergripande kollision)
 // pos.x på väggarna ligger uppe till vänster med ett indrag på radius (diameter/2)
-import processing.sound.*;
+// Se till att ev. Hi-Score sparas till nästa runda
+// Walldamage slutat fungera!?!
+
+// import processing.sound.*;
 
 
-SoundFile ducktales;
+// SoundFile ducktales;
 Game invadersOfSpace;
 StarSystem stars;
 int state;
 boolean firstTime;
-Sound s;
+int highScore;
+// Sound s;
 
 void setup() {
-	ducktales = new SoundFile(this, "DuckTales.mp3");
+	// ducktales = new SoundFile(this, "DuckTales.mp3");
 	surface.setLocation(10, 10);
 	((java.awt.Canvas) surface.getNative()).requestFocus();
 	size(480, 640);
@@ -29,16 +33,18 @@ void setup() {
 	state = 0; // Init.
 	firstTime = true;
 	stars = new StarSystem(new PVector(width/2, height/2));	
-	s = new Sound(this);
-	s.volume(0.1);
-	ducktales.loop();			
+	highScore = 0;
+
+	// s = new Sound(this);
+	// s.volume(0.1);
+	// ducktales.loop();			
 }
 
 void draw() {
 	stars.drawBackground();
 	switch (state) {
 		case 0: 
-		invadersOfSpace = new Game(); 
+		invadersOfSpace = new Game(highScore); 
 		if (firstTime) {
 			state = 1;
 			firstTime = false;

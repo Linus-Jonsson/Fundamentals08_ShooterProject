@@ -9,9 +9,9 @@ class Player extends GameObject {
 		super(x, y, bc);
 		alive = true;
 		isCurrent = false;
-		col = color(255, 159, 0);
-		colDark = color(207, 129, 0);
-		colBright = color(255, 173, 36);
+		col = color(255, 174, 0);
+		colDark = color(192, 132, 0);
+		colBright = color(255, 200, 82);
 	}
 
 	boolean collideWall() {
@@ -22,9 +22,8 @@ class Player extends GameObject {
 	}
 
 	void draw(boolean highlight) {
-		//drawBoundingCircle();
 		float size = 10;
-		int nonHighlightAlpha = 175;
+		int nonHighlightAlpha = 210;
 		
 		pushMatrix();
 		translate(pos.x, pos.y);
@@ -41,12 +40,8 @@ class Player extends GameObject {
 
 		beginShape(QUADS);
 		noStroke();
-		
-		if (!highlight)
-			fill(colDark, nonHighlightAlpha);
-		else 
-			fill(colDark);
-
+		if (!highlight) { fill(colDark, nonHighlightAlpha); }
+		else 			{ fill(colDark); }
 		vertex(-size*0.7, -size*0.5);
 		vertex(-size*0.6, -size*0.5);
 		vertex(-size*0.6, -size*2.1);
@@ -60,13 +55,10 @@ class Player extends GameObject {
 		vertex(size*0.4, -size*2.15);
 		vertex(size*0.35, -size*2);
 		endShape();
-
 		beginShape(TRIANGLES);
 		noStroke();
-		if (!highlight)
-			fill(col, nonHighlightAlpha);
-		else
-			fill(col);
+		if (!highlight) { fill(col, nonHighlightAlpha); }
+		else { fill(col); stroke(255); strokeWeight(0.8);} 
 		vertex(-size*0.9, -size*0.75);
 		vertex(-size*1.4, -size*1.8);
 		vertex(-size*0.4, -size*1.8);
@@ -76,22 +68,17 @@ class Player extends GameObject {
 		vertex(0, 0);
 		vertex(-size, -size*2);
 		vertex(size, -size*2);
-		if (!highlight)
-			fill(colBright, nonHighlightAlpha);
-		else
-			fill(colBright);
+		noStroke();
+		if (!highlight) { fill(colBright, nonHighlightAlpha); }
+		else { fill(colBright); }
 		vertex(0, -size*0.7);
 		vertex(-size*0.4, -size*1.5);
 		vertex(size*0.4, -size*1.5);
 		endShape();
-
 		beginShape(LINES);
 		strokeWeight(size * 0.1);
-		
-		if (!highlight) 
-			stroke(nonHighlightAlpha);
-		else
-			stroke(255);
+		if (!highlight) { stroke(nonHighlightAlpha); }
+		else 			{ stroke(255); }
 		vertex(-size*0.02, -size*0.06);
 		vertex(-size*0.65, -size*1.35);
 		vertex(-size*0.95, -size*0.8);
@@ -100,7 +87,7 @@ class Player extends GameObject {
 		vertex(size*0.65, -size*1.25);
 		vertex(0, -size*0.75);
 		vertex(-size*0.4, -size*1.45);
-		endShape();	
+		endShape();
 		popMatrix();
 	}	
 }

@@ -4,6 +4,7 @@ class CollisionManager {
 	ArrayList<Shot> shots;
 	Wall[] walls;
 	ExplosionsManager explosionsManager;
+	boolean shipDestroyed = false;
 
 	CollisionManager(Player[][] _players, 
 					 Enemy[] _enemies, 
@@ -25,7 +26,7 @@ class CollisionManager {
 			// players:
 			for (int py = 0; py < players.length; py++) {
 				for (int px = 0; px < players[0].length; px++) {
-					if (s.collides(players[py][px]) && players[py][px].alive && s.boundingCircle.offset.y == 0) {
+					if (s.collides(players[py][px]) && players[py][px].alive) {
 						players[py][px].alive = false;
 						shots.remove(n);
 						float explosionX = players[py][px].pos.x + players[py][px].boundingCircle.offset.x;						
@@ -36,6 +37,7 @@ class CollisionManager {
 							return true; // Game Over!
 						} else {
 							explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 30);
+							shipDestroyed = true;
 							return false;
 						}
 					} 
@@ -44,11 +46,10 @@ class CollisionManager {
 		
 			// enemies:
 			for (int ex = 0; ex < enemies.length; ex++) {
-				if (s.collides(enemies[ex]) && s.boundingCircle.offset.y == 10 && enemies[ex].deathRotation == 0) {
+				if (s.collides(enemies[ex])) {
 					float explosionX = enemies[ex].pos.x + enemies[ex].boundingCircle.offset.x;						
 					float explosionY = enemies[ex].pos.y + enemies[ex].boundingCircle.offset.y;
 					explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 30);					
-					enemies[ex].lostLife = true; // POSSIBLE BUG!!!
 					shots.remove(n);					
 					return false;
 				}
@@ -59,8 +60,7 @@ class CollisionManager {
 				for (int wp = 0; wp < walls[w].wall.length; wp++) {
 					WallPiece wallPiece = walls[w].wall[wp];
 					if (wallPiece.alive && s.collides(wallPiece)) {
-						//wallPiece.alive = false;
-						wallPiece.applyDamage();
+						wallPiece.alive = false;
 						shots.remove(n);						
 						return false;
 					}

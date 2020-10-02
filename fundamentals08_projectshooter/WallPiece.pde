@@ -2,6 +2,7 @@ class WallPiece extends GameObject {
 	boolean alive;
 	float diameter;
 	color col;
+	color colDark;
 	int damageLevel;
 	ArrayList<PVector> damage;
 
@@ -9,7 +10,8 @@ class WallPiece extends GameObject {
 		super(x, y, bc);
 		alive = true;
 		diameter = dia;
-		col = color(0, 57, 136);
+		col = color(0,160,180);
+		colDark = color(0,80, 90);
 		damageLevel = 0;
 		damage = new ArrayList<PVector>();
 	}
@@ -43,7 +45,7 @@ class WallPiece extends GameObject {
 	void draw() {
 		if (alive) {
 			rectMode(CENTER);
-			stroke(col);
+			stroke(colDark);
 			fill(col);
 			beginShape();
 			vertex(pos.x+diameter/2, pos.y+diameter/2);
@@ -61,7 +63,7 @@ class WallPiece extends GameObject {
 	void drawTopRow() {
 		if (alive) {
 			rectMode(CENTER);
-			stroke(col);
+			stroke(colDark);
 			fill(col);
 			square(pos.x, pos.y, diameter);
 			drawDamage();			
@@ -70,7 +72,7 @@ class WallPiece extends GameObject {
 
 	void drawLeftCorner() {
 		if (alive) {
-			stroke(col);
+			stroke(colDark);
 			fill(col);
 			beginShape();
 			vertex(pos.x+diameter/2, pos.y+diameter/2);
@@ -84,7 +86,7 @@ class WallPiece extends GameObject {
 
 	void drawRightCorner() {
 		if (alive) {
-			stroke(col);
+			stroke(colDark);
 			fill(col);
 			beginShape();
 			vertex(pos.x+diameter/2, pos.y+diameter/2);
