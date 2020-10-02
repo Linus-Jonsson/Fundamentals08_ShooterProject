@@ -71,12 +71,12 @@ void keyPressed() {
 	if (keyCode == LEFT) invadersOfSpace.move(-1, 0);
 	if (keyCode == DOWN) invadersOfSpace.move(0, 1);
 	if (keyCode == UP) invadersOfSpace.move(0, -1);
-  	if (key == 32) { // Spacebar
-  		switch (state) {
-  			case 1: state = 2; break;
-  			case 2: invadersOfSpace.shoot(); break;
-  			case 3: state = 0; break;
-  		}
-  	}
-  }
+	if (key == 32) { // Spacebar
+		switch (state) {
+			case 1: state = 2; break;
+			case 2: invadersOfSpace.shoot(); break;
+			case 3: state = 0; break;
+		}
+	}
+}
 

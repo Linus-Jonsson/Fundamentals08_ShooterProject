@@ -40,6 +40,3 @@ class Shot extends GameObject {
 		rect (pos.x, pos.y, 2, 10);
 	}
 }
-
-
-
