@@ -32,8 +32,10 @@ class Enemy extends GameObject {
 			//drawBoundingCircle();
 			pushMatrix();
 			translate(pos.x, pos.y);
-			if (deathRotation > 0)
+			if (deathRotation > 0) {
 				rotate(deathRotation);
+				scale(1 + (3.14 - abs(deathRotation - 3.14)) / 3);
+			}
 			else
 				rotate(walkingRotation);
 			noStroke();

@@ -11,7 +11,6 @@ void graphicElements(int score, int highScore, PFont font) {
 	text("SCORE  " + score, 35, 40);
 }
 
-
 void startScreen(PFont titleFont, PFont font) {	
 	textFont(titleFont);
 	fill(255);
@@ -24,6 +23,9 @@ void startScreen(PFont titleFont, PFont font) {
 	textFont(font);
 	textSize(24);
 	textAlign(CENTER);
+	fill(255 - (255 - 56) * (500 - abs((millis() % 1000) - 500)) / 500,
+		 255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
+		 255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
 	text("Press SPACE to start", width/2, height/2+90);
 	beginShape();
 	strokeWeight(2.5);
@@ -69,7 +71,7 @@ void gameOverScreen(PFont titleFont, PFont font) {
 	text("OVER ", width/2, height/2+70);
 	textFont(font);
 	textSize(20);
-	text("Press SPACE to play again", width/2, height/2+120);
+	text("Press ENTER to play again", width/2, height/2+120);
 	text("Or ESC to quit", width/2, height/2+150);
 	beginShape();
 	strokeWeight(2.5);
@@ -105,7 +107,7 @@ void winScreen(PFont titleFont, PFont font, int _score, int _highScore) {
 	text(_score, width/2, height/2+90);
 	textFont(font);
 	textSize(20);
-	text("Press SPACE to play again", width/2, height/2+170);
+	text("Press ENTER to play again", width/2, height/2+170);
 	text("Or ESC to quit", width/2, height/2+200);
 	beginShape();
 	strokeWeight(2.5);

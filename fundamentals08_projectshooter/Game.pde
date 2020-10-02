@@ -11,10 +11,12 @@ class Game {
 	ExplosionsManager explosionsManager;
 	WallManager wallManager;
 
+	FrameCounter fps;
 	Time time;
 	int score;
 	int highScore;
 	int state;
+	int getReadyCounter;
 	PFont titleFont = createFont("Alien-Encounters-Italic.ttf", 80);
 	PFont font = createFont("Futuristic Armour.otf", 22);
 	boolean gameOver;
@@ -22,6 +24,7 @@ class Game {
 	
 	Game(int _highScore) {
 		time = new Time();
+		fps = new FrameCounter();
 		shotsManager = new ShotsManager();
 		playerManager = new PlayerManager(nPlayersX, nPlayersY); //
 		explosionsManager = new ExplosionsManager();
@@ -33,6 +36,7 @@ class Game {
 			wallManager.getWalls(),
 			explosionsManager);
 		gameOver = false;
+		getReadyCounter = 0;
 		score = 9999;
 		highScore = _highScore;
 	}
@@ -43,8 +47,18 @@ class Game {
 		startScreen(titleFont, font);
 	}
 
+	void getReady() {
+		fill(255 - (255 - 56) * (500 - abs((millis() % 1000) - 500)) / 500,
+			255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
+			255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
+		textSize(40);
+		text("GET READY", width/2, height/2-20);
+	}
+
 	void run() {
 		float delta_t = time.getDelta() * 0.05;
+		//text("FPS: " + (int)fps.get(), 35, 15); // For debug purposes.
+
 		if (time.getAbsolute()%100 <= 25)
 			score -= 1;
 		if (collisionManager.shipDestroyed == true){
@@ -89,6 +103,7 @@ class Game {
 			float y = playerManager.getCurrent().pos.y;
 			shotsManager.spawn(x - 5, y, new BoundingCircle(0, 10, 2), new PVector(0, 3));
 			shotsManager.spawn(x + 5, y, new BoundingCircle(0, 10, 2), new PVector(0, 3));
+			soundEffect(3);
 		}
 	}
 }

@@ -38,7 +38,6 @@ class EnemyManager {
 				e.lostLife = false;
 				e.lives--;
 				e.deathRotation = 6.28;
-				println("Crab lives: " + e.lives);
 			}
 
 			if (e.deathRotation > 0) {
@@ -56,8 +55,8 @@ class EnemyManager {
 			if ((int)random(100) == 0) 
 				e.vel.x = 1;
 			
-			if (e.pos.x < 25 || e.pos.x > width-25) {
-				e.pos.x -= e.vel.x*5; // FIXA DENNA ANDREAS!!!
+			if (e.pos.x < 25 || e.pos.x > width - 25) {
+				e.pos.x -= e.vel.x * 5; 
 				e.vel.x = 0;			
 			}
 			
@@ -96,16 +95,6 @@ class EnemyManager {
 					}			
 				}
 			}
-			
-			//aiClock
-			/*if (e.pos.x < closestX) {
-				e.vel.x = -1;
-				clock = 20 + random(100);
-			}
-			else if (e.pos.x > closestX) {
-				e.vel.x = 1;		
-				clock = 20 + random(100);
-			}*/
 		}
 	}
 }

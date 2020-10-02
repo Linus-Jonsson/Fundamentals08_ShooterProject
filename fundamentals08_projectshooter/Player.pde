@@ -15,9 +15,11 @@ class Player extends GameObject {
 	}
 
 	boolean collideWall() {
-		float SIZE = 30; // Change later... 
-		if ((pos.x - SIZE / 2 < 0) || (pos.x > width - SIZE / 2))
-			return true;
+		float SIZE = 30; // width of spaceship
+		if (alive) {
+			if ((pos.x - SIZE / 2 < 0) || (pos.x > width - SIZE / 2))
+				return true;
+		}
 		return false;
 	}
 

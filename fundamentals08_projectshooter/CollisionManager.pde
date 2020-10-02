@@ -19,10 +19,36 @@ class CollisionManager {
 	}
 
 	boolean update(float delta_t) {
+		// Players against walls:
+		for (int py = 0; py < players.length; py++) {
+			for (int px = 0; px < players[0].length; px++) {
+				for (int w = 0; w < walls.length; w++) {					
+					for (int wp = 0; wp < walls[w].wall.length; wp++) {
+						WallPiece wallPiece = walls[w].wall[wp];
+						if (players[py][px].collides(wallPiece) && wallPiece.alive && players[py][px].alive) {
+							players[py][px].alive = false;
+							float explosionX = players[py][px].pos.x + players[py][px].boundingCircle.offset.x;						
+							float explosionY = players[py][px].pos.y + players[py][px].boundingCircle.offset.y;
+							if (players[py][px].isCurrent) {
+								explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
+								explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
+								soundEffect(4);
+								return true; // Game Over!
+							} else {
+								explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
+								shipDestroyed = true;
+								soundEffect(4);
+								return false;
+							}
+						}
+					}			
+				}
+			}
+		}
+
 		// Check all shots against players, enemies and walls
 		for (int n = 0; n < shots.size(); n++) {
 			Shot s = shots.get(n);
-
 			// players:
 			for (int py = 0; py < players.length; py++) {
 				for (int px = 0; px < players[0].length; px++) {
@@ -32,12 +58,14 @@ class CollisionManager {
 						float explosionX = players[py][px].pos.x + players[py][px].boundingCircle.offset.x;						
 						float explosionY = players[py][px].pos.y + players[py][px].boundingCircle.offset.y;
 						if (players[py][px].isCurrent) {
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 128, 255), 30);
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 64, 128), 30);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
+							soundEffect(5);
 							return true; // Game Over!
 						} else {
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 30);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
 							shipDestroyed = true;
+							soundEffect(4);
 							return false;
 						}
 					} 
@@ -49,8 +77,12 @@ class CollisionManager {
 				if (s.collides(enemies[ex]) && s.boundingCircle.offset.y == 10 && enemies[ex].deathRotation == 0) {
 					float explosionX = enemies[ex].pos.x + enemies[ex].boundingCircle.offset.x;						
 					float explosionY = enemies[ex].pos.y + enemies[ex].boundingCircle.offset.y;
-					explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 30);					
+					explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);					
 					enemies[ex].lostLife = true;
+					if (enemies[ex].lives == 1)
+						soundEffect(2);
+					else 
+						soundEffect(1);
 					shots.remove(n);					
 					return false;
 				}
@@ -64,19 +96,26 @@ class CollisionManager {
 				
 				if (!(s.pos.x >= (x1 - 1) && s.pos.x <= x2 && s.pos.y + s.boundingCircle.offset.y >= y))
 					continue;
-				else {
-					println("within range");
-				}
 
 				for (int wp = 0; wp < walls[w].wall.length; wp++) {
 					WallPiece wallPiece = walls[w].wall[wp];
 					if (wallPiece.alive && s.collides(wallPiece)) {
+						explosionsManager.spawn(new PVector(s.pos.x, s.pos.y), color(0,80, 90), 60);
+						explosionsManager.spawn(new PVector(s.pos.x, s.pos.y), color(0,160,180), 60);
 						wallPiece.applyDamage();
+						soundEffect(7);
 						shots.remove(n);						
 						return false;
 					}
 				}
 			}
+
+			// Explodes on line
+			if (s.pos.y > height - 48) {
+				explosionsManager.spawn(new PVector(s.pos.x, s.pos.y), color(0, 0, 0), 60);
+				shots.remove(n);
+			}
+
 		}
 		return false; // No game over!
 	}

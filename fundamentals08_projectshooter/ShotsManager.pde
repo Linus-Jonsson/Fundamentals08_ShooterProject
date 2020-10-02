@@ -35,8 +35,8 @@ class Shot extends GameObject {
 	}
 
 	void draw() {
-		stroke(0, 200, 255);
-		fill(0, 200, 255);
+		stroke(200, 200, 200);
+		fill(200, 200, 200);
 		rect (pos.x, pos.y, 2, 10);
 	}
 }

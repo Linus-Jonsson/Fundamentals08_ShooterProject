@@ -1,67 +1,81 @@
 // To fix:
 // 
-// States -
-//
-// 1) svart skärm
-// 2) från centrum och utåt
-// 3) ladda musik i bakgrunden
-// 4) när stjärnorna börjar bli fulltaliga
-// 5) start screen kommer tillsammans med musiken
-//
-// Optimera kollision mot väggarna (övergripande kollision)
-// pos.x på väggarna ligger uppe till vänster med ett indrag på radius (diameter/2)
 // Se till att ev. Hi-Score sparas till nästa runda
-// Walldamage slutat fungera!?!
+//
+// Current ship color
+ 
 
-// import processing.sound.*;
+import processing.sound.*;
 
-
-// SoundFile ducktales;
+SoundFile[] ducktales;
+Sound sound;
+boolean soundOn = true;
 Game invadersOfSpace;
 StarSystem stars;
 int state;
 boolean firstTime;
 int highScore;
-// Sound s;
 
 void setup() {
-	// ducktales = new SoundFile(this, "DuckTales.mp3");
+	if (soundOn) {
+		ducktales = new SoundFile[10];
+		ducktales[0] = new SoundFile(this, "DuckTales.mp3");
+		ducktales[1] = new SoundFile(this, "crabHit.wav");
+		ducktales[2] = new SoundFile(this, "crabDies.wav");
+		ducktales[3] = new SoundFile(this, "fire.wav");
+		ducktales[4] = new SoundFile(this, "playerHit.wav");
+		ducktales[5] = new SoundFile(this, "playerDead.wav");
+		ducktales[6] = new SoundFile(this, "restart.wav");
+		ducktales[7] = new SoundFile(this, "wallHit.wav");	
+	}
+
 	surface.setLocation(10, 10);
 	((java.awt.Canvas) surface.getNative()).requestFocus();
 	size(480, 640);
-	frameRate(30);
+	frameRate(60);
+
 	state = 0; // Init.
 	firstTime = true;
-	stars = new StarSystem(new PVector(width/2, height/2));	
+	stars = new StarSystem(new PVector(width / 2, height / 2));	
 	highScore = 0;
 
-	// s = new Sound(this);
-	// s.volume(0.1);
-	// ducktales.loop();			
+	if (soundOn) {
+		sound = new Sound(this);
+		sound.volume(0.1);
+		ducktales[0].loop();
+	}
 }
 
 void draw() {
 	stars.drawBackground();
 	switch (state) {
 		case 0: 
-		invadersOfSpace = new Game(highScore); 
-		if (firstTime) {
-			state = 1;
-			firstTime = false;
-		} else 
-		state = 2;
-		break;
+			invadersOfSpace = new Game(highScore); 
+			if (firstTime) {
+				state = 1;
+				firstTime = false;
+			} else 
+			state = 2;
+			break;
 		case 1: 
-		invadersOfSpace.splashScreen(); 
-		break;
+			if (invadersOfSpace.getReadyCounter == 0)
+				invadersOfSpace.splashScreen(); 
+			if (invadersOfSpace.getReadyCounter == 0 && stars.haveAccelerated())
+				invadersOfSpace.getReadyCounter = 170;
+			if (invadersOfSpace.getReadyCounter > 0) {
+				invadersOfSpace.getReady();
+				if (--invadersOfSpace.getReadyCounter == 0)
+					state = 2;
+			}
+			break;
 		case 2: 
-		invadersOfSpace.run();
-		if (invadersOfSpace.isGameOver())
-			state = 3; 
-		break;
+			invadersOfSpace.run();
+			if (invadersOfSpace.isGameOver())
+				state = 3; 
+			break;
 		case 3: 
-		invadersOfSpace.run();
-		invadersOfSpace.gameOver(); 
+			invadersOfSpace.run();
+			invadersOfSpace.gameOver(); 
 		break;
 	}
 }
@@ -71,12 +85,23 @@ void keyPressed() {
 	if (keyCode == LEFT) invadersOfSpace.move(-1, 0);
 	if (keyCode == DOWN) invadersOfSpace.move(0, 1);
 	if (keyCode == UP) invadersOfSpace.move(0, -1);
+	if (keyCode == ENTER) {
+		if (state == 3) {
+			state = 0;
+			soundEffect(6);
+		}
+	}
 	if (key == 32) { // Spacebar
 		switch (state) {
-			case 1: state = 2; break;
+			case 1: stars.accelerate(); 
+					soundEffect(6); break;
 			case 2: invadersOfSpace.shoot(); break;
-			case 3: state = 0; break;
 		}
 	}
 }
 
+void soundEffect(int n) {
+	if (soundOn) {
+		ducktales[n].play();
+	}
+}

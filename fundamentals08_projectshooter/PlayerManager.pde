@@ -19,7 +19,7 @@ class PlayerManager {
 				players[y][x].vel.y = 0;
 			}
 		}
-		players[currentY][currentX].isCurrent = true;
+		players[currentY][currentX].isCurrent = true; 
 	}
 
 	Player[][] getPlayers() {
