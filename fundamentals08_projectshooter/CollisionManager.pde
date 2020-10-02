@@ -58,10 +58,19 @@ class CollisionManager {
 
 			// walls:
 			for (int w = 0; w < walls.length; w++) {
+				float x1 = walls[w].pos.x - walls[w].wallPieceDiameter / 2;
+				float x2 = walls[w].pos.x + 5.5 * walls[w].wallPieceDiameter;
+				float y = walls[w].pos.y - walls[w].wallPieceDiameter / 2; 
+				
+				if (!(s.pos.x >= (x1 - 1) && s.pos.x <= x2 && s.pos.y + s.boundingCircle.offset.y >= y))
+					continue;
+				else {
+					println("within range");
+				}
+
 				for (int wp = 0; wp < walls[w].wall.length; wp++) {
 					WallPiece wallPiece = walls[w].wall[wp];
 					if (wallPiece.alive && s.collides(wallPiece)) {
-						//wallPiece.alive = false;
 						wallPiece.applyDamage();
 						shots.remove(n);						
 						return false;
