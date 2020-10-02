@@ -39,6 +39,7 @@ class WallPiece extends GameObject {
 			fill(0,0,0);
 			strokeWeight(2);
 			circle(d.x, d.y, 2);
+			strokeWeight(1);
 		}
 	}
 

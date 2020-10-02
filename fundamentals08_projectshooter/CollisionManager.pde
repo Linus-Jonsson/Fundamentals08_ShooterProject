@@ -26,7 +26,7 @@ class CollisionManager {
 			// players:
 			for (int py = 0; py < players.length; py++) {
 				for (int px = 0; px < players[0].length; px++) {
-					if (s.collides(players[py][px]) && players[py][px].alive) {
+					if (s.collides(players[py][px]) && players[py][px].alive && s.boundingCircle.offset.y == 0) {
 						players[py][px].alive = false;
 						shots.remove(n);
 						float explosionX = players[py][px].pos.x + players[py][px].boundingCircle.offset.x;						
@@ -46,10 +46,11 @@ class CollisionManager {
 		
 			// enemies:
 			for (int ex = 0; ex < enemies.length; ex++) {
-				if (s.collides(enemies[ex])) {
+				if (s.collides(enemies[ex]) && s.boundingCircle.offset.y == 10 && enemies[ex].deathRotation == 0) {
 					float explosionX = enemies[ex].pos.x + enemies[ex].boundingCircle.offset.x;						
 					float explosionY = enemies[ex].pos.y + enemies[ex].boundingCircle.offset.y;
 					explosionsManager.spawn(new PVector(explosionX, explosionY), color(255, 255, 255), 30);					
+					enemies[ex].lostLife = true;
 					shots.remove(n);					
 					return false;
 				}
@@ -60,7 +61,8 @@ class CollisionManager {
 				for (int wp = 0; wp < walls[w].wall.length; wp++) {
 					WallPiece wallPiece = walls[w].wall[wp];
 					if (wallPiece.alive && s.collides(wallPiece)) {
-						wallPiece.alive = false;
+						//wallPiece.alive = false;
+						wallPiece.applyDamage();
 						shots.remove(n);						
 						return false;
 					}
