@@ -95,11 +95,13 @@ void keyPressed() {
 		}
 	}
 	if (key == 32) { // Spacebar
-		switch (state) {
-			case 1: stars.accelerate(); 
-					soundEffect(6); break;
-			case 2: invadersOfSpace.shoot(); break;
-		}
+		if (!invadersOfSpace.runningGetReady() && stars.acceleration == 0) 
+			switch (state) {
+				case 1: stars.accelerate(); 
+						soundEffect(6); 
+						break;
+				case 2: invadersOfSpace.shoot(); break;
+			}
 	}
 }
 

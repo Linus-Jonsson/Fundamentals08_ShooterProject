@@ -47,6 +47,12 @@ class Game {
 		startScreen(titleFont, font);
 	}
 
+	boolean runningGetReady() {
+		if (getReadyCounter > 0)
+			return true;
+		return false;
+	}
+
 	void getReady() {
 		fill(255 - (255 - 56) * (500 - abs((millis() % 1000) - 500)) / 500,
 			255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
