@@ -3,6 +3,9 @@
 // Se till att ev. Hi-Score sparas till nästa runda
 //
 // Current ship color
+//
+// musikbugg
+// krabba fastnar på sidan
  
 
 import processing.sound.*;
