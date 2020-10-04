@@ -58,7 +58,7 @@ class Particle {
 	PVector pos = new PVector();
 	PVector vel;
 	color col;
-	float speed = 1.2;
+	float speed = 1.05;
 	float size = 2;
 
 	Particle (PVector _pos, color _col) {

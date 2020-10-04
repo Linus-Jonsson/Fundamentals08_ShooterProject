@@ -9,7 +9,7 @@ class Enemy extends GameObject {
 	int walkTime = 20;
 	float deathRotation = 0;
 	float walkingRotation = 0;
-	float walkingRotationVel = 0.01;
+	float walkingRotationVel = 0.02;
 	boolean lostLife = false;
 
 	Enemy(float x, float y, BoundingCircle bc) {

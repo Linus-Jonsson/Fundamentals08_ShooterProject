@@ -45,7 +45,7 @@ class EnemyManager {
 			}
 
 			e.walkingRotation -= e.walkingRotationVel;
-			if (e.walkingRotation >= 0.2 || e.walkingRotation <= -0.2) {
+			if (e.walkingRotation >= 0.1 || e.walkingRotation <= -0.1) {
 				e.walkingRotationVel *= -1;
 			}
 

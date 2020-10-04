@@ -52,7 +52,7 @@ class Game {
 	}
 
 	void getReady() {
-		image(theMoon, 200, -440); 
+		image(theMoon, 260, -480); 
 		fill(255 - (255 - 56) * (500 - abs((millis() % 1000) - 500)) / 500,
 			255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
 			255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
@@ -69,16 +69,11 @@ class Game {
 			score -= 100;
 			collisionManager.shipDestroyed = false;
 		}
-
+		
+		image(theMoon, 260, -480); 
+		
 		if (!gameOver)
 			graphicElements(score, font);
-		
-		image(theMoon, 200, -440); 
-
-		if (!gameOver) {
-			enemyLives.drawLives();
-			graphicElements(score, highScore, font);
-		}
 
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);

@@ -1,6 +1,6 @@
 void graphicElements(int score, PFont font) {
 	strokeWeight(2);
-	stroke(0,160,180);
+	stroke(0,80, 90);
 	line(35, height*0.93, width-35, height*0.93);
 	textAlign(RIGHT);
 	fill(255);
@@ -24,8 +24,8 @@ void startScreen(PFont titleFont, PFont font) {
 	textSize(24);
 	textAlign(CENTER);
 	fill(255 - (255 - 56) * (500 - abs((millis() % 1000) - 500)) / 500,
-		 255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
-		 255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
+		255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
+		255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
 	text("Press SPACE to start", width/2, height/2+90);
 	beginShape();
 	strokeWeight(2.5);
@@ -96,26 +96,28 @@ void gameOverScreen(PFont titleFont, PFont font) {
 void winScreen(PFont titleFont, PFont font, int score) {	
 	noStroke();
 	fill(0, 150);
-	rect(width/2, height/2, width, height);
-	if (frameCount%40 == 0) {
+	rect(0, 0, width*2, height*2);
+	if (frameCount%20 == 0) {
 		invadersOfSpace.explosionsManager.spawn(new PVector(random(80, width-80), random(80, height-80)),
-												color(random(50, 256), random(50, 256), random(50, 256)), 60);
+			color(random(50, 256), random(50, 256), random(50, 256)), 100);
 	}
 	invadersOfSpace.explosionsManager.update(invadersOfSpace.time.getDelta() * 0.05);
 	textFont(titleFont);
-	fill(255);
+	fill(255 - (255 - 56) * (500 - abs((millis() % 1000) - 500)) / 500,
+		 255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
+		 255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
 	textAlign(CENTER);
 	textSize(80);
-	text("VICTORY! ", width/2, height/2-80);
-	textSize(34);
-	text("YOUR", width/2, height/2-30);
-	text("SCORE:", width/2, height/2);
-	textSize(100);
-	text(score + " ", width/2, height/2+90);
+	text("VICTORY! ", width/2-5, height/2-80);
+	fill(255);
+	textSize(26);
+	text(" SCORE:", width/2, height/2-24);
+	textSize(60);
+	text(score + " ", width/2, height/2+30);
 	textFont(font);
 	textSize(20);
-	text("Press ENTER to play again", width/2, height/2+150);
-	text("Or ESC to quit", width/2, height/2+180);
+	text("Press ENTER to play again", width/2, height/2+105);
+	text("Or ESC to quit", width/2, height/2+135);
 	beginShape();
 	strokeWeight(2.5);
 	stroke(20, 40, 205);

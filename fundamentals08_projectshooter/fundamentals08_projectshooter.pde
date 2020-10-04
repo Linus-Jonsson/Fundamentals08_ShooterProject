@@ -1,13 +1,13 @@
 // To fix:
-// Se till att ev. Hi-Score sparas till nästa runda
+// Spelet använder mikrofon?!
 // Current ship color
 // musikbugg
 // krabba fastnar på sidan
 
-// import processing.sound.*;
+import processing.sound.*;
 
-// SoundFile[] ducktales;
-// Sound sound;
+SoundFile[] ducktales;
+Sound sound;
 boolean soundOn = true;
 Game invadersOfSpace;
 StarSystem stars;
@@ -17,35 +17,33 @@ int highScore;
 PImage theMoon;
 
 void setup() {
-	// if (soundOn) {
-	// 	ducktales = new SoundFile[10];
-	// 	ducktales[0] = new SoundFile(this, "DuckTales.mp3");
-	// 	ducktales[1] = new SoundFile(this, "crabHit.wav");
-	// 	ducktales[2] = new SoundFile(this, "crabDies.wav");
-	// 	ducktales[3] = new SoundFile(this, "fire.wav");
-	// 	ducktales[4] = new SoundFile(this, "playerHit.wav");
-	// 	ducktales[5] = new SoundFile(this, "playerDead.wav");
-	// 	ducktales[6] = new SoundFile(this, "restart.wav");
-	// 	ducktales[7] = new SoundFile(this, "wallHit.wav");	
-	// }
+	 if (soundOn) {
+	 	ducktales = new SoundFile[10];
+	 	ducktales[0] = new SoundFile(this, "DuckTales.mp3");
+	 	ducktales[1] = new SoundFile(this, "crabHit.wav");
+	 	ducktales[2] = new SoundFile(this, "crabDies.wav");
+	 	ducktales[3] = new SoundFile(this, "fire.wav");
+	 	ducktales[4] = new SoundFile(this, "playerHit.wav");
+	 	ducktales[5] = new SoundFile(this, "playerDead.wav");
+	 	ducktales[6] = new SoundFile(this, "restart.wav");
+	 	ducktales[7] = new SoundFile(this, "wallHit.wav");	
+	 }
 
-	surface.setLocation(10, 10);
+	//surface.setLocation(10, 10);
 	((java.awt.Canvas) surface.getNative()).requestFocus();
 	size(480, 640);
 	frameRate(60);
-
 	theMoon = loadImage("moon.png");
-
 	state = 0; // Init.
 	firstTime = true;
 	stars = new StarSystem(new PVector(width/2, height/2));	
 	highScore = 0;
 
-	// if (soundOn) {
-	// 	sound = new Sound(this);
-	// 	sound.volume(0.1);
-	// 	ducktales[0].loop();
-	// }
+	 if (soundOn) {
+	 	sound = new Sound(this);
+	 	sound.volume(0.1);
+	 	ducktales[0].loop();
+	 }
 }
 
 void draw() {
@@ -94,8 +92,8 @@ void keyPressed() {
 			soundEffect(6);
 		}
 	}
-	if (key == 32) { // Spacebar
-		if (!invadersOfSpace.runningGetReady() && stars.acceleration == 0) 
+	if (key == 32) {
+		if (!invadersOfSpace.runningGetReady() && stars.acceleration == 0) { 
 			switch (state) {
 				case 1:
 				stars.accelerate(); 
@@ -105,9 +103,10 @@ void keyPressed() {
 			}
 		}
 	}
+}
 
-	void soundEffect(int n) {
-		// if (soundOn) {
-		// 	ducktales[n].play();
-		// }
+void soundEffect(int n) {
+	if (soundOn) {
+  		ducktales[n].play();
 	}
+}
