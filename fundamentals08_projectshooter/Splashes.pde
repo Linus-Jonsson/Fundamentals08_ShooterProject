@@ -1,4 +1,4 @@
-void graphicElements(int score, int highScore, PFont font) {
+void graphicElements(int score, PFont font) {
 	strokeWeight(2);
 	stroke(0,160,180);
 	line(35, height*0.93, width-35, height*0.93);
@@ -93,22 +93,29 @@ void gameOverScreen(PFont titleFont, PFont font) {
 	endShape(CLOSE);
 }	
 
-void winScreen(PFont titleFont, PFont font, int _score, int _highScore) {	
+void winScreen(PFont titleFont, PFont font, int score) {	
+	noStroke();
+	fill(0, 150);
+	rect(width/2, height/2, width, height);
+	if (frameCount%40 == 0) {
+		invadersOfSpace.explosionsManager.spawn(new PVector(random(80, width-80), random(80, height-80)),
+												color(random(50, 256), random(50, 256), random(50, 256)), 60);
+	}
+	invadersOfSpace.explosionsManager.update(invadersOfSpace.time.getDelta() * 0.05);
 	textFont(titleFont);
 	fill(255);
 	textAlign(CENTER);
-	textSize(60);
-	//TODO - Not final text!
-	text("Congratz! ", width/2, height/2-80);
-	textSize(30);
+	textSize(80);
+	text("VICTORY! ", width/2, height/2-80);
+	textSize(34);
 	text("YOUR", width/2, height/2-30);
 	text("SCORE:", width/2, height/2);
 	textSize(100);
-	text(_score, width/2, height/2+90);
+	text(score + " ", width/2, height/2+90);
 	textFont(font);
 	textSize(20);
-	text("Press ENTER to play again", width/2, height/2+170);
-	text("Or ESC to quit", width/2, height/2+200);
+	text("Press ENTER to play again", width/2, height/2+150);
+	text("Or ESC to quit", width/2, height/2+180);
 	beginShape();
 	strokeWeight(2.5);
 	stroke(20, 40, 205);
@@ -127,7 +134,7 @@ void winScreen(PFont titleFont, PFont font, int _score, int _highScore) {
 	vertex(width-45, height-45);
 	vertex(45, height-45);
 	endShape(CLOSE);
-	if (_score > _highScore) {
-		highScore = _highScore; //Working??
+	if (score > highScore) {
+		highScore = score;
 	}
 }	

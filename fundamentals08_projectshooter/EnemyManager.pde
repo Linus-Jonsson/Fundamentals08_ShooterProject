@@ -29,6 +29,9 @@ class EnemyManager {
 	void draw() {
 		for (int n = 0; n < nEnemies; n++) {
 			enemies[n].draw();
+			if (enemies[n].lives >= 2) {
+				enemies[n].drawLives(enemies[n].lives);
+			}
 		}
 	}
 
@@ -60,11 +63,10 @@ class EnemyManager {
 				e.vel.x = 0;			
 			}
 			
-			if (e.vel.x == 1)
-				e.walkingRotation = 0.6 - random(1, 10) * 0.06;
-			if (e.vel.x == -1)
-				e.walkingRotation = -0.6 + random(1, 10) * 0.06;
-
+			e.walkingRotation -= e.walkingRotationVel;
+			if (e.walkingRotation >= 0.2 || e.walkingRotation <= -0.2) {
+				e.walkingRotationVel *= -1;
+			}
 
 			if ((int)random(10) == 0) {
 				if (e.readyToShoot()) {

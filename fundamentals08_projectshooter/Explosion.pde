@@ -27,7 +27,7 @@ class Explosion {
 	Particle[] explosion = new Particle[100];
 	PVector pos;
 	int lifeClock;
-  color col;
+  	color col;
 	
 	Explosion (PVector _pos, color _c, int clock) {
 		pos = new PVector(_pos.x, _pos.y);
@@ -58,22 +58,22 @@ class Particle {
 	PVector pos = new PVector();
 	PVector vel;
 	color col;
-	float speed = 0.75;
-	float size = 6;
+	float speed = 1.2;
+	float size = 2;
 
 	Particle (PVector _pos, color _col) {
 		pos.set(_pos);
 		vel = new PVector (random (-1,1), random (-1,1));
 		if (_col == color(0, 0, 0))
-      col = color(random(125, 256), random(125, 256), 255); //Not in use now
-    else
-      col = _col;
+      		col = color(random(125, 256), random(125, 256), 255);
+    	else
+      	col = _col;
 	}
 
 	void update (float delta_t) {
 		vel.mult(speed*delta_t);
 		pos.add(vel);
-		size = size * 0.75;
+		size = size * 0.9;
 		noStroke();
 		fill (col);
 		ellipse (pos.x, pos.y, size, size);

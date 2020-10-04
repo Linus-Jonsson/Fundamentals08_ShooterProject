@@ -25,7 +25,7 @@ class Player extends GameObject {
 
 	void draw(boolean highlight) {
 		float size = 10;
-		int nonHighlightAlpha = 210;
+		int nonHighlightAlpha = 255;
 		
 		pushMatrix();
 		translate(pos.x, pos.y);
@@ -59,8 +59,8 @@ class Player extends GameObject {
 		endShape();
 		beginShape(TRIANGLES);
 		noStroke();
-		if (!highlight) { fill(col, nonHighlightAlpha); }
-		else { fill(col); stroke(255); strokeWeight(0.8);} 
+		if (!highlight) { fill(col, nonHighlightAlpha); stroke(255); strokeWeight(0.6);}
+		else { fill(200, 100, 220); stroke(255); strokeWeight(0.8);} 
 		vertex(-size*0.9, -size*0.75);
 		vertex(-size*1.4, -size*1.8);
 		vertex(-size*0.4, -size*1.8);
@@ -78,7 +78,7 @@ class Player extends GameObject {
 		vertex(size*0.4, -size*1.5);
 		endShape();
 		beginShape(LINES);
-		strokeWeight(size * 0.1);
+		strokeWeight(size * 0.12);
 		if (!highlight) { stroke(nonHighlightAlpha); }
 		else 			{ stroke(255); }
 		vertex(-size*0.02, -size*0.06);

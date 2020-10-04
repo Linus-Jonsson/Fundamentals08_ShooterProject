@@ -30,12 +30,12 @@ class CollisionManager {
 							float explosionX = players[py][px].pos.x + players[py][px].boundingCircle.offset.x;						
 							float explosionY = players[py][px].pos.y + players[py][px].boundingCircle.offset.y;
 							if (players[py][px].isCurrent) {
-								explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
-								explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
+								explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 40);
+								explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 40);
 								soundEffect(4);
 								return true; // Game Over!
 							} else {
-								explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
+								explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 40);
 								shipDestroyed = true;
 								soundEffect(4);
 								return false;
@@ -58,12 +58,12 @@ class CollisionManager {
 						float explosionX = players[py][px].pos.x + players[py][px].boundingCircle.offset.x;						
 						float explosionY = players[py][px].pos.y + players[py][px].boundingCircle.offset.y;
 						if (players[py][px].isCurrent) {
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 40);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 40);
 							soundEffect(5);
 							return true; // Game Over!
 						} else {
-							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);
+							explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 40);
 							shipDestroyed = true;
 							soundEffect(4);
 							return false;
@@ -77,7 +77,7 @@ class CollisionManager {
 				if (s.collides(enemies[ex]) && s.boundingCircle.offset.y == 10 && enemies[ex].deathRotation == 0) {
 					float explosionX = enemies[ex].pos.x + enemies[ex].boundingCircle.offset.x;						
 					float explosionY = enemies[ex].pos.y + enemies[ex].boundingCircle.offset.y;
-					explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 60);					
+					explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 40);					
 					enemies[ex].lostLife = true;
 					if (enemies[ex].lives == 1)
 						soundEffect(2);
@@ -100,8 +100,8 @@ class CollisionManager {
 				for (int wp = 0; wp < walls[w].wall.length; wp++) {
 					WallPiece wallPiece = walls[w].wall[wp];
 					if (wallPiece.alive && s.collides(wallPiece)) {
-						explosionsManager.spawn(new PVector(s.pos.x, s.pos.y), color(0,80, 90), 60);
-						explosionsManager.spawn(new PVector(s.pos.x, s.pos.y), color(0,160,180), 60);
+						explosionsManager.spawn(new PVector(s.pos.x, s.pos.y), color(0,80, 90), 5);
+						explosionsManager.spawn(new PVector(s.pos.x, s.pos.y), color(0,160,180), 5);
 						wallPiece.applyDamage();
 						soundEffect(7);
 						shots.remove(n);						
@@ -112,7 +112,7 @@ class CollisionManager {
 
 			// Explodes on line
 			if (s.pos.y > height - 48) {
-				explosionsManager.spawn(new PVector(s.pos.x, s.pos.y), color(0, 0, 0), 60);
+				explosionsManager.spawn(new PVector(s.pos.x, s.pos.y), color(0, 0, 0), 40);
 				shots.remove(n);
 			}
 

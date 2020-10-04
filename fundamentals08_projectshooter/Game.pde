@@ -1,7 +1,7 @@
 class Game { 
 	final int nPlayersX = 11;
 	final int nPlayersY = 5;
-	final int nEnemies = 3;
+	final int nEnemies = 1;
 	final int nWalls = 4;
 
 	PlayerManager playerManager;
@@ -20,9 +20,8 @@ class Game {
 	PFont titleFont = createFont("Alien-Encounters-Italic.ttf", 80);
 	PFont font = createFont("Futuristic Armour.otf", 22);
 	boolean gameOver;
-	Enemy enemyLives = new Enemy(width/5.4, height*0.99, new BoundingCircle(0,0,10));
 	
-	Game(int _highScore) {
+	Game() {
 		time = new Time();
 		fps = new FrameCounter();
 		shotsManager = new ShotsManager();
@@ -38,7 +37,6 @@ class Game {
 		gameOver = false;
 		getReadyCounter = 0;
 		score = 9999;
-		highScore = _highScore;
 	}
 	
 	boolean isGameOver() {return gameOver;}
@@ -64,18 +62,16 @@ class Game {
 	void run() {
 		float delta_t = time.getDelta() * 0.05;
 		//text("FPS: " + (int)fps.get(), 35, 15); // For debug purposes.
-
 		if (time.getAbsolute()%100 <= 25)
 			score -= 1;
-		if (collisionManager.shipDestroyed == true){
+		if (collisionManager.shipDestroyed == true) {
 			score -= 100;
 			collisionManager.shipDestroyed = false;
 		}
-		if (!gameOver) {
-			enemyLives.drawLives();
-			graphicElements(score, highScore, font);
-		}
 
+		if (!gameOver)
+			graphicElements(score, font);
+		
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);
 		shotsManager.update(delta_t);
@@ -86,17 +82,19 @@ class Game {
 		if (enemyManager.allDead())
 			gameOver = true;
 
+		wallManager.draw();
 		playerManager.draw();
 		enemyManager.draw();
 		shotsManager.draw();
-		wallManager.draw();
 	}
 
 	void gameOver() {
 		if (enemyManager.allDead())
-			winScreen(titleFont, font, score, highScore);
-		else
+			winScreen(titleFont, font, score);
+		else {
+			run();
 			gameOverScreen(titleFont, font);
+		}
 	}
 
 	void move(int x, int y) {

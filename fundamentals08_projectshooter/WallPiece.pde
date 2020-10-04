@@ -46,6 +46,7 @@ class WallPiece extends GameObject {
 	void draw() {
 		if (alive) {
 			rectMode(CENTER);
+			strokeWeight(0.8);
 			stroke(colDark);
 			fill(col);
 			beginShape();
@@ -64,6 +65,7 @@ class WallPiece extends GameObject {
 	void drawTopRow() {
 		if (alive) {
 			rectMode(CENTER);
+			strokeWeight(0.8);
 			stroke(colDark);
 			fill(col);
 			square(pos.x, pos.y, diameter);
@@ -73,6 +75,7 @@ class WallPiece extends GameObject {
 
 	void drawLeftCorner() {
 		if (alive) {
+			strokeWeight(0.8);
 			stroke(colDark);
 			fill(col);
 			beginShape();
@@ -87,6 +90,7 @@ class WallPiece extends GameObject {
 
 	void drawRightCorner() {
 		if (alive) {
+			strokeWeight(0.8);
 			stroke(colDark);
 			fill(col);
 			beginShape();
