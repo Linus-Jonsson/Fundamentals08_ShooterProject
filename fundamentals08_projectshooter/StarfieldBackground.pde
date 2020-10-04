@@ -11,7 +11,6 @@ class StarSystem {
 	}
 
 	void drawBackground() {
-		background(0);
 		if (startOffRun) {
 			startOffRun = false;
 			for (int n = 0; n < 1000; n++) {

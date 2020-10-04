@@ -6,6 +6,7 @@ class Enemy extends GameObject {
 	float size = 10;
 	int lives = 3;
 	int time;
+	int walkTime = 20;
 	float deathRotation = 0;
 	float walkingRotation = 0;
 	float walkingRotationVel = 0.01;
@@ -18,10 +19,11 @@ class Enemy extends GameObject {
 		colBright = color(39, 3, 132);
 		colBrighter = color(136, 95, 242);
 		time = millis();
+		vel.x = -1;
 	}
 
 	boolean readyToShoot() {
-		if (lives > 0 && millis() - time > 1000) {
+		if (lives > 0 && millis() - time > 400) {
 			time = millis();
 			return true;
 		}

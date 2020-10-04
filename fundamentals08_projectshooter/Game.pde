@@ -25,7 +25,7 @@ class Game {
 		time = new Time();
 		fps = new FrameCounter();
 		shotsManager = new ShotsManager();
-		playerManager = new PlayerManager(nPlayersX, nPlayersY); //
+		playerManager = new PlayerManager(nPlayersX, nPlayersY);
 		explosionsManager = new ExplosionsManager();
 		wallManager = new WallManager(nWalls);
 		enemyManager = new EnemyManager(nEnemies, shotsManager, wallManager);
@@ -52,6 +52,7 @@ class Game {
 	}
 
 	void getReady() {
+		image(theMoon, 200, -440); 
 		fill(255 - (255 - 56) * (500 - abs((millis() % 1000) - 500)) / 500,
 			255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
 			255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
@@ -72,6 +73,13 @@ class Game {
 		if (!gameOver)
 			graphicElements(score, font);
 		
+		image(theMoon, 200, -440); 
+
+		if (!gameOver) {
+			enemyLives.drawLives();
+			graphicElements(score, highScore, font);
+		}
+
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);
 		shotsManager.update(delta_t);
