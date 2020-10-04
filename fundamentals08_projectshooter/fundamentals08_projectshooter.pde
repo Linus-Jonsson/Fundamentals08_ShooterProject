@@ -18,6 +18,7 @@ StarSystem stars;
 int state;
 boolean firstTime;
 int highScore;
+PImage theMoon;
 
 void setup() {
 	if (soundOn) {
@@ -37,6 +38,8 @@ void setup() {
 	size(480, 640);
 	frameRate(60);
 
+	theMoon = loadImage("moon.png");
+
 	state = 0; // Init.
 	firstTime = true;
 	stars = new StarSystem(new PVector(width / 2, height / 2));	
@@ -50,7 +53,9 @@ void setup() {
 }
 
 void draw() {
+	background(0);
 	stars.drawBackground();
+	
 	switch (state) {
 		case 0: 
 			invadersOfSpace = new Game(highScore); 

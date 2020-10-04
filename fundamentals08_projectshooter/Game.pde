@@ -1,7 +1,7 @@
 class Game { 
 	final int nPlayersX = 11;
 	final int nPlayersY = 5;
-	final int nEnemies = 3;
+	final int nEnemies = 1;
 	final int nWalls = 4;
 
 	PlayerManager playerManager;
@@ -54,6 +54,7 @@ class Game {
 	}
 
 	void getReady() {
+		image(theMoon, 200, -440); 
 		fill(255 - (255 - 56) * (500 - abs((millis() % 1000) - 500)) / 500,
 			255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
 			255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
@@ -71,10 +72,12 @@ class Game {
 			score -= 100;
 			collisionManager.shipDestroyed = false;
 		}
+		image(theMoon, 200, -440); 
 		if (!gameOver) {
 			enemyLives.drawLives();
 			graphicElements(score, highScore, font);
 		}
+
 
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);
