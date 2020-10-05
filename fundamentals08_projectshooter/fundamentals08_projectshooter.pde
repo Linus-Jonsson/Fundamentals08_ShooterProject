@@ -4,10 +4,8 @@
 // musikbugg
 // krabba fastnar på sidan
 
-import processing.sound.*;
+import ddf.minim.*;
 
-SoundFile[] ducktales;
-Sound sound;
 boolean soundOn = true;
 Game invadersOfSpace;
 StarSystem stars;
@@ -16,17 +14,25 @@ boolean firstTime;
 int highScore;
 PImage theMoon;
 
+Minim minim;
+AudioPlayer theme;
+AudioSample[] duckTales;
+
 void setup() {
 	 if (soundOn) {
-	 	ducktales = new SoundFile[10];
-	 	ducktales[0] = new SoundFile(this, "DuckTales.mp3");
-	 	ducktales[1] = new SoundFile(this, "crabHit.wav");
-	 	ducktales[2] = new SoundFile(this, "crabDies.wav");
-	 	ducktales[3] = new SoundFile(this, "fire.wav");
-	 	ducktales[4] = new SoundFile(this, "playerHit.wav");
-	 	ducktales[5] = new SoundFile(this, "playerDead.wav");
-	 	ducktales[6] = new SoundFile(this, "restart.wav");
-	 	ducktales[7] = new SoundFile(this, "wallHit.wav");	
+  		minim = new Minim(this);
+	 	duckTales = new AudioSample[10];
+	 	theme = minim.loadFile("DuckTales.mp3", 10000);
+	 	duckTales[1] = minim.loadSample("crabHit.wav", 512);
+	 	duckTales[2] = minim.loadSample("crabDies.wav", 512);
+	 	duckTales[3] = minim.loadSample("fire.wav", 512);
+	 	duckTales[4] = minim.loadSample("playerHit.wav", 512);
+	 	duckTales[5] = minim.loadSample("playerDead.wav", 512);
+	 	duckTales[6] = minim.loadSample("restart.wav", 512);
+	 	duckTales[7] = minim.loadSample("wallHit.wav", 512);	
+	 
+	 	theme.loop(10);
+	 	theme.play();
 	 }
 
 	//surface.setLocation(10, 10);
@@ -38,18 +44,12 @@ void setup() {
 	firstTime = true;
 	stars = new StarSystem(new PVector(width/2, height/2));	
 	highScore = 0;
-
-	 if (soundOn) {
-	 	sound = new Sound(this);
-	 	sound.volume(0.1);
-	 	ducktales[0].loop();
-	 }
 }
 
 void draw() {
 	background(0);
 	stars.drawBackground();
-	
+  		
 	switch (state) {
 		case 0: 
 		invadersOfSpace = new Game(); 
@@ -107,6 +107,6 @@ void keyPressed() {
 
 void soundEffect(int n) {
 	if (soundOn) {
-  		ducktales[n].play();
+  		duckTales[n].trigger();
 	}
 }

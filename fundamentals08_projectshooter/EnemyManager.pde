@@ -3,7 +3,6 @@ class EnemyManager {
 	int nEnemies;
 	ShotsManager shotsManager;
 	WallManager wallManager;
-	int aiClock;
 
 	EnemyManager(int _nEnemies, ShotsManager _shotsManager, WallManager _wallManager) {
 		nEnemies = _nEnemies;
@@ -12,7 +11,6 @@ class EnemyManager {
 			enemies[n] = new Enemy(width / 2, height * 0.885, new BoundingCircle(0, 0, 35));
 		shotsManager = _shotsManager;
 		wallManager = _wallManager;
-		int aiClock = 30;
 	}
 
 	Enemy[] getEnemies() {
@@ -52,7 +50,7 @@ class EnemyManager {
 			Shot s = closestShot(e);
 			if (!evadingClosestShot(e, s, delta_t)) {
 				if (distanceToShot(e, s) < 20 + (int)random(100)) {
-					if ((int)random(2) == 0) {
+					if ((int)random(12) == 0) {
 						e.vel.x = -e.vel.x;	
 						e.walkTime = 40;	
 					}
