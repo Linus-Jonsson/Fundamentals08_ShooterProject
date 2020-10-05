@@ -11,35 +11,33 @@ class Game {
 	ExplosionsManager explosionsManager;
 	WallManager wallManager;
 
-	FrameCounter fps;
-	Time time;
-	int score;
-	int highScore;
-	int state;
-	int getReadyCounter;
 	PFont titleFont = createFont("Alien-Encounters-Italic.ttf", 80);
 	PFont font = createFont("Futuristic Armour.otf", 22);
-	boolean gameOver;
 	
+	FrameCounter fps = new FrameCounter();
+	Time time = new Time();
+	int score = 9999;
+	int highScore;
+	int state;
+	int getReadyCounter = 0;
+	boolean gameOver = false;
+
 	Game() {
-		time = new Time();
-		fps = new FrameCounter();
 		shotsManager = new ShotsManager();
 		playerManager = new PlayerManager(nPlayersX, nPlayersY);
 		explosionsManager = new ExplosionsManager();
 		wallManager = new WallManager(nWalls);
 		enemyManager = new EnemyManager(nEnemies, shotsManager, wallManager);
 		collisionManager = new CollisionManager(playerManager.getPlayers(),
-			enemyManager.getEnemies(),
-			shotsManager.getShots(),
-			wallManager.getWalls(),
-			explosionsManager);
-		gameOver = false;
-		getReadyCounter = 0;
-		score = 9999;
+												enemyManager.getEnemies(),
+												shotsManager.getShots(),
+												wallManager.getWalls(),
+												explosionsManager);
 	}
 	
-	boolean isGameOver() {return gameOver;}
+	boolean isGameOver() {
+		return gameOver;
+	}
 
 	void splashScreen() {
 		startScreen(titleFont, font);
@@ -54,8 +52,8 @@ class Game {
 	void getReady() {
 		image(theMoon, 260, -480); 
 		fill(255 - (255 - 56) * (500 - abs((millis() % 1000) - 500)) / 500,
-			255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
-			255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
+			 255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
+			 255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
 		textSize(40);
 		text("GET READY", width/2, height/2-20);
 	}
@@ -63,32 +61,31 @@ class Game {
 	void run() {
 		float delta_t = time.getDelta() * 0.05;
 		//text("FPS: " + (int)fps.get(), 35, 15); // For debug purposes.
-		if (time.getAbsolute()%100 <= 25)
-			score -= 1;
-		if (collisionManager.shipDestroyed == true) {
-			score -= 100;
-			collisionManager.shipDestroyed = false;
-		}
-		
-		image(theMoon, 260, -480); 
-		
-		if (!gameOver)
-			graphicElements(score, font);
+		scoreUpdate();
+
+		graphicElements(score, font, gameOver);
 
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);
 		shotsManager.update(delta_t);
 		explosionsManager.update(delta_t);
 		
-		if (collisionManager.update(delta_t))
-			gameOver = true;
-		if (enemyManager.allDead())
+		if (collisionManager.update(delta_t) || enemyManager.allDead())
 			gameOver = true;
 
 		wallManager.draw();
 		playerManager.draw();
 		enemyManager.draw();
 		shotsManager.draw();
+	}
+
+	void scoreUpdate() {
+		if (time.getAbsolute() % 100 <= 25)
+			score -= 1;
+		if (collisionManager.shipDestroyed == true) {
+			score -= 100;
+			collisionManager.shipDestroyed = false;
+		}	
 	}
 
 	void gameOver() {
@@ -105,8 +102,8 @@ class Game {
 	}
 
 	void shoot() {
-		if (playerManager.clearShot() && playerManager.readyToShoot()) { // No other player ship is blocking the view.
-			float x = playerManager.getCurrent().pos.x; 				 // and enough time has passed since the last shot.
+		if (playerManager.clearShot() && playerManager.readyToShoot()) {
+			float x = playerManager.getCurrent().pos.x;
 			float y = playerManager.getCurrent().pos.y;
 			shotsManager.spawn(x - 5, y, new BoundingCircle(0, 10, 2), new PVector(0, 3));
 			shotsManager.spawn(x + 5, y, new BoundingCircle(0, 10, 2), new PVector(0, 3));

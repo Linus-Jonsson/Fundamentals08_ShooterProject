@@ -1,30 +1,26 @@
 class Player extends GameObject {
+	float size = 10;
 	boolean alive;
 	boolean isCurrent;
-	color col;
-	color colDark;
-	color colBright;
+	color col = color(255, 174, 0);
+	color colDark = color(192, 132, 0);
+	color colBright = color(255, 200, 82);
 	
 	Player(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
 		alive = true;
 		isCurrent = false;
-		col = color(255, 174, 0);
-		colDark = color(192, 132, 0);
-		colBright = color(255, 200, 82);
 	}
 
 	boolean collideWall() {
-		float SIZE = 30; // width of spaceship
 		if (alive) {
-			if ((pos.x - SIZE / 2 < 0) || (pos.x > width - SIZE / 2))
+			if ((pos.x - size * 1.5 < 0) || (pos.x > width - size * 1.5))
 				return true;
 		}
 		return false;
 	}
 
 	void draw(boolean highlight) {
-		float size = 10;
 		int nonHighlightAlpha = 255;
 		
 		pushMatrix();

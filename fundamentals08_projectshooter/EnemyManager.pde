@@ -7,30 +7,11 @@ class EnemyManager {
 	EnemyManager(int _nEnemies, ShotsManager _shotsManager, WallManager _wallManager) {
 		nEnemies = _nEnemies;
 		enemies = new Enemy[nEnemies];
-		for (int n = 0; n < nEnemies; n++)
+		for (int n = 0; n < nEnemies; n++) {
 			enemies[n] = new Enemy(width / 2, height * 0.885, new BoundingCircle(0, 0, 35));
+		}
 		shotsManager = _shotsManager;
 		wallManager = _wallManager;
-	}
-
-	Enemy[] getEnemies() {
-		return enemies;
-	}
-
-	boolean allDead() {
-		for (int n = 0; n < nEnemies; n++)
-			if (enemies[n].lives > 0)
-				return false;
-		return true;
-	}
-
-	void draw() {
-		for (int n = 0; n < nEnemies; n++) {
-			enemies[n].draw();
-			if (enemies[n].lives >= 2) {
-				enemies[n].drawLives(enemies[n].lives);
-			}
-		}
 	}
 
 	void update(float delta_t) {
@@ -70,13 +51,32 @@ class EnemyManager {
 		}
 	}
 
+	void draw() {
+		for (int n = 0; n < nEnemies; n++) {
+			enemies[n].draw();
+			if (enemies[n].lives >= 2) {
+				enemies[n].drawLives(enemies[n].lives);
+			}
+		}
+	}
+
+
+	Enemy[] getEnemies() {
+		return enemies;
+	}
+
+	boolean allDead() {
+		for (int n = 0; n < nEnemies; n++)
+			if (enemies[n].lives > 0)
+				return false;
+		return true;
+	}
 
 	boolean behindWall(Enemy e) {
 		for (int w = 0; w < wallManager.getWalls().length; w++) {
 			float x1 = wallManager.getWalls()[w].pos.x - wallManager.getWalls()[w].wallPieceDiameter / 2;
 			float x2 = wallManager.getWalls()[w].pos.x + 
-					   wallManager.getWalls()[w].wallPieceDiameter / 2 + 
-					   5 * wallManager.getWalls()[w].wallPieceDiameter;
+					   wallManager.getWalls()[w].wallPieceDiameter * 5.5;
 			if (e.pos.x >= (x1 - 1) && e.pos.x <= (x2 + 1)) 
 				return true;
 		}
@@ -135,5 +135,4 @@ class EnemyManager {
 			e.deathRotation = 0;
 		}
 	}
-
 }

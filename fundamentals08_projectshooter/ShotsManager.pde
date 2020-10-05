@@ -1,10 +1,8 @@
 class ShotsManager {
 	ArrayList<Shot> shots;
-	int t;
 	
 	ShotsManager() {
 		shots = new ArrayList<Shot>(100);
-		t = millis();
 	}
 
 	ArrayList<Shot> getShots() {
@@ -16,17 +14,16 @@ class ShotsManager {
 	}
 
 	void update(float delta_t) {
-		for (Shot s : shots) {
+		for (Shot s : shots)
 			s.transform(delta_t);
-		}
 	}
 
 	void draw() {
-		for (Shot s : shots) {
+		for (Shot s : shots)
 			s.draw();
-		}
 	}
 }
+
 
 class Shot extends GameObject {
 	Shot(float x, float y, BoundingCircle bc, PVector _vel) {

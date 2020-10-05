@@ -1,12 +1,12 @@
 class Enemy extends GameObject {
-	color col;
-	color colDark;
-	color colBright;
-	color colBrighter;
-	float size = 10;
+	color col = color(84, 23, 243);
+	color colDark = color(56, 4, 191);
+	color colBright = color(39, 3, 132);
+	color colBrighter = color(136, 95, 242);
 	int lives = 3;
-	int time;
+	int time = millis();
 	int walkTime = 20;
+	float size = 10;
 	float deathRotation = 0;
 	float walkingRotation = 0;
 	float walkingRotationVel = 0.02;
@@ -14,11 +14,6 @@ class Enemy extends GameObject {
 
 	Enemy(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
-		col = color(84, 23, 243);
-		colDark = color(56, 4, 191);
-		colBright = color(39, 3, 132);
-		colBrighter = color(136, 95, 242);
-		time = millis();
 		vel.x = -1;
 	}
 
@@ -38,8 +33,9 @@ class Enemy extends GameObject {
 				rotate(deathRotation);
 				scale(1 + (3.14 - abs(deathRotation - 3.14)) / 3);
 			}
-			else
+			else {
 				rotate(walkingRotation);
+			}
 			noStroke();
 			beginShape(TRIANGLES);
 			fill(255);

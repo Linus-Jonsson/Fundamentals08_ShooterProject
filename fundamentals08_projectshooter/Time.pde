@@ -1,11 +1,6 @@
 class Time {
-	long initTime;
-	long lastTime;
-	
-	Time() {
-		initTime = millis();
-		lastTime = millis();
-	}
+	long initTime = millis();
+	long lastTime = millis();
 
 	long getAbsolute() {
 		return millis() - initTime;
@@ -17,8 +12,8 @@ class Time {
 		return delta_t;
 	}
 
-	void pause(long p) {
+	void pause(long pauseTime) {
 		long t = millis();
-		while ((millis() - t) < p);
+		while ((millis() - t) < pauseTime);
 	}
 }

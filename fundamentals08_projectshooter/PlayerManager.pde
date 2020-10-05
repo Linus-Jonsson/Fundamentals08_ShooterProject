@@ -2,15 +2,15 @@ class PlayerManager {
 	Player[][] players;
 	int rows, cols;
 	int currentX, currentY;	
-	int time;
+	int time = millis();
 
 	PlayerManager(int _cols, int _rows) {
 		rows = _rows;
 		cols = _cols;
-		currentX = cols /  2;
+		currentX = cols / 2;
 		currentY = rows - 1;
-		time = millis();
 		players = new Player[rows][cols];
+
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < cols; x++) {
 				players[y][x] = new Player((width / 2) - (cols / 2) * 35 + x * 35, 
@@ -18,7 +18,7 @@ class PlayerManager {
 				players[y][x].vel.x = -0.5;
 				players[y][x].vel.y = 0;
 			}
-		}
+		}		
 		players[currentY][currentX].isCurrent = true; 
 	}
 
@@ -29,16 +29,12 @@ class PlayerManager {
 	void setCurrentPlayer(int x, int y) {
 		if (x == 0 && y == 0)
 			return;
-		else if (currentX + x < 0 || currentX + x > cols - 1 || 
-		 	     currentY + y < 0 || currentY + y > rows - 1) {
+		else if (currentX + x < 0 || currentX + x > cols - 1 || currentY + y < 0 || currentY + y > rows - 1)
 			return;
-		}
-		else {				
+		else			
 			players[currentY][currentX].isCurrent = false;
-		}
 
-		// find closest one along the vector +/- specified degree (up to 180)
-		// cast two rays: 
+		// Find closest one along the vector +/- specified degree (up to 180) - Cast two rays: 
 		float initAngle = atan2(y, x);
 		float rayLength = sqrt(players.length * players.length + players[0].length * players[0].length) + 3;
 		int xRay, yRay;
@@ -77,14 +73,12 @@ class PlayerManager {
 	}
 
 	void update(float delta_t) {
-		// Move all the players
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < cols; x++) {
 				players[y][x].transform(delta_t);
 			}
 		}		
 
-		// Collide against walls:
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < cols; x++) {
 				if (players[y][x].collideWall()) {
@@ -104,7 +98,6 @@ class PlayerManager {
 			}
 		}				
 	}
-
 
 	Player getCurrent() {
 		return players[currentY][currentX];

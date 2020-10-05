@@ -1,19 +1,14 @@
 class WallPiece extends GameObject {
-	boolean alive;
+	boolean alive = true;
 	float diameter;
-	color col;
-	color colDark;
-	int damageLevel;
-	ArrayList<PVector> damage;
+	color col = color(0, 160, 180);
+	color colDark = color(0, 80, 90);
+	int damageLevel = 0;
+	ArrayList<PVector> damage = new ArrayList<PVector>();
 
-	WallPiece(float x, float y, BoundingCircle bc, float dia) {
+	WallPiece(float x, float y, BoundingCircle bc, float _diameter) {
 		super(x, y, bc);
-		alive = true;
-		diameter = dia;
-		col = color(0,160,180);
-		colDark = color(0,80, 90);
-		damageLevel = 0;
-		damage = new ArrayList<PVector>();
+		diameter = _diameter;
 	}
 
 	void pixelDamage(int d) {
@@ -29,14 +24,14 @@ class WallPiece extends GameObject {
 			case 0: pixelDamage((int)random(5, 10)); break;
 			case 1:	pixelDamage((int)random(5, 10)); break;
 			case 2: pixelDamage((int)random(5, 10)); break;
-			case 3: alive = false;
+			case 3: alive = false; break;
 		}
 	}
 
 	void drawDamage() {
 		for (PVector d : damage) {
-			stroke(0,0,0);
-			fill(0,0,0);
+			stroke(0, 0, 0);
+			fill(0, 0, 0);
 			strokeWeight(2);
 			circle(d.x, d.y, 2);
 			strokeWeight(1);
@@ -50,13 +45,13 @@ class WallPiece extends GameObject {
 			stroke(colDark);
 			fill(col);
 			beginShape();
-			vertex(pos.x+diameter/2, pos.y+diameter/2);
-			vertex(pos.x-diameter/2, pos.y+diameter/2);
-			vertex(pos.x-diameter/2, pos.y-diameter/1.3);
-			vertex(pos.x-diameter/4, pos.y-diameter/1.7);
-			vertex(pos.x, pos.y-diameter/2);
-			vertex(pos.x+diameter/3, pos.y-diameter/1.9);
-			vertex(pos.x+diameter/2, pos.y-diameter/1.3);
+			vertex(pos.x + diameter / 2, pos.y + diameter / 2);
+			vertex(pos.x - diameter / 2, pos.y + diameter / 2);
+			vertex(pos.x - diameter / 2, pos.y - diameter / 1.3);
+			vertex(pos.x - diameter / 4, pos.y - diameter / 1.7);
+			vertex(pos.x, pos.y - diameter / 2);
+			vertex(pos.x + diameter / 3, pos.y - diameter / 1.9);
+			vertex(pos.x + diameter / 2, pos.y - diameter / 1.3);
 			endShape(CLOSE);
 			drawDamage();
 		}
@@ -79,10 +74,10 @@ class WallPiece extends GameObject {
 			stroke(colDark);
 			fill(col);
 			beginShape();
-			vertex(pos.x+diameter/2, pos.y+diameter/2);
-			vertex(pos.x-diameter/2, pos.y+diameter/2);
-			vertex(pos.x-diameter/2, pos.y-diameter/2);
-			vertex(pos.x+diameter/2, pos.y-diameter*1.5);
+			vertex(pos.x + diameter / 2, pos.y + diameter / 2);
+			vertex(pos.x - diameter / 2, pos.y + diameter / 2);
+			vertex(pos.x - diameter / 2, pos.y - diameter / 2);
+			vertex(pos.x + diameter / 2, pos.y - diameter * 1.5);
 			endShape(CLOSE);
 			drawDamage();			
 		}
@@ -94,10 +89,10 @@ class WallPiece extends GameObject {
 			stroke(colDark);
 			fill(col);
 			beginShape();
-			vertex(pos.x+diameter/2, pos.y+diameter/2);
-			vertex(pos.x-diameter/2, pos.y+diameter/2);
-			vertex(pos.x-diameter/2, pos.y-diameter*1.5);
-			vertex(pos.x+diameter/2, pos.y-diameter/2);
+			vertex(pos.x + diameter / 2, pos.y + diameter / 2);
+			vertex(pos.x - diameter / 2, pos.y + diameter / 2);
+			vertex(pos.x - diameter / 2, pos.y - diameter * 1.5);
+			vertex(pos.x + diameter / 2, pos.y - diameter / 2);
 			endShape(CLOSE);
 			drawDamage();						
 		}

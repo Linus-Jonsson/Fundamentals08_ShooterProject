@@ -1,7 +1,10 @@
-void graphicElements(int score, PFont font) {
+void graphicElements(int score, PFont font, boolean gameOver) {
+	image(theMoon, 260, -480); 
+	if (gameOver)
+		return;
 	strokeWeight(2);
 	stroke(0,80, 90);
-	line(35, height*0.93, width-35, height*0.93);
+	line(35, height * 0.93, width - 35, height * 0.93);
 	textAlign(RIGHT);
 	fill(255);
 	textFont(font, 22);
@@ -24,8 +27,8 @@ void startScreen(PFont titleFont, PFont font) {
 	textSize(24);
 	textAlign(CENTER);
 	fill(255 - (255 - 56) * (500 - abs((millis() % 1000) - 500)) / 500,
-		255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
-		255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
+		 255 - (255 - 4) * (500 - abs((millis() % 1000) - 500)) / 500,
+		 255 - (255 - 191) * (500 - abs((millis() % 1000) - 500)) / 500);
 	text("Press SPACE to start", width/2, height/2+90);
 	beginShape();
 	strokeWeight(2.5);

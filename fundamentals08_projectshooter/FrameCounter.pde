@@ -2,6 +2,7 @@ class FrameCounter {
 	float frames = 0;
 	float startTime = millis();
 	float fps;
+	
 	float get() {
 		frames++;
 		if (millis() - startTime > 1000) {

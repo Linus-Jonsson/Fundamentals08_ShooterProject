@@ -79,10 +79,11 @@ class CollisionManager {
 					float explosionY = enemies[ex].pos.y + enemies[ex].boundingCircle.offset.y;
 					explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 40);					
 					enemies[ex].lostLife = true;
-					if (enemies[ex].lives == 1)
+					if (enemies[ex].lives == 1) {
 						soundEffect(2);
-					else 
+					} else {
 						soundEffect(1);
+					}
 					shots.remove(n);					
 					return false;
 				}
@@ -94,9 +95,10 @@ class CollisionManager {
 				float x2 = walls[w].pos.x + 5.5 * walls[w].wallPieceDiameter;
 				float y = walls[w].pos.y - walls[w].wallPieceDiameter / 2; 
 				
-				if (!(s.pos.x >= (x1 - 1) && s.pos.x <= x2 && s.pos.y + s.boundingCircle.offset.y >= y))
+				if (!(s.pos.x >= (x1 - 1) && s.pos.x <= x2 && s.pos.y + s.boundingCircle.offset.y >= y)) {
 					continue;
-
+				}
+				
 				for (int wp = 0; wp < walls[w].wall.length; wp++) {
 					WallPiece wallPiece = walls[w].wall[wp];
 					if (wallPiece.alive && s.collides(wallPiece)) {

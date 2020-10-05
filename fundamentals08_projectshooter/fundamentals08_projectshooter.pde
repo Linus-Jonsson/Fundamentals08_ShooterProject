@@ -1,83 +1,78 @@
-// To fix:
-// Spelet använder mikrofon?!
-// Current ship color
-// musikbugg
-// krabba fastnar på sidan
-
 import ddf.minim.*;
-
-boolean soundOn = true;
-Game invadersOfSpace;
-StarSystem stars;
-int state;
-boolean firstTime;
-int highScore;
-PImage theMoon;
-
 Minim minim;
 AudioPlayer theme;
 AudioSample[] duckTales;
 
-void setup() {
-	 if (soundOn) {
-  		minim = new Minim(this);
-	 	duckTales = new AudioSample[10];
-	 	theme = minim.loadFile("DuckTales.mp3", 10000);
-	 	duckTales[1] = minim.loadSample("crabHit.wav", 512);
-	 	duckTales[2] = minim.loadSample("crabDies.wav", 512);
-	 	duckTales[3] = minim.loadSample("fire.wav", 512);
-	 	duckTales[4] = minim.loadSample("playerHit.wav", 512);
-	 	duckTales[5] = minim.loadSample("playerDead.wav", 512);
-	 	duckTales[6] = minim.loadSample("restart.wav", 512);
-	 	duckTales[7] = minim.loadSample("wallHit.wav", 512);	
-	 
-	 	theme.loop(10);
-	 	theme.play();
-	 }
+PImage theMoon;
 
-	//surface.setLocation(10, 10);
+Game invadersOfSpace;
+StarSystem stars;
+boolean soundOn = true;
+boolean firstTime = true;
+int state = 0;
+int highScore = 0;
+
+void setup() {
+	if (soundOn) {
+		minim = new Minim(this);
+		duckTales = new AudioSample[10];
+		theme = minim.loadFile("DuckTales.mp3", 10000);
+		duckTales[1] = minim.loadSample("crabHit.wav", 512);
+		duckTales[2] = minim.loadSample("crabDies.wav", 512);
+		duckTales[3] = minim.loadSample("fire.wav", 512);
+		duckTales[4] = minim.loadSample("playerHit.wav", 512);
+		duckTales[5] = minim.loadSample("playerDead.wav", 512);
+		duckTales[6] = minim.loadSample("restart.wav", 512);
+		duckTales[7] = minim.loadSample("wallHit.wav", 512);	
+		theme.loop(10);
+		theme.play();
+	}
+
 	((java.awt.Canvas) surface.getNative()).requestFocus();
 	size(480, 640);
 	frameRate(60);
 	theMoon = loadImage("moon.png");
-	state = 0; // Init.
-	firstTime = true;
-	stars = new StarSystem(new PVector(width/2, height/2));	
-	highScore = 0;
+	stars = new StarSystem(new PVector(width / 2, height / 2));	
 }
 
 void draw() {
 	background(0);
 	stars.drawBackground();
-  		
+
 	switch (state) {
 		case 0: 
-		invadersOfSpace = new Game(); 
-		if (firstTime) {
-			state = 1;
-			firstTime = false;
-		} else 
-		state = 2;
-		break;
-		case 1: 
-		if (invadersOfSpace.getReadyCounter == 0)
-			invadersOfSpace.splashScreen(); 
-		if (invadersOfSpace.getReadyCounter == 0 && stars.haveAccelerated())
-			invadersOfSpace.getReadyCounter = 170;
-		if (invadersOfSpace.getReadyCounter > 0) {
-			invadersOfSpace.getReady();
-			if (--invadersOfSpace.getReadyCounter == 0)
+			invadersOfSpace = new Game(); 
+			if (firstTime) {
+				state = 1;
+				firstTime = false;
+			} else {
 				state = 2;
-		}
-		break;
+			}
+			break;
+
+		case 1: 
+			if (invadersOfSpace.getReadyCounter == 0) {
+				invadersOfSpace.splashScreen(); 
+			}
+			if (invadersOfSpace.getReadyCounter == 0 && stars.haveAccelerated()) {
+				invadersOfSpace.getReadyCounter = 170;
+			}
+			if (invadersOfSpace.getReadyCounter > 0) {
+				invadersOfSpace.getReady();
+				if (--invadersOfSpace.getReadyCounter == 0)
+					state = 2;
+			}
+			break;
+
 		case 2: 
-		invadersOfSpace.run();
-		if (invadersOfSpace.isGameOver())
-			state = 3; 
-		break;
+			invadersOfSpace.run();
+			if (invadersOfSpace.isGameOver())
+				state = 3; 
+			break;
+
 		case 3: 
-		invadersOfSpace.gameOver(); 
-		break;
+			invadersOfSpace.gameOver(); 
+			break;
 	}
 }
 
@@ -96,17 +91,18 @@ void keyPressed() {
 		if (!invadersOfSpace.runningGetReady() && stars.acceleration == 0) { 
 			switch (state) {
 				case 1:
-				stars.accelerate(); 
-				soundEffect(6); 
-				break;
-				case 2: invadersOfSpace.shoot(); break;
+					stars.accelerate(); 
+					soundEffect(6); 
+					break;
+				case 2:
+					invadersOfSpace.shoot();
+					break;
 			}
 		}
 	}
 }
 
 void soundEffect(int n) {
-	if (soundOn) {
-  		duckTales[n].trigger();
-	}
+	if (soundOn)
+		duckTales[n].trigger();
 }
