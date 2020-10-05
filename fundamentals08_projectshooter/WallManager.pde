@@ -5,9 +5,8 @@ class WallManager {
 	WallManager(int _nWalls) {
 		nWalls = _nWalls;
 		walls = new Wall[nWalls];
-		for (int i=0; i<nWalls; i++) {
+		for (int i=0; i<nWalls; i++)
 			walls[i] = new Wall(new PVector(width / 8.5 + (width / 9 * 2 * i), height * 0.78));
-		}
 	}
 
 	Wall[] getWalls() {

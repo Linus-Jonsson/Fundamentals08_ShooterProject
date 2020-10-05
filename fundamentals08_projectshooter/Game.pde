@@ -60,7 +60,7 @@ class Game {
 
 	void run() {
 		float delta_t = time.getDelta() * 0.05;
-		//text("FPS: " + (int)fps.get(), 35, 15); // For debug purposes.
+		// text("FPS: " + (int)fps.get(), 35, 15); // For debug purposes.
 		scoreUpdate();
 
 		graphicElements(score, font, gameOver);
@@ -83,7 +83,7 @@ class Game {
 		if (time.getAbsolute() % 100 <= 25)
 			score -= 1;
 		if (collisionManager.shipDestroyed == true) {
-			score -= 100;
+			score -= 150;
 			collisionManager.shipDestroyed = false;
 		}	
 	}

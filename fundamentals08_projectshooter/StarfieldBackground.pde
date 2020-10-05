@@ -27,9 +27,8 @@ class StarSystem {
 		if (haveAccelerated && acceleration == 0) {
 			startOffRun = true;
 			return true;
-		} else { 
-			return false;
 		}
+		return false;
 	}
 
 	void accelerate() {
@@ -39,12 +38,11 @@ class StarSystem {
 	}
 
 	void addStars() {
-		if (acceleration > 0) {
+		if (acceleration > 0)
 			for (int n = 0; n < 5; n++)
 				stars.add(new Star(origin, acceleration));
-		} else {
+		else
 			stars.add(new Star(origin, acceleration));
-		}
 	}
 
 	void run(boolean draw) {
@@ -56,9 +54,8 @@ class StarSystem {
 		for (int i = stars.size() - 1; i >= 0; i--) {
 			Star s = stars.get(i);
 			s.run(draw, acceleration);
-			if (s.isDead()) {
+			if (s.isDead())
 				stars.remove(i);
-			}
 		}
 	}
 }
@@ -90,7 +87,8 @@ class Star {
 		if (acceleration > 0) {
 			stroke(255, 255);
 			fill(255, 255);
-		} else {
+		}
+		else {
 			stroke(255, 255 - lifespan);
 			fill(255, 255 - lifespan);
 		}
@@ -98,10 +96,8 @@ class Star {
 	}
 
 	boolean isDead() {
-		if (lifespan < 0.0) {
+		if (lifespan < 0.0)
 			return true;
-		} else {
-			return false;
-		}
+		return false;
 	}
 }

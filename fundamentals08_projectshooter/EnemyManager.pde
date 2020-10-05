@@ -128,10 +128,10 @@ class EnemyManager {
 			e.lives--;
 			e.deathRotation = 6.28;
 		}
-
 		if (e.deathRotation > 0) {
 			e.deathRotation -= delta_t * 0.1;
-		} else {		
+		}
+		else {		
 			e.deathRotation = 0;
 		}
 	}
