@@ -186,6 +186,7 @@ class CollisionManager {
 	boolean baselineVsShot(int nShot) {
 		Shot shot = shots.get(nShot);
 		if (shot.pos.y > height - 48) {
+			soundEffect(6);
 			explosionsManager.spawn(new PVector(shot.pos.x, shot.pos.y), color(0,160,180), 8);
 			shots.remove(nShot);
 			return true;

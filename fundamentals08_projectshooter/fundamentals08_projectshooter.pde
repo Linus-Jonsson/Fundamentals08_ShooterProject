@@ -1,3 +1,23 @@
+// -------------------------------------------------------------------
+//
+// Invaders of Space - Game Creator Programmer, Yrgo 2020
+//  - Linus Jonsson & Andreas Collvin
+//
+// Linus har lagt krutet på grafik och specialeffekter,
+// med huvudfokus på följande filer:
+// 
+//		Enemy, Player, Splashes, StarfieldBackground, Explosion
+//		WallManager, WallPiece
+//
+// Andreas har inriktat sig på spelmotorn,
+// allmän struktur och kollisionsdetektering, med
+// huvudfokus på följande filer:
+//
+//		CollisionManager, EnemyManager, PlayerManager, ShotsManager,
+//		Game och fundamentals08_projectshooter
+//
+// -------------------------------------------------------------------
+
 import ddf.minim.*;
 Minim minim;
 AudioPlayer theme;

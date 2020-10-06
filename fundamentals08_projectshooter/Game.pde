@@ -56,7 +56,7 @@ class Game {
 
 	void run() {
 		float delta_t = time.getDelta() * 0.05;
-		// text("FPS: " + (int)fps.get(), 35, 15); // For debug purposes.
+
 		scoreUpdate();
 
 		graphicElements(score, font, gameOver);

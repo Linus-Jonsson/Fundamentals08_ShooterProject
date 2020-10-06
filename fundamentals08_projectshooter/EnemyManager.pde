@@ -105,7 +105,6 @@ class EnemyManager {
 
 	Shot closestShot(Enemy e) {
 		Shot closest = new Shot(9999, 9999, new BoundingCircle(0, 0, 0), new PVector(0, 0)); 
-		println(shotsManager.getShots().size());
 		for (Shot s : shotsManager.getShots()) {
 			if (s.boundingCircle.offset.y > 0) {
 				if (s.pos.y < e.pos.y + e.boundingCircle.diameter / 2) {

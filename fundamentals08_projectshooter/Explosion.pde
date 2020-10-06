@@ -10,7 +10,6 @@ class ExplosionsManager {
 	}
 
 	void update(float delta_t) {
-    println(explosions.size());
 		for (int e = 0; e < explosions.size(); e++) {
 			explosions.get(e).update(delta_t);
 			if (explosions.get(e).isDone())
@@ -54,7 +53,7 @@ class Explosion {
 	}
 
 	boolean isDone() {
-	 	if (deadParticles == 100)
+	 	if (deadParticles > 70)
 	 		return true;
 	 	return false;
 	}
