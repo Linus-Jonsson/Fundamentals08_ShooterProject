@@ -10,10 +10,11 @@ class ExplosionsManager {
 	}
 
 	void update(float delta_t) {
+    println(explosions.size());
 		for (int e = 0; e < explosions.size(); e++) {
 			explosions.get(e).update(delta_t);
-			// if (explosions.get(e).isDone())
-			// 	explosions.remove(e);
+			if (explosions.get(e).isDone())
+			 explosions.remove(e);
 		}
 	}
 
@@ -27,6 +28,7 @@ class Explosion {
 	Particle[] explosion = new Particle[100];
 	PVector pos;
 	float lifeLength;
+  int deadParticles = 0;
 	color col;
 	
 	Explosion (PVector _pos, color _c, float _lifeLength) {
@@ -38,7 +40,7 @@ class Explosion {
 	}
 
 	void update(float delta_t) {
-		for (int i=0; i<explosion.length; i++) {
+		for (int i = 0; i < explosion.length; i++) {
 			if (explosion[i] == null) {
 				continue;
 			} else {
@@ -46,15 +48,16 @@ class Explosion {
 			}
 			if (explosion[i].isDone(lifeLength) == true) {
 				explosion[i] = null;
+        deadParticles++;
 			}
 		}
 	}
 
-	// boolean isDone() {
-	// 	if (lifeClock == 0)
-	// 		return true;
-	// 	return false;
-	// }
+	boolean isDone() {
+	 	if (deadParticles == 100)
+	 		return true;
+	 	return false;
+	}
 }
 
 
@@ -90,5 +93,4 @@ class Particle {
 		else
 			return false;
 	}
-
 }
