@@ -38,8 +38,6 @@
 import ddf.minim.*;
 Minim minim;
 
-PImage theMoon;
-
 Game invadersOfSpace;
 SoundManager soundManager;
 StarSystem stars;
@@ -56,7 +54,6 @@ void setup() {
 
 	minim = new Minim(this);
 	soundManager = new SoundManager(true);
-	theMoon = loadImage("moon.png");
 	stars = new StarSystem(new PVector(width / 2, height / 2));	
 	isInitialized = new Initialized();
 }

@@ -1,8 +1,8 @@
 //
 // Huvudansvarig: Linus Jonsson
 //
-void graphicElements(int score, PFont font, boolean gameOver) {
-	image(theMoon, 260, -480); 
+void graphicElements(int score, PFont font, boolean gameOver, PImage moon) {
+	image(moon, 260, -480); 
 	if (gameOver)
 		return;
 	strokeWeight(2);

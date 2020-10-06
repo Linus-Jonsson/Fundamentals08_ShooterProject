@@ -20,6 +20,7 @@ class Game {
 	
 	FrameCounter fps = new FrameCounter();
 	Time time = new Time();
+	PImage theMoon = loadImage("moon.png");
 	int score = 9999;
 	int highScore;
 	int state;
@@ -57,7 +58,7 @@ class Game {
 
 		scoreUpdate();
 
-		graphicElements(score, font, gameOver);
+		graphicElements(score, font, gameOver, theMoon);
 
 		playerManager.update(delta_t);
 		enemyManager.update(delta_t);
