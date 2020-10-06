@@ -1,13 +1,18 @@
 // -------------------------------------------------------------------
 //
 // Invaders of Space - Game Creator Programmer, Yrgo 2020
-//  - Linus Jonsson & Andreas Collvin
+//	
+//		Linus Jonsson & Andreas Collvin
+//
+// -------------------------------------------------------------------
 //
 // Linus har lagt krutet på grafik och specialeffekter,
 // med huvudfokus på följande filer:
 // 
 //		Enemy, Player, Splashes, StarfieldBackground, Explosion
 //		WallManager, WallPiece
+//
+// Det enda i grafikväg som vi inte har skapat är månen och fonterna.
 //
 // Andreas har inriktat sig på spelmotorn,
 // allmän struktur och kollisionsdetektering, med
@@ -16,6 +21,14 @@
 //		CollisionManager, EnemyManager, PlayerManager, ShotsManager,
 //		Game och fundamentals08_projectshooter
 //
+// Credits: 
+//
+//		Music - Laura Platt and Pascal Michael Stiefel 
+//				https://www.youtube.com/watch?v=BoH89vxiQDk
+//
+//		Sound Effects - Duck Tales (NES Game)
+//
+//		Moon Picture - https://pnghunter.com/png/moon-23/
 // -------------------------------------------------------------------
 
 import ddf.minim.*;
@@ -30,11 +43,8 @@ StarSystem stars;
 boolean soundOn = true;
 boolean firstTime = true;
 int highScore = 0;
-enum GameState {
-	Init, StartScreen, Run, GameOver;
-}
+enum GameState {Init, StartScreen, Run, GameOver;}
 GameState state = GameState.Init;
-
 
 void setup() {
 	if (soundOn) {
