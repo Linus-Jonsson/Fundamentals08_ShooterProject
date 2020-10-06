@@ -89,7 +89,7 @@ class PlayerManager {
 					return;
 				}
 			}
-		}				
+		}
 	}
 
 	void changeDirection(float delta_t) {
@@ -99,7 +99,7 @@ class PlayerManager {
 				players[y][x].pos.y += 20;
 				players[y][x].vel.x = -players[y][x].vel.x;
 			}
-		}				
+		}
 	}
 
 	Player getCurrent() {

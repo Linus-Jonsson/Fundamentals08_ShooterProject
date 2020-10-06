@@ -24,11 +24,11 @@ class CollisionManager {
 				if (playerVsWall(players[py][px]))
 					return true;
 				if (playerVsEnemies(players[py][px]))
-	  				return true;
-	  		  	if (playerVsBaseline(players[py][px]))
-	  				return true;
-	  		}
-	  	}	
+					return true;
+				if (playerVsBaseline(players[py][px]))
+					return true;
+			}
+		}	
 
 		for (int nShot = 0; nShot < shots.size(); nShot++) {
 			switch (armadaVsShot(nShot)) {
@@ -89,7 +89,7 @@ class CollisionManager {
 	}
 
 	boolean playerVsWall(Player player) {
-		for (int w = 0; w < walls.length; w++) {					
+		for (int w = 0; w < walls.length; w++) {
 			for (int wp = 0; wp < walls[w].wall.length; wp++) {
 				WallPiece wallPiece = walls[w].wall[wp];
 				if (player.collides(wallPiece) && wallPiece.alive && player.alive) {
@@ -108,7 +108,7 @@ class CollisionManager {
 						return false;
 					}
 				}
-			}			
+			}
 		}
 		return false;
 	}
@@ -155,7 +155,7 @@ class CollisionManager {
 					soundManager.soundEffect(0);
 				}
 				shots.remove(nShot);
-				return true;					
+				return true;
 			}
 		}
 		return false;
@@ -178,7 +178,7 @@ class CollisionManager {
 					explosionsManager.spawn(new PVector(shot.pos.x, shot.pos.y), color(0,160,180), 6);
 					wallPiece.applyDamage();
 					soundManager.soundEffect(6);
-					shots.remove(nShot);						
+					shots.remove(nShot);
 					return true;
 				}
 			}

@@ -65,7 +65,7 @@ class WallPiece extends GameObject {
 			stroke(colDark);
 			fill(col);
 			square(pos.x, pos.y, diameter);
-			drawDamage();			
+			drawDamage();
 		}
 	}
 
@@ -80,7 +80,7 @@ class WallPiece extends GameObject {
 			vertex(pos.x - diameter / 2, pos.y - diameter / 2);
 			vertex(pos.x + diameter / 2, pos.y - diameter * 1.5);
 			endShape(CLOSE);
-			drawDamage();			
+			drawDamage();
 		}
 	}	
 
@@ -95,7 +95,7 @@ class WallPiece extends GameObject {
 			vertex(pos.x - diameter / 2, pos.y - diameter * 1.5);
 			vertex(pos.x + diameter / 2, pos.y - diameter / 2);
 			endShape(CLOSE);
-			drawDamage();						
+			drawDamage();
 		}
 	}
 }

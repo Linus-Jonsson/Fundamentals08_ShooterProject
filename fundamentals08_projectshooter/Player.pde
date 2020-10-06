@@ -2,12 +2,12 @@
 // Huvudansvarig: Linus Jonsson
 //
 class Player extends GameObject {
-	float size = 10;
-	boolean alive;
-	boolean isCurrent;
 	color col = color(255, 174, 0);
 	color colDark = color(192, 132, 0);
 	color colBright = color(255, 200, 82);
+	float size = 10;
+	boolean alive;
+	boolean isCurrent;
 	boolean highlight;
 	
 	Player(float x, float y, BoundingCircle bc) {

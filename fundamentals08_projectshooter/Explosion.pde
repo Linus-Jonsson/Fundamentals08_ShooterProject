@@ -2,7 +2,7 @@
 // Huvudansvarig: Linus Jonsson
 //
 class ExplosionsManager {
-  ArrayList<Explosion> explosions;
+	ArrayList<Explosion> explosions;
 
 	ExplosionsManager() {
 		explosions = new ArrayList<Explosion>(10);
@@ -16,7 +16,7 @@ class ExplosionsManager {
 		for (int e = 0; e < explosions.size(); e++) {
 			explosions.get(e).update(delta_t);
 			if (explosions.get(e).isDone())
-			 explosions.remove(e);
+				explosions.remove(e);
 		}
 	}
 
@@ -30,7 +30,7 @@ class Explosion {
 	Particle[] explosion = new Particle[100];
 	PVector pos;
 	float lifeLength;
-  int deadParticles = 0;
+	int deadParticles = 0;
 	color col;
 	
 	Explosion (PVector _pos, color _c, float _lifeLength) {
@@ -50,15 +50,15 @@ class Explosion {
 			}
 			if (explosion[i].isDone(lifeLength) == true) {
 				explosion[i] = null;
-        deadParticles++;
+				deadParticles++;
 			}
 		}
 	}
 
 	boolean isDone() {
-	 	if (deadParticles > 70)
-	 		return true;
-	 	return false;
+		if (deadParticles > 70)
+			return true;
+		return false;
 	}
 }
 

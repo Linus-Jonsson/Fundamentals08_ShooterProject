@@ -30,8 +30,8 @@ class WallManager {
 					walls[i].wall[j].drawRightCorner();
 				} else {
 					walls[i].wall[j].draw();
-				}      
-			}      
+				}
+			}
 		}
 	}
 }

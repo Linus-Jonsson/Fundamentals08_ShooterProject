@@ -6,7 +6,7 @@
 //
 // -------------------------------------------------------------------
 //
-// Linus har lagt krutet på grafik och specialeffekter,
+// Linus har lagt krutet på grafik, design och specialeffekter,
 // med huvudfokus på följande filer:
 // 
 //		Enemy, Player, Splashes, StarfieldBackground, Explosion
@@ -23,6 +23,8 @@
 //		BoundingCircle, Time, FrameCounter
 //
 // Delat ansvar för Game.pde.
+//
+// Gemensam genomgång av och delat ansvar för "clean code".
 //
 // Credits: 
 //
