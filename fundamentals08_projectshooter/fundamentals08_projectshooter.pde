@@ -43,9 +43,8 @@ SoundManager soundManager;
 StarSystem stars;
 enum GameState {Init, SplashScreen, Run, GameOver;}
 GameState state = GameState.Init;
-int highScore = 0;
 Initialized isInitialized;
-
+int highScore = 0;
 
 void setup() {
 	((java.awt.Canvas) surface.getNative()).requestFocus();
