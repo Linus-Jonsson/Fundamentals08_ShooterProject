@@ -28,11 +28,7 @@ class Game {
 		explosionsManager = new ExplosionsManager();
 		wallManager = new WallManager(nWalls);
 		enemyManager = new EnemyManager(nEnemies, shotsManager, wallManager);
-		collisionManager = new CollisionManager(playerManager.getPlayers(),
-												enemyManager.getEnemies(),
-												shotsManager.getShots(),
-												wallManager.getWalls(),
-												explosionsManager);
+		collisionManager = new CollisionManager(this);
 	}
 	
 	boolean isGameOver() {

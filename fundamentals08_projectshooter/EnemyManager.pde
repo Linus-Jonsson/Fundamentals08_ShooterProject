@@ -31,7 +31,7 @@ class EnemyManager {
 			Shot s = closestShot(e);
 			if (!evadingClosestShot(e, s, delta_t)) {
 				if (distanceToShot(e, s) < 20 + (int)random(100)) {
-					if ((int)random(12) == 0) {
+					if ((int)random(10) == 0) {
 						e.vel.x = -e.vel.x;	
 						e.walkTime = 40;	
 					}
@@ -105,7 +105,7 @@ class EnemyManager {
 
 	Shot closestShot(Enemy e) {
 		Shot closest = new Shot(9999, 9999, new BoundingCircle(0, 0, 0), new PVector(0, 0)); 
-	
+		println(shotsManager.getShots().size());
 		for (Shot s : shotsManager.getShots()) {
 			if (s.boundingCircle.offset.y > 0) {
 				if (s.pos.y < e.pos.y + e.boundingCircle.diameter / 2) {

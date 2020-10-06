@@ -21,10 +21,8 @@ class WallPiece extends GameObject {
 
 	void applyDamage() {
 		switch (damageLevel++) {
-			case 0: pixelDamage((int)random(5, 10)); break;
-			case 1:	pixelDamage((int)random(5, 10)); break;
-			case 2: pixelDamage((int)random(5, 10)); break;
-			case 3: alive = false; break;
+			case 0: pixelDamage((int)random(7, 14)); break;
+			case 1: alive = false; break;
 		}
 	}
 
