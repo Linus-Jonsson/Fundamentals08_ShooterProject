@@ -1,4 +1,4 @@
-# Fundamentals08_ShooterProject
+# Invaders of Space
 
 ![Screenshot](fundamentals08_projectshooter/promo/InvadersOfSpace1.png)
 
