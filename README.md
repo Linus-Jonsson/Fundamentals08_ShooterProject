@@ -1,3 +1,3 @@
 # Fundamentals08_ShooterProject
 
-![Screenshot](fundamentals08_ShooterProject/promo/InvadersOfSpace1.png)
+![Screenshot](fundamentals08_projectshooter/promo/InvadersOfSpace1.png)
