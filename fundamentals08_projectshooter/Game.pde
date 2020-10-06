@@ -103,7 +103,7 @@ class Game {
 			float y = playerManager.getCurrent().pos.y;
 			shotsManager.spawn(x - 5, y, new BoundingCircle(0, 10, 2), new PVector(0, 3));
 			shotsManager.spawn(x + 5, y, new BoundingCircle(0, 10, 2), new PVector(0, 3));
-			soundEffect(3);
+			soundEffect(2);
 		}
 	}
 }

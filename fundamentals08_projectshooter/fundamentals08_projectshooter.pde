@@ -9,21 +9,25 @@ Game invadersOfSpace;
 StarSystem stars;
 boolean soundOn = true;
 boolean firstTime = true;
-int state = 0;
 int highScore = 0;
+enum GameState {
+	Init, StartScreen, Run, GameOver;
+}
+GameState state = GameState.Init;
+
 
 void setup() {
 	if (soundOn) {
 		minim = new Minim(this);
 		duckTales = new AudioSample[10];
 		theme = minim.loadFile("DuckTales.mp3", 10000);
-		duckTales[1] = minim.loadSample("crabHit.wav", 512);
-		duckTales[2] = minim.loadSample("crabDies.wav", 512);
-		duckTales[3] = minim.loadSample("fire.wav", 512);
-		duckTales[4] = minim.loadSample("playerHit.wav", 512);
-		duckTales[5] = minim.loadSample("playerDead.wav", 512);
-		duckTales[6] = minim.loadSample("restart.wav", 512);
-		duckTales[7] = minim.loadSample("wallHit.wav", 512);	
+		duckTales[0] = minim.loadSample("crabHit.wav", 512);
+		duckTales[1] = minim.loadSample("crabDies.wav", 512);
+		duckTales[2] = minim.loadSample("fire.wav", 512);
+		duckTales[3] = minim.loadSample("playerHit.wav", 512);
+		duckTales[4] = minim.loadSample("playerDead.wav", 512);
+		duckTales[5] = minim.loadSample("restart.wav", 512);
+		duckTales[6] = minim.loadSample("wallHit.wav", 512);	
 		theme.loop(10);
 		theme.play();
 	}
@@ -40,17 +44,17 @@ void draw() {
 	stars.drawBackground();
 
 	switch (state) {
-		case 0: 
+		case Init: 
 			invadersOfSpace = new Game(); 
 			if (firstTime) {
-				state = 1;
+				state = GameState.StartScreen;
 				firstTime = false;
 			} else {
-				state = 2;
+				state = GameState.Run;
 			}
 			break;
 
-		case 1: 
+		case StartScreen: 
 			if (invadersOfSpace.getReadyCounter == 0) {
 				invadersOfSpace.splashScreen(); 
 			}
@@ -60,17 +64,17 @@ void draw() {
 			if (invadersOfSpace.getReadyCounter > 0) {
 				invadersOfSpace.getReady();
 				if (--invadersOfSpace.getReadyCounter == 0)
-					state = 2;
+					state = GameState.Run;
 			}
 			break;
 
-		case 2: 
+		case Run: 
 			invadersOfSpace.run();
 			if (invadersOfSpace.isGameOver())
-				state = 3; 
+				state = GameState.GameOver; 
 			break;
 
-		case 3: 
+		case GameOver: 
 			invadersOfSpace.gameOver(); 
 			break;
 	}
@@ -82,19 +86,19 @@ void keyPressed() {
 	if (keyCode == DOWN) invadersOfSpace.move(0, 1);
 	if (keyCode == UP) invadersOfSpace.move(0, -1);
 	if (keyCode == ENTER) {
-		if (state == 3) {
-			state = 0;
-			soundEffect(6);
+		if (state == GameState.GameOver) {
+			state = GameState.Init;
+			soundEffect(5);
 		}
 	}
 	if (key == 32) {
 		if (!invadersOfSpace.runningGetReady() && stars.acceleration == 0) { 
 			switch (state) {
-				case 1:
+				case StartScreen:
 					stars.accelerate(); 
-					soundEffect(6); 
+					soundEffect(5); 
 					break;
-				case 2:
+				case Run:
 					invadersOfSpace.shoot();
 					break;
 			}
