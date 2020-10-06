@@ -54,12 +54,12 @@ class CollisionManager {
 				if (player.isCurrent) {
 					explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
 					explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
-					soundEffect(3);
+					soundManager.soundEffect(3);
 					return true;
 				} else {
 					explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
 					shipDestroyed = true;
-					soundEffect(3);
+					soundManager.soundEffect(3);
 				}
 			}
 		}
@@ -74,12 +74,12 @@ class CollisionManager {
 			if (player.isCurrent) {
 				explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
 				explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
-				soundEffect(3);
+				soundManager.soundEffect(3);
 				return true;
 			} else {
 				explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
 				shipDestroyed = true;
-				soundEffect(3);
+				soundManager.soundEffect(3);
 			}
 		}
 		return false;
@@ -96,12 +96,12 @@ class CollisionManager {
 					if (player.isCurrent) {
 						explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
 						explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
-						soundEffect(3);
-						return true; // Game Over!
+						soundManager.soundEffect(3);
+						return true; 
 					} else {
 						explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
 						shipDestroyed = true;
-						soundEffect(3);
+						soundManager.soundEffect(3);
 						return false;
 					}
 				}
@@ -123,12 +123,12 @@ class CollisionManager {
 					if (players[py][px].isCurrent) {
 						explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
 						explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
-						soundEffect(4);
-						return 2; // Game Over!
+						soundManager.soundEffect(4);
+						return 2; 
 					} else {
 						explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
 						shipDestroyed = true;
-						soundEffect(3);
+						soundManager.soundEffect(3);
 						return 1;
 					}
 				} 
@@ -147,9 +147,9 @@ class CollisionManager {
 				explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);					
 				enemies[ex].lostLife = true;
 				if (enemies[ex].lives == 1) {
-					soundEffect(1);
+					soundManager.soundEffect(1);
 				} else {
-					soundEffect(0);
+					soundManager.soundEffect(0);
 				}
 				shots.remove(nShot);
 				return true;					
@@ -174,7 +174,7 @@ class CollisionManager {
 					explosionsManager.spawn(new PVector(shot.pos.x, shot.pos.y), color(0,80, 90), 6);
 					explosionsManager.spawn(new PVector(shot.pos.x, shot.pos.y), color(0,160,180), 6);
 					wallPiece.applyDamage();
-					soundEffect(6);
+					soundManager.soundEffect(6);
 					shots.remove(nShot);						
 					return true;
 				}
@@ -186,7 +186,7 @@ class CollisionManager {
 	boolean baselineVsShot(int nShot) {
 		Shot shot = shots.get(nShot);
 		if (shot.pos.y > height - 48) {
-			soundEffect(6);
+			soundManager.soundEffect(6);
 			explosionsManager.spawn(new PVector(shot.pos.x, shot.pos.y), color(0,160,180), 8);
 			shots.remove(nShot);
 			return true;
