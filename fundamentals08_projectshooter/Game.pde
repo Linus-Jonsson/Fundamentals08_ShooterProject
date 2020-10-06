@@ -17,13 +17,12 @@ class Game {
 
 	PFont titleFont = createFont("Alien-Encounters-Italic.ttf", 80);
 	PFont font = createFont("Futuristic Armour.otf", 22);
-	
+	PImage theMoon = loadImage("moon.png");
+
 	FrameCounter fps = new FrameCounter();
 	Time time = new Time();
-	PImage theMoon = loadImage("moon.png");
 	int score = 9999;
 	int highScore;
-	int state;
 	int getReadyCounter = 0;
 
 	boolean gameOver = false;
