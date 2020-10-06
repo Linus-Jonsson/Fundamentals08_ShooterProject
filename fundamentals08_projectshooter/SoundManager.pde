@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Andreas Collvin
+//
 class SoundManager {
 	AudioPlayer theme;
 	AudioSample[] duckTales;

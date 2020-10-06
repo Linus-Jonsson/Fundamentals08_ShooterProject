@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Linus Jonsson
+//
 class Player extends GameObject {
 	float size = 10;
 	boolean alive;

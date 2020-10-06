@@ -1,5 +1,8 @@
+//
+// Huvudansvarig: Linus Jonsson
+//
 class ExplosionsManager {
-	ArrayList<Explosion> explosions;
+  ArrayList<Explosion> explosions;
 
 	ExplosionsManager() {
 		explosions = new ArrayList<Explosion>(10);

@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: 50/50
+//
 class Game { 
 	final int nPlayersX = 11;
 	final int nPlayersY = 5;

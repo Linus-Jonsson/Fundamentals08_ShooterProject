@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Andreas Collvin
+//
 class FrameCounter {
 	float frames = 0;
 	float startTime = millis();

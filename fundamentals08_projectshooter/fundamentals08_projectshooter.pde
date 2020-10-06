@@ -10,7 +10,7 @@
 // med huvudfokus på följande filer:
 // 
 //		Enemy, Player, Splashes, StarfieldBackground, Explosion
-//		WallManager, WallPiece
+//		WallManager, WallPiece 
 //
 // Det enda i grafikväg som vi inte har skapat är månen och fonterna.
 //
@@ -18,8 +18,11 @@
 // allmän struktur och kollisionsdetektering, med
 // huvudfokus på följande filer:
 //
-//		CollisionManager, EnemyManager, PlayerManager, ShotsManager,
-//		Game och fundamentals08_projectshooter
+//		CollisionManager, EnemyManager, PlayerManager, ShotsManager, 
+//		SoundManager, fundamentals08_projectshooter, GameObject
+//		BoundingCircle, Time, FrameCounter
+//
+// Delat ansvar för Game.pde.
 //
 // Credits: 
 //
@@ -29,6 +32,7 @@
 //		Sound Effects - Duck Tales (NES Game)
 //
 //		Moon Picture - https://pnghunter.com/png/moon-23/
+//
 // -------------------------------------------------------------------
 
 import ddf.minim.*;

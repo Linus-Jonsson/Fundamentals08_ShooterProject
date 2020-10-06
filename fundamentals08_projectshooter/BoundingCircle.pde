@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Andreas Collvin
+//
 class BoundingCircle {
 	PVector offset;
 	float diameter;

@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Andreas Collvin
+//
 class PlayerManager {
 	Player[][] players;
 	int rows, cols;

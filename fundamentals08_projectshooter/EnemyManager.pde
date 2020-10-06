@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Andreas Collvin
+//
 class EnemyManager {
 	Enemy[] enemies;
 	int nEnemies;

@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Linus Jonsson
+//
 class Enemy extends GameObject {
 	color col = color(84, 23, 243);
 	color colDark = color(56, 4, 191);

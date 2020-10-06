@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Andreas Collvin
+//
 class GameObject {
 	PVector pos, vel;
 	BoundingCircle boundingCircle;

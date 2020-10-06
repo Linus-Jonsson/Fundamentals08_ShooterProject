@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Linus Jonsson
+//
 class StarSystem {
 	ArrayList<Star> stars = new ArrayList<Star>(1000);
 	PVector origin;

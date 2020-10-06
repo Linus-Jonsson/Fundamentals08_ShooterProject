@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Andreas Collvin
+//
 class CollisionManager {
 	boolean shipDestroyed = false;
 	Player[][] players;

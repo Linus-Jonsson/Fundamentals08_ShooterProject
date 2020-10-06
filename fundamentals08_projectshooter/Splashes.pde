@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Linus Jonsson
+//
 void graphicElements(int score, PFont font, boolean gameOver) {
 	image(theMoon, 260, -480); 
 	if (gameOver)

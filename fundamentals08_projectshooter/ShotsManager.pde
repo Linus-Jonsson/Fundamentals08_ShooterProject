@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Andreas Collvin
+//
 class ShotsManager {
 	ArrayList<Shot> shots;
 	

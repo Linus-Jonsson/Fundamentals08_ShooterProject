@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Linus Jonsson
+//
 class WallPiece extends GameObject {
 	boolean alive = true;
 	float diameter;

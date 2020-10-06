@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Linus Jonsson
+//
 class WallManager {
 	Wall[] walls;
 	int nWalls;

@@ -1,3 +1,6 @@
+//
+// Huvudansvarig: Andreas Collvin
+//
 class Time {
 	long initTime = millis();
 	long lastTime = millis();
