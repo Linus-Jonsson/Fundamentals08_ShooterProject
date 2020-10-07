@@ -54,7 +54,7 @@ void setup() {
 	frameRate(60);
 
 	minim = new Minim(this);
-	soundManager = new SoundManager(true);
+	soundManager = new SoundManager(false);
 	stars = new StarSystem(new PVector(width / 2, height / 2));	
 	isInitialized = new Initialized();
 }

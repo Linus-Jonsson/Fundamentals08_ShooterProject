@@ -17,8 +17,10 @@ class SoundManager {
 		duckTales[4] = minim.loadSample("playerDead.wav", 512);
 		duckTales[5] = minim.loadSample("restart.wav", 512);
 		duckTales[6] = minim.loadSample("wallHit.wav", 512);
-		theme.loop(10);
-		theme.play();
+		if (soundOn) {
+			theme.loop(10);
+			theme.play();
+		}
 	}
 
 	void soundEffect(int index) {

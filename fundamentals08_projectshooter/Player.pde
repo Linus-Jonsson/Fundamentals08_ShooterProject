@@ -7,19 +7,35 @@ class Player extends GameObject {
 	color colBright = color(255, 200, 82);
 	float size = 10;
 	boolean alive;
-	boolean isCurrent;
+	boolean isCurrent = false;
 	boolean highlight;
 	
 	Player(float x, float y, BoundingCircle bc) {
 		super(x, y, bc);
-		alive = true;
-		isCurrent = false;
 	}
 
 	boolean collideWall() {
 		if (alive) {
 			if ((pos.x - size * 1.5 < 0) || (pos.x > width - size * 1.5))
 				return true;
+		}
+		return false;
+	}
+
+	boolean explode(ExplosionsManager explosionsManager, SoundManager soundManager) {
+		if (alive) {
+			alive = false;
+			float explosionX = pos.x + boundingCircle.offset.x;						
+			float explosionY = pos.y + boundingCircle.offset.y;
+			if (isCurrent) {
+				explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
+				explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
+				soundManager.soundEffect(4);
+				return true; 
+			} else {
+				explosionsManager.spawn(new PVector(explosionX, explosionY), color(0, 0, 0), 12);
+				soundManager.soundEffect(3);
+			}
 		}
 		return false;
 	}

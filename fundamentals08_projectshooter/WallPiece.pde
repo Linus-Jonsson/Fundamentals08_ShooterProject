@@ -2,7 +2,6 @@
 // Huvudansvarig: Linus Jonsson
 //
 class WallPiece extends GameObject {
-	boolean alive = true;
 	float diameter;
 	color col = color(0, 160, 180);
 	color colDark = color(0, 80, 90);

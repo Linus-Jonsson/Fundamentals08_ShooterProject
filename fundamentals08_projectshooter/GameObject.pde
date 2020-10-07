@@ -4,11 +4,13 @@
 class GameObject {
 	PVector pos, vel;
 	BoundingCircle boundingCircle;
+	boolean alive;
 
 	GameObject (float x, float y, BoundingCircle bc) {
 		pos = new PVector(x, y);
 		vel = new PVector(0, 0);
 		boundingCircle = bc;
+		alive = true;
 	}
 
 	void transform(float delta_t) {
@@ -17,6 +19,8 @@ class GameObject {
 	}
 
 	boolean collides(GameObject g) {
+		if (!alive || !g.alive)
+			return false;
 		float dx = (pos.x + boundingCircle.offset.x) - (g.pos.x + g.boundingCircle.offset.x);
 		float dy = (pos.y + boundingCircle.offset.y) - (g.pos.y + g.boundingCircle.offset.y);
 		if (sqrt(dx * dx + dy * dy) <= (boundingCircle.diameter / 2 + g.boundingCircle.diameter / 2))

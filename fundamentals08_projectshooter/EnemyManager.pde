@@ -11,7 +11,7 @@ class EnemyManager {
 		nEnemies = _nEnemies;
 		enemies = new Enemy[nEnemies];
 		for (int n = 0; n < nEnemies; n++) {
-			enemies[n] = new Enemy(width / 2, height * 0.885, new BoundingCircle(0, 0, 35));
+			enemies[n] = new Enemy(width / 2+random(100), height * 0.885, new BoundingCircle(0, 0, 35));
 		}
 		shotsManager = _shotsManager;
 		wallManager = _wallManager;

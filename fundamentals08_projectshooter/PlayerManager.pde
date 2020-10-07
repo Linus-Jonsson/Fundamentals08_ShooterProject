@@ -34,9 +34,7 @@ class PlayerManager {
 			return;
 		else if (currentX + x < 0 || currentX + x > cols - 1 || currentY + y < 0 || currentY + y > rows - 1)
 			return;
-		else			
-			players[currentY][currentX].isCurrent = false;
-
+		
 		// Find closest one along the vector +/- specified degree (up to 180) - Cast two rays: 
 		float initAngle = atan2(y, x);
 		float rayLength = sqrt(players.length * players.length + players[0].length * players[0].length) + 3;
@@ -51,6 +49,7 @@ class PlayerManager {
 						break;
 					}
 					if (!(xRay == 0 && yRay == 0) && players[currentY + yRay][currentX + xRay].alive) {
+						players[currentY][currentX].isCurrent = false;
 						currentX += xRay;
 						currentY += yRay;
 						players[currentY][currentX].isCurrent = true;
