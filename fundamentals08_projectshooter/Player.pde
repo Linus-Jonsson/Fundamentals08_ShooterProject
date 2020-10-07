@@ -6,7 +6,6 @@ class Player extends GameObject {
 	color colDark = color(192, 132, 0);
 	color colBright = color(255, 200, 82);
 	float size = 10;
-	boolean alive;
 	boolean isCurrent = false;
 	boolean highlight;
 	

@@ -20,7 +20,7 @@ class Enemy extends GameObject {
 	}
 
 	boolean readyToShoot() {
-		if (lives > 0 && millis() - time > 100) {
+		if (lives > 0 && millis() - time > 400) {
 			time = millis();
 			return true;
 		}
